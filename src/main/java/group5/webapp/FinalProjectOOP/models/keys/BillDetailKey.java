@@ -8,11 +8,6 @@ public class BillDetailKey implements Serializable {
 
     public BillDetailKey(){}
 
-    public BillDetailKey(Integer productId, Integer billId) {
-        this.productId = productId;
-        this.billId = billId;
-    }
-
     public Integer getProductId() {
         return productId;
     }

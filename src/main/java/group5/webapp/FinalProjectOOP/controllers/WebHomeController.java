@@ -36,8 +36,8 @@ public class WebHomeController {
     @Autowired
     BillService billService;
 
-    @Autowired
-    BillDetailService billDetailService;
+//    @Autowired
+//    BillDetailService billDetailService;
 
     public static final int PAGE_SITE = 12;
 
@@ -164,14 +164,14 @@ public class WebHomeController {
         HttpSession session = rq.getSession();
         User user = (User) session.getAttribute("account");
         Optional<Bill> billCheck = billService.findByUserAndStatus(user,-1);
-        if(billCheck.isPresent()){
-            Bill bill = billCheck.get();
-            List<BillDetail> billDetailList = billDetailService.findAllByBill(bill);
-            if(billDetailList.size() > 0) {
-                model.addAttribute("listBillDetail", billDetailList);
-                model.addAttribute("bill", bill);
-            }
-        }
+//        if(billCheck.isPresent()){
+//            Bill bill = billCheck.get();
+//            List<BillDetail> billDetailList = billDetailService.findAllByBill(bill.getId());
+//            if(billDetailList.size() > 0) {
+//                model.addAttribute("listBillDetail", billDetailList);
+//                model.addAttribute("bill", bill);
+//            }
+//        }
         if(user == null)
             return "redirect:/login";
 
