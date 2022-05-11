@@ -16,6 +16,8 @@ public class User {
 	private String userName;
 	private String passWord;
 	private int role;
+
+	private int status;
 	
 	public User() {};
 
@@ -51,6 +53,13 @@ public class User {
 		this.role = role;
 	}
 
+	public int getStatus() {
+		return status;
+	}
+
+	public void setStatus(int status) {
+		this.status = status;
+	}
 }
 
 

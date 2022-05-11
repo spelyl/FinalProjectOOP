@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.List;
 import java.util.Optional;
 
 @Transactional
@@ -26,4 +27,15 @@ public class BillServiceImplement implements BillService {
     public void saveBill(Bill bill) {
         billRepository.save(bill);
     }
+
+    @Override
+    public List<Bill> findAllByDate(String year1, String year2) {
+        return billRepository.findAllByDate(year1,year2);
+    }
+
+    @Override
+    public List<Bill> findAll() {
+        return billRepository.findAll();
+    }
+
 }

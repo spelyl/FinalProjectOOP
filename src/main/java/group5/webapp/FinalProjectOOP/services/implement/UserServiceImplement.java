@@ -30,5 +30,10 @@ public class UserServiceImplement implements UserService {
     public void saveUser(User user) {
         userRepository.save(user);
     }
+    @Override
+    public User getUserByUserNameAndPassWordAndRole(String username, String password, int role) {
+
+        return userRepository.getUserByUserNameAndPassWordAndRole(username, password, role);
+    }
 
 }

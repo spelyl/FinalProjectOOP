@@ -20,21 +20,21 @@
     <meta name="author" content="codedthemes" />
     <!-- Favicon icon -->
     <link rel="icon" th:href="@{/assets/images/favicon.ico}"
-    type="image/x-icon">
+          type="image/x-icon">
     <!-- Google font-->
     <link href="https://fonts.googleapis.com/css?family=Roboto:400,500"
           rel="stylesheet">
     <!-- waves.css -->
     <link rel="stylesheet"
           th:href="@{/assets/pages/waves/css/waves.min.css}"
-    type="text/css" media="all">
+          type="text/css" media="all">
     <!-- Required Fremwork -->
     <link rel="stylesheet" type="text/css"
           th:href="@{/assets/css/bootstrap/css/bootstrap.min.css}">
     <!-- waves.css -->
     <link rel="stylesheet"
           th:href="@{/assets/pages/waves/css/waves.min.css}"
-    type="text/css" media="all">
+          type="text/css" media="all">
     <!-- themify icon -->
     <link rel="stylesheet" type="text/css"
           th:href="@{/assets/icon/themify-icons/themify-icons.css}">
@@ -52,9 +52,9 @@
     <link rel="stylesheet" type="text/css"
           th:href="@{/assets/css/style.css}">
     <link rel="stylesheet" type="text/css"
-          th:href="@{/templates/css/table.css}">
+          th:href="@{/css/table.css}">
     <link rel="stylesheet" type="text/css"
-          th:href="@{/templates/css/profile.css}">
+          th:href="@{/css/profile.css}">
     <link rel="stylesheet"
           href="https://fonts.googleapis.com/css?family=Roboto|Varela+Round">
     <link rel="stylesheet"
@@ -133,336 +133,337 @@
     <div class="pcoded-overlay-box"></div>
     <div class="pcoded-container navbar-wrapper">
 
-<!--        Header-->
+        <!--        Header-->
         <div th:replace="~{admin/header::header}"></div>
-<!--        EndHeader-->
+        <!--        EndHeader-->
 
         <div class="pcoded-main-container">
             <div class="pcoded-wrapper">
 
-<!--                Left-->
+                <!--                Left-->
                 <div th:replace="~{admin/left::left}"></div>
-<!--                Endleft-->
+                <!--                Endleft-->
 
-<!--                Body-->
+                <!--                Body-->
 
 
-<div class="pcoded-content">
-    <!-- Page-header start -->
-    <div class="page-header">
-        <div class="page-block">
-            <div class="row align-items-center">
-                <div class="col-md-8">
-                    <div class="page-header-title">
-                        <h5 class="m-b-10">Dashboard</h5>
-                        <p class="m-b-0">Welcome to Admin site</p>
+                <div class="pcoded-content">
+                    <!-- Page-header start -->
+                    <div class="page-header">
+                        <div class="page-block">
+                            <div class="row align-items-center">
+                                <div class="col-md-8">
+                                    <div class="page-header-title">
+                                        <h5 class="m-b-10">Dashboard</h5>
+                                        <p class="m-b-0">Welcome to Admin site</p>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <ul class="breadcrumb-title">
+                                        <li class="breadcrumb-item"><a
+                                                href="/admin/home"> <i class="fa fa-home"></i>
+                                        </a></li>
+                                        <li class="breadcrumb-item"><a
+                                                href="/admin/home">Dashboard</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                </div>
-                <div class="col-md-4">
-                    <ul class="breadcrumb-title">
-                        <li class="breadcrumb-item"><a
-                                href="/admin/home"> <i class="fa fa-home"></i>
-                            </a></li>
-                        <li class="breadcrumb-item"><a
-                                href="/admin/home">Dashboard</a></li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- Page-header end -->
-    <div class="pcoded-inner-content">
-        <!-- Main-body start -->
-        <div class="main-body">
-            <div class="page-wrapper">
-                <!-- Page-body start -->
-                <div class="page-body">
-                    <div class="row">
-                        <!-- task, page, download counter  start -->
-                        <div class="col-xl-3 col-md-6">
-                            <div class="card">
-                                <div class="card-block">
-                                    <div class="row align-items-center">
-                                        <div class="col-8">
-                                            <h4 class="text-c-purple">${Total}</h4>
-                                            <h6 class="text-muted m-b-0">Total Money</h6>
-                                        </div>
-                                        <div class="col-4 text-right">
-                                            <i class="fa fa-bar-chart f-28"></i>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="card-footer bg-c-purple">
-                                    <div class="row align-items-center">
-                                        <div class="col-9">
-                                            <p class="text-white m-b-0">100%</p>
-                                        </div>
-                                        <div class="col-3 text-right">
-                                            <i class="fa fa-line-chart text-white f-16"></i>
-                                        </div>
-                                    </div>
-
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-xl-3 col-md-6">
-                            <div class="card">
-                                <div class="card-block">
-                                    <div class="row align-items-center">
-                                        <div class="col-8">
-                                            <h4 class="text-c-green">${CountInvoice}+</h4>
-                                            <h6 class="text-muted m-b-0">Total Invoice</h6>
-                                        </div>
-                                        <div class="col-4 text-right">
-                                            <i class="fa fa-file-text-o f-28"></i>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="card-footer bg-c-green">
-                                    <div class="row align-items-center">
-                                        <div class="col-9">
-                                            <p class="text-white m-b-0">100%</p>
-                                        </div>
-                                        <div class="col-3 text-right">
-                                            <i class="fa fa-line-chart text-white f-16"></i>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-xl-3 col-md-6">
-                            <div class="card">
-                                <div class="card-block">
-                                    <div class="row align-items-center">
-                                        <div class="col-8">
-                                            <h4 class="text-c-red">${CountSeller}</h4>
-                                            <h6 class="text-muted m-b-0">Total Seller</h6>
-                                        </div>
-                                        <div class="col-4 text-right">
-                                            <i class="fa fa-calendar-check-o f-28"></i>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="card-footer bg-c-red">
-                                    <div class="row align-items-center">
-                                        <div class="col-9">
-                                            <p class="text-white m-b-0">100%</p>
-                                        </div>
-                                        <div class="col-3 text-right">
-                                            <i class="fa fa-line-chart text-white f-16"></i>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-xl-3 col-md-6">
-                            <div class="card">
-                                <div class="card-block">
-                                    <div class="row align-items-center">
-                                        <div class="col-8">
-                                            <h4 class="text-c-blue">${CountCustomer}</h4>
-                                            <h6 class="text-muted m-b-0">Total Customer</h6>
-                                        </div>
-                                        <div class="col-4 text-right">
-                                            <i class="fa fa-hand-o-down f-28"></i>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="card-footer bg-c-blue">
-                                    <div class="row align-items-center">
-                                        <div class="col-9">
-                                            <p class="text-white m-b-0">100%</p>
-                                        </div>
-                                        <div class="col-3 text-right">
-                                            <i class="fa fa-line-chart text-white f-16"></i>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- task, page, download counter  end -->
-
-                        <!--  sale analytics start -->
-                        <div class="col-xl-8 col-md-12">
-                            <div class="card">
-                                <div class="card-header">
-                                    <h5>Sales Analytics</h5>
-                                    <span class="text-muted">Get 15% Off on <a
-                                            href="https://www.amcharts.com/" target="_blank">amCharts</a>
-										licences. Use code "codedthemes" and get the discount.
-									</span>
-                                    <div class="card-header-right">
-                                        <ul class="list-unstyled card-option">
-                                            <li><i class="fa fa fa-wrench open-card-option"></i></li>
-                                            <li><i class="fa fa-window-maximize full-card"></i></li>
-                                            <li><i class="fa fa-minus minimize-card"></i></li>
-                                            <li><i class="fa fa-refresh reload-card"></i></li>
-                                            <li><i class="fa fa-trash close-card"></i></li>
-                                        </ul>
-                                    </div>
-                                </div>
-                                <div class="card-block">
-                                    <div id="sales-analytics" style="height: 400px;"></div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-xl-4 col-md-12">
-                            <div class="card">
-                                <div class="card-block">
+                    <!-- Page-header end -->
+                    <div class="pcoded-inner-content">
+                        <!-- Main-body start -->
+                        <div class="main-body">
+                            <div class="page-wrapper">
+                                <!-- Page-body start -->
+                                <div class="page-body">
                                     <div class="row">
-                                        <div class="col">
-                                            <h4>$256.23</h4>
-                                            <p class="text-muted">This Month</p>
-                                        </div>
-                                        <div class="col-auto">
-                                            <label class="label label-success">+20%</label>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-sm-8">
-                                            <canvas id="this-month" style="height: 150px;"></canvas>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="card quater-card">
-                                <div class="card-block">
-                                    <h6 class="text-muted m-b-15">This Quarter</h6>
-                                    <h4>$3,9452.50</h4>
-                                    <p class="text-muted">$3,9452.50</p>
-                                    <h5>87</h5>
-                                    <p class="text-muted">
-                                        Online Revenue<span class="f-right">80%</span>
-                                    </p>
-                                    <div class="progress">
-                                        <div class="progress-bar bg-c-blue" style="width: 80%"></div>
-                                    </div>
-                                    <h5 class="m-t-15">68</h5>
-                                    <p class="text-muted">
-                                        Offline Revenue<span class="f-right">50%</span>
-                                    </p>
-                                    <div class="progress">
-                                        <div class="progress-bar bg-c-green" style="width: 50%"></div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <!--  sale analytics end -->
-                        <!--  project and team member start -->
-                        <div class="col-xl-8 col-md-12">
-                            <div class="card table-card">
-                                <div class="card-header">
-                                    <h5>List Seller</h5>
-                                    <div class="card-header-right">
-                                        <ul class="list-unstyled card-option">
-                                            <li><i class="fa fa fa-wrench open-card-option"></i></li>
-                                            <li><i class="fa fa-window-maximize full-card"></i></li>
-                                            <li><i class="fa fa-minus minimize-card"></i></li>
-                                            <li><i class="fa fa-refresh reload-card"></i></li>
-                                            <li><i class="fa fa-trash close-card"></i></li>
-                                        </ul>
-                                    </div>
-                                </div>
-                                <div class="card-block">
-                                    <div class="table-responsive">
-                                        <table class="table table-hover">
-                                            <thead>
-                                            <tr>
-                                                <th>
-                                                    <div class="chk-option">
-                                                        <div class="checkbox-fade fade-in-primary">
-                                                            <label class="check-task"> <input
-                                                                    type="checkbox" value=""> <span class="cr">
-																		<i class="cr-icon fa fa-check txt-default"></i>
-																</span>
-                                                            </label>
+                                        <!-- task, page, download counter  start -->
+                                        <div class="col-xl-3 col-md-6">
+                                            <div class="card">
+                                                <div class="card-block">
+                                                    <div class="row align-items-center">
+                                                        <div class="col-8">
+                                                            <h4 class="text-c-purple">[[${Total}]]</h4>
+                                                            <h6 class="text-muted m-b-0">Total Money</h6>
                                                         </div>
-                                                    </div> Avatar
-                                                </th>
-                                                <th>Name</th>
-                                                <th>User Name</th>
-                                                <th>Status</th>
-                                            </tr>
-                                            </thead>
-                                            <tbody>
-<!--                                            <c:forEach items="${list5Seller}" var="o">-->
-                                                <tr>
-                                                    <td>
-                                                        <div class="chk-option">
-                                                            <div class="checkbox-fade fade-in-primary">
-                                                                <label class="check-task"> <input
-                                                                        type="checkbox" value=""> <span class="cr">
-																		<i class="cr-icon fa fa-check txt-default"></i>
-																</span>
-                                                                </label>
-                                                            </div>
+                                                        <div class="col-4 text-right">
+                                                            <i class="fa fa-bar-chart f-28"></i>
                                                         </div>
-                                                        <div class="d-inline-block align-middle">
-                                                            <img src="/assets/images/avatar-4.jpg" alt="user image"
-                                                            class="img-radius img-40 align-top m-r-15">
-                                                            <div class="d-inline-block">
+                                                    </div>
+                                                </div>
+                                                <div class="card-footer bg-c-purple">
+                                                    <div class="row align-items-center">
+                                                        <div class="col-9">
+                                                            <p class="text-white m-b-0">100%</p>
+                                                        </div>
+                                                        <div class="col-3 text-right">
+                                                            <i class="fa fa-line-chart text-white f-16"></i>
+                                                        </div>
+                                                    </div>
 
-                                                            </div>
-                                                        </div>
-                                                    </td>
-                                                    <td>${o.fullName}</td>
-                                                    <td>${o.userName}</td>
-                                                    <td>${o.status == 0 ? "Disable" : "Enable"}</td>
-                                                </tr>
-<!--                                            </c:forEach>-->
-                                            </tbody>
-                                        </table>
-                                        <div class="text-right m-r-20">
-                                            <a href="/admin/list-seller?check=3" class=" b-b-primary text-primary">View all
-                                            Seller</a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-xl-4 col-md-12">
-                            <div class="card ">
-                                <div class="card-header">
-                                    <h5>List Customers</h5>
-                                    <div class="card-header-right">
-                                        <ul class="list-unstyled card-option">
-                                            <li><i class="fa fa fa-wrench open-card-option"></i></li>
-                                            <li><i class="fa fa-window-maximize full-card"></i></li>
-                                            <li><i class="fa fa-minus minimize-card"></i></li>
-                                            <li><i class="fa fa-refresh reload-card"></i></li>
-                                            <li><i class="fa fa-trash close-card"></i></li>
-                                        </ul>
-                                    </div>
-                                </div>
-                                <div class="card-block">
-<!--                                    <c:forEach items="${list5Customer}" var="o">-->
-                                        <div class="align-middle m-b-30">
-                                            <img src="/assets/images/avatar-2.jpg" alt="user image"
-                                            class="img-radius img-40 align-top m-r-15">
-                                            <div class="d-inline-block">
-                                                <h6>${o.fullName}</h6>
-                                                <p class="text-muted m-b-0">${o.userName}</p>
+                                                </div>
                                             </div>
                                         </div>
-<!--                                    </c:forEach>-->
+                                        <div class="col-xl-3 col-md-6">
+                                            <div class="card">
+                                                <div class="card-block">
+                                                    <div class="row align-items-center">
+                                                        <div class="col-8">
+                                                            <h4 class="text-c-green">[[${Totalbill}]]</h4>
+                                                            <h6 class="text-muted m-b-0">Total Bill</h6>
+                                                        </div>
+                                                        <div class="col-4 text-right">
+                                                            <i class="fa fa-file-text-o f-28"></i>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="card-footer bg-c-green">
+                                                    <div class="row align-items-center">
+                                                        <div class="col-9">
+                                                            <p class="text-white m-b-0">100%</p>
+                                                        </div>
+                                                        <div class="col-3 text-right">
+                                                            <i class="fa fa-line-chart text-white f-16"></i>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-xl-3 col-md-6">
+                                            <div class="card">
+                                                <div class="card-block">
+                                                    <div class="row align-items-center">
+                                                        <div class="col-8">
+                                                            <h4 class="text-c-red">[[${totalproduct}]]</h4>
+                                                            <h6 class="text-muted m-b-0">Products Sold</h6>
+                                                        </div>
+                                                        <div class="col-4 text-right">
+                                                            <i class="fa fa-calendar-check-o f-28"></i>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="card-footer bg-c-red">
+                                                    <div class="row align-items-center">
+                                                        <div class="col-9">
+                                                            <p class="text-white m-b-0">100%</p>
+                                                        </div>
+                                                        <div class="col-3 text-right">
+                                                            <i class="fa fa-line-chart text-white f-16"></i>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-xl-3 col-md-6">
+                                            <div class="card">
+                                                <div class="card-block">
+                                                    <div class="row align-items-center">
+                                                        <div class="col-8">
+                                                            <h4 class="text-c-blue">[[${totalcustomer}]]</h4>
+                                                            <h6 class="text-muted m-b-0">Total Customer</h6>
+                                                        </div>
+                                                        <div class="col-4 text-right">
+                                                            <i class="fa fa-hand-o-down f-28"></i>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="card-footer bg-c-blue">
+                                                    <div class="row align-items-center">
+                                                        <div class="col-9">
+                                                            <p class="text-white m-b-0">100%</p>
+                                                        </div>
+                                                        <div class="col-3 text-right">
+                                                            <i class="fa fa-line-chart text-white f-16"></i>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- task, page, download counter  end -->
 
-                                    <div class="text-center">
-                                        <a href="/admin/list-customer?check=3" />" class="b-b-primary text-primary">View all
-                                        Customers</a>
+                                        <!--  sale analytics start -->
+                                        <div class="col-xl-8 col-md-12">
+                                            <div class="card">
+                                                <div class="card-header">
+                                                    <h5>Sales Analytics</h5>
+                                                    <span class="text-muted">Get 15% Off on <a
+                                                            href="https://www.amcharts.com/" target="_blank">amCharts</a>
+										licences. Use code "codedthemes" and get the discount.
+									</span>
+                                                    <div class="card-header-right">
+                                                        <ul class="list-unstyled card-option">
+                                                            <li><i class="fa fa fa-wrench open-card-option"></i></li>
+                                                            <li><i class="fa fa-window-maximize full-card"></i></li>
+                                                            <li><i class="fa fa-minus minimize-card"></i></li>
+                                                            <li><i class="fa fa-refresh reload-card"></i></li>
+                                                            <li><i class="fa fa-trash close-card"></i></li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                                <div class="card-block">
+                                                    <div id="sales-analytics" style="height: 400px;"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-xl-4 col-md-12">
+                                            <div class="card">
+                                                <div class="card-block">
+                                                    <div class="row">
+                                                        <div class="col">
+                                                            <h4>$+[[${Total1}]]</h4>
+                                                            <p class="text-muted">This Month</p>
+                                                        </div>
+                                                        <div class="col-auto">
+                                                            <label class="label label-success">+20%</label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-sm-8">
+                                                            <canvas id="this-month" style="height: 150px;"></canvas>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="card quater-card">
+                                                <div class="card-block">
+                                                    <h6 class="text-muted m-b-15">This Quarter</h6>
+                                                    <h4>$3,9452.50</h4>
+                                                    <p class="text-muted">$3,9452.50</p>
+                                                    <h5>87</h5>
+                                                    <p class="text-muted">
+                                                        Online Revenue<span class="f-right">80%</span>
+                                                    </p>
+                                                    <div class="progress">
+                                                        <div class="progress-bar bg-c-blue" style="width: 80%"></div>
+                                                    </div>
+                                                    <h5 class="m-t-15">68</h5>
+                                                    <p class="text-muted">
+                                                        Offline Revenue<span class="f-right">50%</span>
+                                                    </p>
+                                                    <div class="progress">
+                                                        <div class="progress-bar bg-c-green" style="width: 50%"></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!--  sale analytics end -->
+                                        <!--  project and team member start -->
+                                        <div class="col-xl-8 col-md-12">
+                                            <div class="card table-card">
+                                                <div class="card-header">
+                                                    <h5>List User</h5>
+                                                    <div class="card-header-right">
+                                                        <ul class="list-unstyled card-option">
+                                                            <li><i class="fa fa fa-wrench open-card-option"></i></li>
+                                                            <li><i class="fa fa-window-maximize full-card"></i></li>
+                                                            <li><i class="fa fa-minus minimize-card"></i></li>
+                                                            <li><i class="fa fa-refresh reload-card"></i></li>
+                                                            <li><i class="fa fa-trash close-card"></i></li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                                <div class="card-block">
+                                                    <div class="table-responsive">
+                                                        <table class="table table-hover">
+                                                            <thead>
+                                                            <tr>
+                                                                <th>
+                                                                    <div class="chk-option">
+                                                                        <div class="checkbox-fade fade-in-primary">
+                                                                            <label class="check-task"> <input
+                                                                                    type="checkbox" value=""> <span class="cr">
+																		<i class="cr-icon fa fa-check txt-default"></i>
+																</span>
+                                                                            </label>
+                                                                        </div>
+                                                                    </div> Avatar
+                                                                </th>
+                                                                <th>Name</th>
+                                                                <th>User Name</th>
+                                                                <th>Status</th>
+                                                            </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                            <th:block th:each="o : ${customerInfoList}">
+                                                                <tr>
+                                                                    <td>
+                                                                        <div class="chk-option">
+                                                                            <div class="checkbox-fade fade-in-primary">
+                                                                                <label class="check-task"> <input
+                                                                                        type="checkbox" value=""> <span class="cr">
+																		<i class="cr-icon fa fa-check txt-default"></i>
+																</span>
+                                                                                </label>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="d-inline-block align-middle">
+                                                                            <th:block th:if="${o.linkAVT == null}">
+                                                                                <img src="https://st3.depositphotos.com/15648834/17930/v/600/depositphotos_179308454-stock-illustration-unknown-person-silhouette-glasses-profile.jpg" alt="user image"
+                                                                                     class="img-radius img-40 align-top m-r-15">
+                                                                            </th:block>
+                                                                            <th:block th:if="${o.linkAVT}">
+                                                                                <img th:src="@{'/api/uploadfile/upload/' + ${o.linkAVT}}" alt="user image"
+                                                                                     class="img-radius img-40 align-top m-r-15">
+                                                                            </th:block>
+                                                                            <div class="d-inline-block">
+
+                                                                            </div>
+                                                                        </div>
+                                                                    </td>
+                                                                    <td>[[${o.fullname}]]</td>
+                                                                    <td>[[${o.user.userName}]]</td>
+                                                                    <td>[[${o.user.status == 0 ? "Disable" : "Enable"}]]</td>
+                                                                </tr>
+                                                            </th:block>
+                                                            </tbody>
+                                                        </table>
+                                                        <div class="text-right m-r-20">
+                                                            <a href="/admin/list-seller?check=3" class=" b-b-primary text-primary">View all User</a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-xl-4 col-md-12">
+                                            <div class="card ">
+                                                <div class="card-header">
+                                                    <h5>List Product Best Seller</h5>
+                                                    <div class="card-header-right">
+                                                        <ul class="list-unstyled card-option">
+                                                            <li><i class="fa fa fa-wrench open-card-option"></i></li>
+                                                            <li><i class="fa fa-window-maximize full-card"></i></li>
+                                                            <li><i class="fa fa-minus minimize-card"></i></li>
+                                                            <li><i class="fa fa-refresh reload-card"></i></li>
+                                                            <li><i class="fa fa-trash close-card"></i></li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                                <div class="card-block">
+                                                    <th:block th:each="o : ${productList}">
+                                                        <div class="align-middle m-b-30">
+                                                            <img th:src="@{'/api/uploadfile/upload/' + ${o.thumbnailPhoto}}" alt="user image"
+                                                                 class="img-radius img-40 align-top m-r-15">
+                                                            <div class="d-inline-block">
+                                                                <h6>[[${o.name}]]</h6>
+                                                                <p class="text-muted m-b-0">[[${o.amount+"/"+o.quantity}]]</p>
+                                                            </div>
+                                                        </div>
+                                                    </th:block>
+
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!--  project and team member end -->
                                     </div>
-
                                 </div>
+                                <!-- Page-body end -->
                             </div>
+                            <div id="styleSelector"></div>
                         </div>
-                        <!--  project and team member end -->
                     </div>
                 </div>
-                <!-- Page-body end -->
-            </div>
-            <div id="styleSelector"></div>
-        </div>
-    </div>
-</div>
                 <!--                EndBody-->
             </div>
         </div>

@@ -29,7 +29,7 @@
           th:href="@{/assets/css/bootstrap/css/bootstrap.min.css}" >
     <!-- waves.css -->
     <link rel="stylesheet" th:href="@{/assets/pages/waves/css/waves.min.css}"
-    type="text/css" media="all">
+          type="text/css" media="all">
     <!-- themify-icons line icon -->
     <link rel="stylesheet" type="text/css"
           th:href="@{/assets/icon/themify-icons/themify-icons.css}">
@@ -105,7 +105,7 @@
             <div class="col-sm-12">
                 <!-- Authentication card start -->
 
-                <form class="md-float-material form-material" action="login" method="post">
+                <form class="md-float-material form-material" action="/admin/login" method="post">
                     <div class="text-center">
                         <img th:src="@{/images/logo.png}" width="15%" height="15%"  alt="logo.png">
                     </div>
@@ -116,7 +116,7 @@
                                     <h3 class="text-center">Sign In Admin</h3>
                                 </div>
                             </div>
-                            <p class="text-danger">${mess}</p>
+                            <p class="text-danger"></p>
                             <div class="form-group form-primary">
                                 <input type="text" name="username" class="form-control" required="">
                                 <span class="form-bar"></span>

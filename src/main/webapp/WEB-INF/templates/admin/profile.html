@@ -52,9 +52,9 @@
     <link rel="stylesheet" type="text/css"
           th:href="@{/assets/css/style.css}">
     <link rel="stylesheet" type="text/css"
-          th:href="@{/templates/css/table.css}">
+          th:href="@{/css/table.css}">
     <link rel="stylesheet" type="text/css"
-          th:href="@{/templates/css/profile.css}">
+          th:href="@{/css/profile.css}">
     <link rel="stylesheet"
           href="https://fonts.googleapis.com/css?family=Roboto|Varela+Round">
     <link rel="stylesheet"
@@ -145,119 +145,120 @@
                 <!--                Endleft-->
 
                 <!--                Body-->
-<div class="pcoded-content">
-    <div class="container rounded bg-white mt-5 mb-5">
-<!--        <c:if test="${check == 1}">-->
-<!--            <div class="alert alert-success">-->
-<!--                <strong>Success!</strong> Thành công !!!-->
-<!--            </div>-->
-<!--        </c:if>-->
-<!--        <c:if test="${check == 0}">-->
-<!--            <div class="alert alert-danger">-->
-<!--                <strong>Error!</strong> Lỗi rồi !!!-->
-<!--            </div>-->
-<!--        </c:if>-->
-        <div class="row">
-            <div class="col-md-3 border-right">
-                <div
-                        class="d-flex flex-column align-items-center text-center p-3 py-5">
-                    <img class="rounded-circle mt-5" width="150px"
-                         src="https://st3.depositphotos.com/15648834/17930/v/600/depositphotos_179308454-stock-illustration-unknown-person-silhouette-glasses-profile.jpg"><span
-                        class="font-weight-bold">${sessionScope.account.fullName}</span><span
-                        class="text-black-50">edogaru@mail.com.my</span><span> </span>
-                </div>
-            </div>
-            <div class="col-md-5 border-right">
-                <div class="p-3 py-5">
-                    <div class="d-flex justify-content-between align-items-center mb-3">
-                        <h4 class="text-right">Profile Settings</h4>
-                    </div>
-                    <form action="update-admin" method="post">
-                        <div class="row mt-3">
-                            <div class="col-md-12">
-                                <input type="hidden" name="editID"
-                                       value="${sessionScope.account.userID}"> <input
-                                    type="hidden" name="editPW"
-                                    value="${sessionScope.account.passWord}"> <label
-                                    class="labels">Full Name</label><input type="text"
-                                                                           name="editFullName" class="form-control"
-                                                                           placeholder="enter your Full Name"
-                                                                           value="${sessionScope.account.fullName}">
+                <div class="pcoded-content">
+                    <div class="container rounded bg-white mt-5 mb-5">
+                        <!--        <c:if test="${check == 1}">-->
+                        <!--            <div class="alert alert-success">-->
+                        <!--                <strong>Success!</strong> Thành công !!!-->
+                        <!--            </div>-->
+                        <!--        </c:if>-->
+                        <!--        <c:if test="${check == 0}">-->
+                        <!--            <div class="alert alert-danger">-->
+                        <!--                <strong>Error!</strong> Lỗi rồi !!!-->
+                        <!--            </div>-->
+                        <!--        </c:if>-->
+                        <div class="row">
+                            <div class="col-md-3 border-right">
+                                <div
+                                        class="d-flex flex-column align-items-center text-center p-3 py-5">
+                                    <img class="rounded-circle mt-5" width="150px"
+                                         src="https://st3.depositphotos.com/15648834/17930/v/600/depositphotos_179308454-stock-illustration-unknown-person-silhouette-glasses-profile.jpg"><span
+                                        class="font-weight-bold">[[${session.info.fullname}]]</span>
+                                    <span
+                                            class="text-black-50">[[${session.info.email}]]</span><span> </span>
+                                </div>
                             </div>
-                            <div class="col-md-12">
-                                <label class="labels">User Name</label><input type="text"
-                                                                              name="editUserName" class="form-control"
-                                                                              placeholder="enter your User Name"
-                                                                              value="${sessionScope.account.userName}">
-                            </div>
-                            <div class="col-md-12">
-                                <label class="labels">Status</label><select class="form-control"
-                                                                            name="editStt" required>
-<!--                                <option value="0"-->
-<!--                                        ${sessionScope.account.status == 0 ? "selected" : "" }>Disable</option>-->
-<!--                                <option value="1"-->
-<!--                                        ${sessionScope.account.status == 1 ? "selected" : "" }>Enable</option>-->
-                            </select>
-                            </div>
-                        </div>
+                            <div class="col-md-5 border-right">
+                                <div class="p-3 py-5">
+                                    <div class="d-flex justify-content-between align-items-center mb-3">
+                                        <h4 class="text-right">Profile Settings</h4>
+                                    </div>
+                                    <form action="update-admin" method="post">
+                                        <div class="row mt-3">
+                                            <div class="col-md-12">
+                                                <input type="hidden" name="editID"
+                                                       value="${sessionScope.account.userID}"> <input
+                                                    type="hidden" name="editPW"
+                                                    value="${sessionScope.account.passWord}"> <label
+                                                    class="labels">Full Name</label><input type="text"
+                                                                                           name="editFullName" class="form-control"
+                                                                                           placeholder="enter your Full Name"
+                                                                                           th:value="${session.info.fullname}">
+                                            </div>
+                                            <div class="col-md-12">
+                                                <label class="labels">User Name</label><input type="text"
+                                                                                              name="editUserName" class="form-control"
+                                                                                              placeholder="enter your User Name"
+                                                                                              th:value="${session.account.userName}">
+                                            </div>
+                                            <div class="col-md-12">
+                                                <label class="labels">Status</label><select class="form-control"
+                                                                                            name="editStt" required>
+                                                <!--                                <option value="0"-->
+                                                <!--                                        ${sessionScope.account.status == 0 ? "selected" : "" }>Disable</option>-->
+                                                <!--                                <option value="1"-->
+                                                <!--                                        ${sessionScope.account.status == 1 ? "selected" : "" }>Enable</option>-->
+                                            </select>
+                                            </div>
+                                        </div>
 
-                        <div class="mt-5 text-center">
-                            <button class="btn btn-primary profile-button" type="submit">Save
-                                Profile</button>
+                                        <div class="mt-5 text-center">
+                                            <button class="btn btn-primary profile-button" type="submit">Save
+                                                Profile</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="p-3 py-5">
+                                    <form action="changepassword" method="post">
+                                        <input type="hidden" name="idUser"
+                                               value="${sessionScope.account.userID}"> <input
+                                            type="hidden" name="fullname"
+                                            value="${sessionScope.account.fullName}"> <input
+                                            type="hidden" name="username"
+                                            value="${sessionScope.account.userName}"> <input
+                                            type="hidden" name="status"
+                                            value="${sessionScope.account.status}"> <input
+                                            type="hidden" name="password"
+                                            value="${sessionScope.account.passWord}">
+                                        <div
+                                                class="d-flex justify-content-between align-items-center experience">
+                                            <span>Change Password</span>
+                                        </div>
+                                        <br>
+                                        <div class="col-md-12">
+                                            <label class="labels">Old Password</label><input name="oldPW"
+                                                                                             type="password" class="form-control"
+                                                                                             placeholder="Enter old password..." value="">
+                                        </div>
+                                        <br>
+                                        <div class="col-md-12">
+                                            <label class="labels">New Password</label><input type="password"
+                                                                                             name="newPW" class="form-control"
+                                                                                             placeholder="Enter new password..." value="">
+                                        </div>
+                                        <br>
+                                        <div class="col-md-12">
+                                            <label class="labels">Confirm Password</label><input
+                                                type="password" name="confirmPW" class="form-control"
+                                                placeholder="Confirm new password..." value="">
+                                        </div>
+                                        <div class="mt-5 text-center">
+                                            <button class="btn btn-primary profile-button" type="submit">Change
+                                                Password</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
                         </div>
-                    </form>
+                    </div>
                 </div>
-            </div>
-            <div class="col-md-4">
-                <div class="p-3 py-5">
-                    <form action="changepassword" method="post">
-                        <input type="hidden" name="idUser"
-                               value="${sessionScope.account.userID}"> <input
-                            type="hidden" name="fullname"
-                            value="${sessionScope.account.fullName}"> <input
-                            type="hidden" name="username"
-                            value="${sessionScope.account.userName}"> <input
-                            type="hidden" name="status"
-                            value="${sessionScope.account.status}"> <input
-                            type="hidden" name="password"
-                            value="${sessionScope.account.passWord}">
-                        <div
-                                class="d-flex justify-content-between align-items-center experience">
-                            <span>Change Password</span>
-                        </div>
-                        <br>
-                        <div class="col-md-12">
-                            <label class="labels">Old Password</label><input name="oldPW"
-                                                                             type="password" class="form-control"
-                                                                             placeholder="Enter old password..." value="">
-                        </div>
-                        <br>
-                        <div class="col-md-12">
-                            <label class="labels">New Password</label><input type="password"
-                                                                             name="newPW" class="form-control"
-                                                                             placeholder="Enter new password..." value="">
-                        </div>
-                        <br>
-                        <div class="col-md-12">
-                            <label class="labels">Confirm Password</label><input
-                                type="password" name="confirmPW" class="form-control"
-                                placeholder="Confirm new password..." value="">
-                        </div>
-                        <div class="mt-5 text-center">
-                            <button class="btn btn-primary profile-button" type="submit">Change
-                                Password</button>
-                        </div>
-                    </form>
-                </div>
+                <!--                EndBody-->
             </div>
         </div>
-    </div>
-</div>
-<!--                EndBody-->
-</div>
-</div>
 
-</div>
+    </div>
 </div>
 
 

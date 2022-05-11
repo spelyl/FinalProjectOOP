@@ -26,4 +26,6 @@ public interface ProductService {
 
     List<Product> getLast4Product();
 
+    List<Product> getTop4ProductBestSeller();
+
 }

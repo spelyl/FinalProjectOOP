@@ -12,4 +12,6 @@ public interface BillDetailsRepository extends JpaRepository<BillDetail, BillDet
     Optional<BillDetail> findBillDetailsByProductIdAndBillId(Product productId, Bill billId);
 
     List<BillDetail> findAllByBillId(Bill billId);
+
+    List<BillDetail> findAll();
 }

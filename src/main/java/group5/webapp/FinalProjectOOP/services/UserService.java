@@ -8,5 +8,6 @@ public interface UserService {
     User getUserByUserName(String username);
 
     void saveUser(User user);
+    User getUserByUserNameAndPassWordAndRole(String username,String password, int role);
 
 }

@@ -15,4 +15,6 @@ public interface BillDetailService {
     void saveBillDetail(BillDetail billDetail);
 
     void removeBillDetail(BillDetailKey billDetailKey);
+
+    List<BillDetail> findAll();
 }

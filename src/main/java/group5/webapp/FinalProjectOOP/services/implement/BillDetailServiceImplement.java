@@ -38,4 +38,9 @@ public class BillDetailServiceImplement implements BillDetailService {
     public void removeBillDetail(BillDetailKey billDetailKey) {
         billDetailsRepository.deleteById(billDetailKey);
     }
+
+    @Override
+    public List<BillDetail> findAll() {
+        return billDetailsRepository.findAll();
+    }
 }

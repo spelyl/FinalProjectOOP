@@ -77,4 +77,9 @@ public class ProductServiceImplement implements ProductService {
     public List<Product> getLast4Product() {
         return productRepository.findTop4ByNameIsNotNull(Sort.by("id").descending());
     }
+
+    @Override
+    public List<Product> getTop4ProductBestSeller() {
+        return productRepository.findTop4ByNameIsNotNull(Sort.by("amount").descending());
+    }
 }

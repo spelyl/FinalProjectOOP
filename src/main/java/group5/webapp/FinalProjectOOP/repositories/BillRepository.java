@@ -3,12 +3,20 @@ package group5.webapp.FinalProjectOOP.repositories;
 import group5.webapp.FinalProjectOOP.models.Bill;
 import group5.webapp.FinalProjectOOP.models.User;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface BillRepository extends JpaRepository<Bill, Integer> {
 
     Optional<Bill> findByUserAndStatus(User user, Integer status);
+
+    List<Bill> findAll();
+    @Query(nativeQuery = true,value = "SELECT * FROM bill WHERE bill.date <= :year2 AND bill.date >= :year1")
+    List<Bill> findAllByDate(@Param("year1") String year1, @Param("year2") String year2);
+
 
 }
