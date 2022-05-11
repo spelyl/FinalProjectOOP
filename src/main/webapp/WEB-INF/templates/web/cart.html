@@ -14,7 +14,11 @@
 <div th:replace="~{web/header::header}">
 
 </div>
+
 <div class="small-container cart-page">
+    <th:block th:if="${message}">
+        <h4 style="color: #2fff00">[[${message}]]</h4>
+    </th:block>
     <table class="cart-item">
         <tr>
             <th>Product</th>
@@ -36,7 +40,7 @@
 
                             </div></td>
                         <td><input type="number" min="1" th:max="${p.productId.quantity - p.productId.amount}" th:value="${p.quantity}"
-                                   disable></td>
+                                   disabled></td>
                         <td>$ [[${p.productId.price*p.quantity}]]</td>
                         <td><div class="btn" th:onclick="'removeCartItem(\'' + ${p.productId.id} + '\');'">Remove</div>
                             <input type="hidden" th:id="'subtotal'+${p.productId.id}" th:value="${p.productId.price*p.quantity}">
@@ -58,7 +62,7 @@
     </div>
 
     <div class="btn-acpt">
-        <a href="order" class="btn">Accept</a>
+        <a href="/payment" class="btn">Accept</a>
     </div>
 </div>
 <div th:replace="~{web/footer::footer}">
@@ -101,7 +105,6 @@
         }
     }
 </script>
-
 <script>
     function calc()
     {

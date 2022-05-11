@@ -188,9 +188,6 @@ public class WebHomeController {
         return "web/cart";
     }
 
-    @RequestMapping(value = {"/order"})
-    public String OrderPage(){
-        return "web/payment";
-    }
+
 
 }

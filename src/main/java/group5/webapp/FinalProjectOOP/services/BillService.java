@@ -14,4 +14,6 @@ public interface BillService {
     List<Bill> findAll();
     List<Bill> findAllByDate(@Param("year1") String year1, @Param("year2") String year2);
 
+    List<Bill> findAllByUserAndStatus(User user, int status);
+
 }

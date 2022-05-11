@@ -46,20 +46,20 @@
                     </tr>
                     </thead>
                     <tbody>
-
+                    <th:block th:each="p : ${billList}">
                     <tr>
-                        <td>20-02-2022</td>
+                        <td>[[${p.date}]]</td>
                         <td>
                             <ul>
-                                <li>Đồng hồ ( 2000$ ) : 2</li>
-                                <li>Đồng hồ ( 2000$ ) : 2</li>
-                                <li>Đồng hồ ( 2000$ ) : 2</li>
-                                <li>Đồng hồ ( 2000$ ) : 2</li>
+                                <th:block th:each="t : ${billDetailList}" th:if="${t.billId.id == p.id}">
+                                <li>[[${t.quantity +" "+t.productId.name + "( "+t.productId.price+"$"+" )"}]]</li>
+
+                                </th:block>
                             </ul>
                         </td>
-                        <td>200000$</td>
+                        <td>[[${p.total}]]$</td>
                     </tr>
-
+                    </th:block>
                     </tbody>
                 </table>
             </div>

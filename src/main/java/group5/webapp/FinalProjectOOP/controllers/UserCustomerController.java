@@ -1,10 +1,7 @@
 package group5.webapp.FinalProjectOOP.controllers;
 
-import group5.webapp.FinalProjectOOP.models.CustomerInfo;
-import group5.webapp.FinalProjectOOP.models.User;
-import group5.webapp.FinalProjectOOP.services.CustomerInfoService;
-import group5.webapp.FinalProjectOOP.services.UploadFileService;
-import group5.webapp.FinalProjectOOP.services.UserService;
+import group5.webapp.FinalProjectOOP.models.*;
+import group5.webapp.FinalProjectOOP.services.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,6 +14,9 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.sql.Date;
+import java.time.LocalDate;
+import java.util.List;
+import java.util.Optional;
 
 @Controller
 public class UserCustomerController {
@@ -29,6 +29,21 @@ public class UserCustomerController {
 
     @Autowired
     UploadFileService uploadFileService;
+
+    @Autowired
+    BillService billService;
+
+    @Autowired
+    BillDetailService billDetailService;
+
+    @Autowired
+    AddressService addressService;
+
+    @Autowired
+    CardService cardService;
+
+    @Autowired
+    ProductService productService;
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     public String LoginPage(@RequestParam(required = false, value = "username") String username,
@@ -255,9 +270,110 @@ public class UserCustomerController {
 
         User user = (User) session.getAttribute("account");
         if(user != null){
+
+            List<Bill> billList = billService.findAllByUserAndStatus(user, 1);
+
+            List<BillDetail> billDetailList = billDetailService.findAll();
+
+            model.addAttribute("billList", billList);
+            model.addAttribute("billDetailList", billDetailList);
+
             return "web/transaction-history";
         }
         return "redirect:/login";
 
+    }
+
+    @RequestMapping(value = "/address")
+    public String AddressPage(HttpServletRequest rq,
+                              RedirectAttributes attributes,
+                              Model model){
+        HttpSession session = rq.getSession();
+
+        User user = (User) session.getAttribute("account");
+
+        if(user == null)
+            return "redirect:/login";
+
+        return "web/address";
+    }
+
+    @RequestMapping(value = "/card")
+    public String CardPage(HttpServletRequest rq,
+                           RedirectAttributes attributes,
+                           Model model){
+            HttpSession session = rq.getSession();
+
+            User user = (User) session.getAttribute("account");
+
+            if(user == null)
+                return "redirect:/login";
+
+        return "web/card";
+    }
+
+    @RequestMapping(value = "/payment")
+    public String PaymentPage(HttpServletRequest rq,
+                            RedirectAttributes attributes,
+                            Model model){
+        HttpSession session = rq.getSession();
+
+        User user = (User) session.getAttribute("account");
+
+        if(user == null){
+            return "redirect:/login";
+        }else {
+            Optional<Bill> billCheck = billService.findByUserAndStatus(user,-1);
+            if(billCheck.isPresent()){
+                Bill bill = billCheck.get();
+                List<Address> addressList =  addressService.findAllByUser(user);
+                List<Card> cardList =  cardService.findAllByUser(user);
+
+                model.addAttribute("total", bill.getTotal());
+                model.addAttribute("addressList", addressList);
+                model.addAttribute("cardList", cardList);
+            }
+        }
+
+        return "web/payment";
+    }
+
+    @RequestMapping(value = {"/payment-confirm"})
+    public String PaymentConfirmPage(HttpServletRequest rq,
+                            RedirectAttributes attributes,
+                            Model model){
+        HttpSession session = rq.getSession();
+
+        User user = (User) session.getAttribute("account");
+
+        if(user == null){
+            return "redirect:/login";
+        }else {
+            Optional<Bill> billCheck = billService.findByUserAndStatus(user,-1);
+            if(billCheck.isPresent()){
+                Bill bill = billCheck.get();
+                Date date = Date.valueOf(LocalDate.now());
+                bill.setDate(date);
+                bill.setStatus(1);
+                List<BillDetail> listBillDetail = billDetailService.findAllByBillId(bill);
+                for(BillDetail bd : listBillDetail){
+                    Product product = bd.getProductId();
+                    int newAmount = product.getAmount() + bd.getQuantity();
+                    if(newAmount > product.getQuantity()){
+                        attributes.addFlashAttribute("message", "Thanh toán thất bại !!!");
+                        return "redirect:/cart";
+                    }
+
+                    product.setAmount(newAmount);
+                    productService.saveProduct(product);
+                }
+                billService.saveBill(bill);
+                attributes.addFlashAttribute("message", "Thanh toán thành công !!!");
+                return "redirect:/cart";
+            }
+
+            attributes.addFlashAttribute("message", "Vui lòng đặt hàng trước khi thanh toán !!!");
+            return "redirect:/cart";
+        }
     }
 }

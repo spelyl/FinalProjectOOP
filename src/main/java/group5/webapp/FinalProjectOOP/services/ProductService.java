@@ -28,4 +28,6 @@ public interface ProductService {
 
     List<Product> getTop4ProductBestSeller();
 
+    void saveProduct(Product product);
+
 }

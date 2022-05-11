@@ -82,4 +82,9 @@ public class ProductServiceImplement implements ProductService {
     public List<Product> getTop4ProductBestSeller() {
         return productRepository.findTop4ByNameIsNotNull(Sort.by("amount").descending());
     }
+
+    @Override
+    public void saveProduct(Product product) {
+        productRepository.save(product);
+    }
 }

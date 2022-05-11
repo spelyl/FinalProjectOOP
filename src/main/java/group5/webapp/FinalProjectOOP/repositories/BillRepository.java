@@ -18,5 +18,6 @@ public interface BillRepository extends JpaRepository<Bill, Integer> {
     @Query(nativeQuery = true,value = "SELECT * FROM bill WHERE bill.date <= :year2 AND bill.date >= :year1")
     List<Bill> findAllByDate(@Param("year1") String year1, @Param("year2") String year2);
 
+    List<Bill> findAllByUserAndStatus(User user, int status);
 
 }
