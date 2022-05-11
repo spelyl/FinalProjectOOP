@@ -2,6 +2,7 @@ package group5.webapp.FinalProjectOOP.controllers;
 
 
 import group5.webapp.FinalProjectOOP.models.*;
+import group5.webapp.FinalProjectOOP.models.GetData.GetData;
 import group5.webapp.FinalProjectOOP.repositories.BillRepository;
 import group5.webapp.FinalProjectOOP.repositories.ProductDetailRepository;
 import group5.webapp.FinalProjectOOP.services.*;
@@ -36,13 +37,16 @@ public class WebHomeController {
     @Autowired
     BillService billService;
 
-//    @Autowired
-//    BillDetailService billDetailService;
+    @Autowired
+    BillDetailService billDetailService;
 
     public static final int PAGE_SITE = 12;
 
     @RequestMapping(value = {"/", "/home", "/index"})
     public String HomePage(Model model){
+
+       // GetData getData = new GetData();
+        //		getData.getDataForDatabase();
 
         List<Product> listTop8Product = productService.getTop8Product();
         List<Product> listLast4Product = productService.getLast4Product();
@@ -61,7 +65,7 @@ public class WebHomeController {
         int amount = productService.findAll().size();
         int endPage = amount / PAGE_SITE;
 
-        if(amount % 4 != 0){
+        if(amount % PAGE_SITE != 0){
             endPage += 1;
         }
 
@@ -79,6 +83,7 @@ public class WebHomeController {
         model.addAttribute("tag", pagenumber);
         model.addAttribute("endPage", endPage);
         model.addAttribute("targetactive", category);
+        model.addAttribute("isSearch", false);
 
         return "web/product";
     }
@@ -121,20 +126,21 @@ public class WebHomeController {
 
         List<Product> listAllProduct = productService.findProductByName(text, pagenumber-1, 8);
         List<Category> listAllCategory = categoryService.findAll();
-        System.out.println(text);
+
         int amount = 0;
+        int endPage = 0;
         List<Product> list = productService.findAllProductByName(text);
-        System.out.println(list.size());
+
         if(list.size() > 0) {
             amount = list.size();
+            endPage  = amount / 8;
+            if(amount % 8 != 0){
+                endPage += 1;
+            }
         }else {
             System.out.println("NUlllll");
         }
-        int endPage = amount / PAGE_SITE;
 
-        if(amount % 4 != 0){
-            endPage += 1;
-        }
 
         if(pagenumber == null){
             pagenumber = 1;
@@ -145,6 +151,8 @@ public class WebHomeController {
         model.addAttribute("tag", pagenumber);
         model.addAttribute("endPage", endPage);
         model.addAttribute("targetactive", 0);
+        model.addAttribute("isSearch", true);
+        model.addAttribute("txtSearch", text);
 
         return "web/product";
     }
@@ -163,17 +171,19 @@ public class WebHomeController {
     public String CartPage(HttpServletRequest rq, Model model){
         HttpSession session = rq.getSession();
         User user = (User) session.getAttribute("account");
-        Optional<Bill> billCheck = billService.findByUserAndStatus(user,-1);
-//        if(billCheck.isPresent()){
-//            Bill bill = billCheck.get();
-//            List<BillDetail> billDetailList = billDetailService.findAllByBill(bill.getId());
-//            if(billDetailList.size() > 0) {
-//                model.addAttribute("listBillDetail", billDetailList);
-//                model.addAttribute("bill", bill);
-//            }
-//        }
         if(user == null)
             return "redirect:/login";
+        double total = 0;
+        Optional<Bill> billCheck = billService.findByUserAndStatus(user,-1);
+        if(billCheck.isPresent()){
+            Bill bill = billCheck.get();
+            List<BillDetail> billDetailList = billDetailService.findAllByBillId(bill);
+            if(billDetailList.size() > 0) {
+                model.addAttribute("listBillDetail", billDetailList);
+                total = bill.getTotal();
+            }
+        }
+        model.addAttribute("total", total);
 
         return "web/cart";
     }

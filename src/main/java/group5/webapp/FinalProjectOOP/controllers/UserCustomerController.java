@@ -164,6 +164,7 @@ public class UserCustomerController {
             user.setUserName(username);
             userService.saveUser(user);
             CustomerInfo customerInfo = (CustomerInfo) session.getAttribute("info");
+            customerInfo.setUser(user);
             customerInfo.setFullname(fullname);
             customerInfo.setPhone(phone);
             customerInfo.setEmail(email);

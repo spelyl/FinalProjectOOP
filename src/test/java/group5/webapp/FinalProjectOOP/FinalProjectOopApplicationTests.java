@@ -1,7 +1,9 @@
 package group5.webapp.FinalProjectOOP;
 
 import group5.webapp.FinalProjectOOP.models.*;
+import group5.webapp.FinalProjectOOP.models.GetData.GetData;
 import group5.webapp.FinalProjectOOP.repositories.*;
+import group5.webapp.FinalProjectOOP.services.BillDetailService;
 import group5.webapp.FinalProjectOOP.services.ProductService;
 import group5.webapp.FinalProjectOOP.services.implement.ProductServiceImplement;
 import org.junit.jupiter.api.Test;
@@ -28,7 +30,7 @@ class FinalProjectOopApplicationTests {
 	ProductService productService;
 
 	@Autowired
-	CategoryRepository categoryRepository;
+	public static CategoryRepository categoryRepository;
 
 	@Autowired
 	ProductDetailRepository productDetailRepository;
@@ -36,8 +38,12 @@ class FinalProjectOopApplicationTests {
 	@Autowired
 	BillRepository billRepository;
 
+	@Autowired
+	BillDetailService billDetailService;
+
 	@Test
 	void contextLoads() {
+
 	}
 
 }

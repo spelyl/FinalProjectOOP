@@ -27,24 +27,24 @@
                         <td>
                             <div class="cart-info">
 
-                                <img th:src="@{'/api/uploadfile/upload' + ${p.product.thumnailPhoto}}" alt="">
+                                <img th:src="@{'/api/uploadfile/upload/' + ${p.productId.thumbnailPhoto}}" alt="">
                                 <div>
-                                    <p>[[${p.product.name}]]</p>
-                                    <small>Price: $ [[${p.product.price}]]</small> <br>
+                                    <p>[[${p.productId.name}]]</p>
+                                    <small>Price: $ [[${p.productId.price}]]</small> <br>
+                                    <small>Rest: [[${p.productId.quantity - p.productId.amount}]]</small> <br>
                                 </div>
 
                             </div></td>
-                        <td><input type="number" th:value="${p.quantity}"
+                        <td><input type="number" min="1" th:max="${p.productId.quantity - p.productId.amount}" th:value="${p.quantity}"
                                    disable></td>
-                        <td>$ [[${p.product.price*p.quantity}]]</td>
-                        <td><a href="">Remove</a></td>
+                        <td>$ [[${p.productId.price*p.quantity}]]</td>
+                        <td><div class="btn" th:onclick="'removeCartItem(\'' + ${p.productId.id} + '\');'">Remove</div>
+                            <input type="hidden" th:id="'subtotal'+${p.productId.id}" th:value="${p.productId.price*p.quantity}">
+                        </td>
             </tr>
         </th:block>
         </th:block>
         </th:block>
-
-
-
     </table>
 
     <div class="total-price">
@@ -52,7 +52,7 @@
 
             <tr>
                 <td>Total</td>
-                <td>$ [[${bill.total}]]</td>
+                <td>$ [[${total}]]</td>
             </tr>
         </table>
     </div>
@@ -78,6 +78,38 @@
         else {
             MenuItems.style.maxHeight = "0px"
         }
+    }
+</script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js">
+</script>
+
+<script>
+    function removeCartItem(productId) {
+        let message = "Bạn có muốn xóa sản phẩm này không?";
+        const subtotal = document.getElementById('subtotal' + productId).value;
+        if (confirm(message) == true) {
+            $.ajax({
+                url: "/remove-cart/" + productId + "/" + subtotal,
+                type: "get",
+                success: function (response) {
+                    window.location = "/cart"
+                },
+                error: function (xhr) {
+
+                },
+            });
+        }
+    }
+</script>
+
+<script>
+    function calc()
+    {
+        var price = document.getElementById("ticket_price").innerHTML;
+        var noTickets = document.getElementById("num").value;
+        var total = parseFloat(price) * noTickets
+        if (!isNaN(total))
+            document.getElementById("total").innerHTML = total
     }
 </script>
 

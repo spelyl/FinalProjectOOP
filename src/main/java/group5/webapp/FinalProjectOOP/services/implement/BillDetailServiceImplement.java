@@ -1,9 +1,10 @@
 package group5.webapp.FinalProjectOOP.services.implement;
 
+import group5.webapp.FinalProjectOOP.models.Bill;
 import group5.webapp.FinalProjectOOP.models.BillDetail;
-import group5.webapp.FinalProjectOOP.repositories.BillDetailRepository;
-import group5.webapp.FinalProjectOOP.repositories.BillRepository;
-import group5.webapp.FinalProjectOOP.repositories.ProductRepository;
+import group5.webapp.FinalProjectOOP.models.Product;
+import group5.webapp.FinalProjectOOP.models.keys.BillDetailKey;
+import group5.webapp.FinalProjectOOP.repositories.BillDetailsRepository;
 import group5.webapp.FinalProjectOOP.services.BillDetailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,28 +16,26 @@ import java.util.Optional;
 @Transactional
 @Service
 public class BillDetailServiceImplement implements BillDetailService {
-//
-//    @Autowired
-//    BillDetailRepository billDetailRepository;
-//
-//    @Autowired
-//    ProductRepository productRepository;
-//
-//    @Autowired
-//    BillRepository billRepository;
-//
-//    @Override
-//    public Optional<BillDetail> findByProductAndBill(Integer productId, Integer billId) {
-//        return billDetailRepository.findByProductAndBill(productRepository.getById(productId), billRepository.getById(billId));
-//    }
-//
-//    @Override
-//    public List<BillDetail> findAllByBill(Integer billId) {
-//        return billDetailRepository.findAllByBill(billRepository.getById(billId));
-//    }
-//
-//    @Override
-//    public void saveBillDetail(BillDetail billDetail) {
-//        billDetailRepository.save(billDetail);
-//    }
+
+    @Autowired
+    BillDetailsRepository billDetailsRepository;
+    @Override
+    public Optional<BillDetail> findBillDetailsByProductIdAndBillId(Product productId, Bill billId) {
+        return billDetailsRepository.findBillDetailsByProductIdAndBillId(productId, billId);
+    }
+
+    @Override
+    public List<BillDetail> findAllByBillId(Bill billId) {
+        return billDetailsRepository.findAllByBillId(billId);
+    }
+
+    @Override
+    public void saveBillDetail(BillDetail billDetail) {
+        billDetailsRepository.save(billDetail);
+    }
+
+    @Override
+    public void removeBillDetail(BillDetailKey billDetailKey) {
+        billDetailsRepository.deleteById(billDetailKey);
+    }
 }

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.w3.org/1999/html">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css">
 </head>
 <body>
 <div th:replace="~{web/header::header}"></div>
@@ -29,24 +30,22 @@
         </div>
 
         <div class="col-2">
-            <p>[[${product.category.name}]]</p>
+            <span>[[${product.category.name}]]</span>
             <h1>[[${product.name}]]</h1>
             <h4>[[${product.price}]] $</h4>
-            <span>Quantity : </span>
+            <span>Quantity : [[${product.quantity}]]</span><br>
+            <span>Rest : [[${product.quantity - product.amount}]]</span>
 
             <br>
-
-            <form action="cart-add" method="get">
-                <input type="text" class="form-control"  id="pID" name="pId" min="1" max="100" th:value="${product.id }" hidden>
+            <th:block th:if="${product.amount < product.quantity}">
                 <span style="font-size:16px;">Số lượng:
-							<input type="number" name="quantity" id="quantity" value="1"
-                                   style="padding: 8px 10px;outline:none;"></span>
-                <button class="btn" type="submit"
-                >
-                    Add to Cart</button>
-            </form>
+                    <input type="number" name="quantity" id="quantity" value="1" min="1" th:max="${product.quantity - product.amount}" style="padding: 8px 10px;outline:none;"></span>
+                <div class="btn" type="submit" th:onclick="'addProductToCart(\'' + ${product.id} + '\');'"> Add to Cart</div>
+            </th:block>
 
-
+            <th:block th:if="${product.amount >= product.quantity}">
+                <div class="btn" style="background-color: #2b3d51">Sold out</div>
+            </th:block>
             <br>
             <p>Brand: [[${detail.brand}]]</p>
             <p>Color: [[${detail.color}]]</p>
@@ -126,6 +125,22 @@
     }
 
 </script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js">
+</script>
 
+<script>
+    function addProductToCart(id){
+        const quantity = document.getElementById('quantity').value;
+        $.ajax({
+            url: "/add-to-cart/" + id +"/"+ quantity,
+            type:"get",
+            success: function(response){
+                alert(response)
+            },
+            error: function (xhr){
+            },
+        });
+    }
+</script>
 </body>
 </html>

@@ -32,19 +32,19 @@ public class BillDetail {
 		this.quantity = quantity;
 	}
 
-	public Product getProduct() {
+	public Product getProductId() {
 		return productId;
 	}
 
-	public void setProduct(Product product) {
-		this.productId = product;
+	public void setProductId(Product productId) {
+		this.productId = productId;
 	}
 
-	public Bill getBill() {
+	public Bill getBillId() {
 		return billId;
 	}
 
-	public void setBill(Bill bill) {
-		this.billId = bill;
+	public void setBillId(Bill billId) {
+		this.billId = billId;
 	}
 }
