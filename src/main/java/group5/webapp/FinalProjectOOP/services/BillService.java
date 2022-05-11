@@ -16,4 +16,6 @@ public interface BillService {
 
     List<Bill> findAllByUserAndStatus(User user, int status);
 
+    List<Bill> findAllByStatus(int status);
+
 }

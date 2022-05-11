@@ -19,4 +19,9 @@ public class CardServiceImplement implements CardService {
     public List<Card> findAllByUser(User user) {
         return cardRepository.findAllByUser(user);
     }
+
+    @Override
+    public List<Card> findAll() {
+        return cardRepository.findAll();
+    }
 }

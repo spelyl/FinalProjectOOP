@@ -36,4 +36,19 @@ public class CustomerInfoServiceImplement implements CustomerInfoService {
     public List<CustomerInfo> findAll() {
         return customerInfoRepository.findAll();
     }
+
+    @Override
+    public CustomerInfo findCustomerInfoByUserID(Integer id) {
+        return customerInfoRepository.getById(id);
+    }
+
+    @Override
+    public void saveInfo(CustomerInfo info) {
+        customerInfoRepository.save(info);
+    }
+
+    @Override
+    public void deletInfoById(Integer id) {
+        customerInfoRepository.deleteById(id);
+    }
 }

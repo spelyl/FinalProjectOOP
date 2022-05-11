@@ -148,16 +148,16 @@
                 <!--                Body-->
                 <div class="pcoded-content">
                     <div class="container-xl">
-<!--                        <c:if test="${check == 1}">-->
-<!--                            <div class="alert alert-success">-->
-<!--                                <strong>Success!</strong> Thành công !!!-->
-<!--                            </div>-->
-<!--                        </c:if>-->
-<!--                        <c:if test="${check == 0}">-->
-<!--                            <div class="alert alert-danger">-->
-<!--                                <strong>Error!</strong> Lỗi rồi !!!-->
-<!--                            </div>-->
-<!--                        </c:if>-->
+                        <!--                        <c:if test="${check == 1}">-->
+                        <!--                            <div class="alert alert-success">-->
+                        <!--                                <strong>Success!</strong> Thành công !!!-->
+                        <!--                            </div>-->
+                        <!--                        </c:if>-->
+                        <!--                        <c:if test="${check == 0}">-->
+                        <!--                            <div class="alert alert-danger">-->
+                        <!--                                <strong>Error!</strong> Lỗi rồi !!!-->
+                        <!--                            </div>-->
+                        <!--                        </c:if>-->
 
                         <div class="table-responsive">
                             <div class="table-wrapper">
@@ -194,47 +194,47 @@
                                     </tr>
                                     </thead>
                                     <tbody>
-<!--                                    <c:forEach items="${listAllCustomer}" var="o">-->
+                                    <th:block th:each="o : ${userList}">
                                         <tr>
                                             <td><span class="custom-checkbox"> <input
                                                     type="checkbox" id="checkbox" name="options[]"
-                                                    value="${o.userID}"> <label for="checkbox"></label>
+                                                    value="${o.id}"> <label for="checkbox"></label>
 								</span></td>
-                                            <td>${o.userID}</td>
-                                            <td>${o.userName}</td>
-                                            <td>${o.passWord}</td>
-                                            <td>${o.role}</td>
-                                            <td>${o.status == 0 ? "Disable" : "Enable"}</td>
+                                            <td>[[${o.id}]]</td>
+                                            <td>[[${o.userName}]]</td>
+                                            <td>[[${o.passWord}]]</td>
+                                            <td>[[${o.role}]]</td>
+                                            <td>[[${o.status == 0 ? "Disable" : "Enable"}]]</td>
                                             <td><a href="#editCustomerModal" class="edit"
                                                    data-toggle="modal"
-                                                   onclick="Edit('${o.userID}','${o.fullName}','${o.userName}','${o.passWord}',${o.status })">
+                                                   th:onclick="Edit([[${o.id}]] , [[${o.userName}]] , [[${o.passWord}]] , [[${o.role}]], [[${o.status}]]);" >
                                                 <i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i>
                                             </a> <a href="#deleteCustomerModal" class="delete"
-                                                    onclick="Delete(${o.userID})" data-toggle="modal"><i
+                                                    th:onclick="deleteUser([[${o.id}]])" data-toggle="modal"><i
                                                     class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a></td>
                                         </tr>
-<!--                                    </c:forEach>-->
+                                    </th:block>
                                     </tbody>
                                 </table>
                                 <div class="clearfix">
                                     <div class="hint-text">
-                                        Showing <b>5</b> out of <b>${counts}</b> entries
+                                        Showing <b>5</b> out of <b>[[${counts}]]</b> entries
                                     </div>
                                     <ul class="pagination">
-<!--                                        <c:if test="${tag>1 }">-->
-<!--                                            <li class="page-item disabled"><a-->
-<!--                                                    href="<c:url value="/admin/list-customer?check=3&index=${tag-1}"/>">Previous</a></li>-->
-<!--                                        </c:if>-->
-<!--                                        <c:forEach begin="1" end="${endP}" var="i">-->
-<!--                                            <li class="page-item ${tag == i ? "active" : "" }"><a-->
-<!--                                                href="<c:url value="/admin/list-customer?check=3&index=${i}"/>"-->
-<!--                                            class="page-link">${i}</a></li>-->
-<!--                                        </c:forEach>-->
-<!--                                        <c:if test="${tag<endP }">-->
-<!--                                            <li class="page-item"><a-->
-<!--                                                    href="<c:url value="/admin/list-customer?check=3&index=${tag+1}"/>"-->
-<!--                                                class="page-link">Next</a></li>-->
-<!--                                        </c:if>-->
+                                        <!--                                        <c:if test="${tag>1 }">-->
+                                        <!--                                            <li class="page-item disabled"><a-->
+                                        <!--                                                    href="<c:url value="/admin/list-customer?check=3&index=${tag-1}"/>">Previous</a></li>-->
+                                        <!--                                        </c:if>-->
+                                        <!--                                        <c:forEach begin="1" end="${endP}" var="i">-->
+                                        <!--                                            <li class="page-item ${tag == i ? "active" : "" }"><a-->
+                                        <!--                                                href="<c:url value="/admin/list-customer?check=3&index=${i}"/>"-->
+                                        <!--                                            class="page-link">${i}</a></li>-->
+                                        <!--                                        </c:forEach>-->
+                                        <!--                                        <c:if test="${tag<endP }">-->
+                                        <!--                                            <li class="page-item"><a-->
+                                        <!--                                                    href="<c:url value="/admin/list-customer?check=3&index=${tag+1}"/>"-->
+                                        <!--                                                class="page-link">Next</a></li>-->
+                                        <!--                                        </c:if>-->
                                     </ul>
                                 </div>
                             </div>
@@ -251,14 +251,6 @@
                                                 aria-hidden="true">&times;</button>
                                     </div>
                                     <div class="modal-body">
-                                        <div class="form-group">
-                                            <label>ID</label> <input id="addID" name="addID" type="text"
-                                                                     class="form-control" required>
-                                        </div>
-                                        <div class="form-group">
-                                            <label>FullName</label> <input id="addFullName"
-                                                                           name="addFullName" type="text" class="form-control" required>
-                                        </div>
                                         <div class="form-group">
                                             <label>UserName</label> <input id="addUserName"
                                                                            name="addUserName" type="text" class="form-control" required>
@@ -277,8 +269,7 @@
                                     </div>
                                     <div class="modal-footer">
                                         <input type="button" class="btn btn-default" data-dismiss="modal"
-                                               value="Cancel"> <input type="submit"
-                                                                      class="btn btn-success" value="Add">
+                                               value="Cancel"> <div onclick="insertUser();" class="btn btn-success" >Add</div>
                                     </div>
                                 </form>
                             </div>
@@ -288,7 +279,7 @@
                     <div id="editCustomerModal" class="modal fade">
                         <div class="modal-dialog">
                             <div class="modal-content">
-                                <form action="edit-customer" method="post">
+                                <form action="/edit-customer" method="post">
                                     <div class="modal-header">
                                         <h4 class="modal-title">Edit Customer</h4>
                                         <button type="button" class="close" data-dismiss="modal"
@@ -300,15 +291,15 @@
                                                                      class="form-control" required readonly>
                                         </div>
                                         <div class="form-group">
-                                            <label>FullName</label> <input id="editFullName"
+                                            <label>UserName</label> <input id="editFullName"
                                                                            name="editFullName" type="text" class="form-control" required>
                                         </div>
                                         <div class="form-group">
-                                            <label>UserName</label> <input id="editUserName"
+                                            <label>Password</label> <input id="editUserName"
                                                                            name="editUserName" type="text" class="form-control" required>
                                         </div>
                                         <div class="form-group">
-                                            <label>PassWord</label> <input id="editPW" name="editPW"
+                                            <label>Role</label> <input id="editPW" name="editPW"
                                                                            type="text" class="form-control" required />
                                         </div>
                                         <div class="form-group">
@@ -321,8 +312,8 @@
                                     </div>
                                     <div class="modal-footer">
                                         <input type="button" class="btn btn-default" data-dismiss="modal"
-                                               value="Cancel"> <input type="submit" class="btn btn-info"
-                                                                      value="Save">
+                                               value="Cancel"> <div onclick="saveUser()" type="submit" class="btn btn-info"
+                                                                    value="Save"></div>
                                     </div>
                                 </form>
                             </div>
@@ -423,6 +414,30 @@
                         }
                         return result;
                     };
+
+                    function saveUser(){
+                        const id = document.getElementById("editID").value
+                        const fullName = document.getElementById("editFullName").value
+                        const username = document.getElementById("editUserName").value
+                        const password = document.getElementById("editPW").value
+                        const status = document.getElementById("editStt").value
+
+                        window.location.href = "/admin/save_user/" + id + "/" + fullName + "/" + username + "/" + password + "/" + status;
+
+                    }
+                    function deleteUser(id){
+                        let message = "Bạn có muốn xóa không?";
+                        if(confirm(message) == true){
+                            window.location.href = "/admin/delete_user/" + id;
+                        }
+                    }
+
+                    function insertUser(){
+                        const username = document.getElementById("addUserName").value
+                        const password = document.getElementById("addPW").value
+                        const status = document.getElementById("addStt").value
+                        window.location.href = "/admin/insert_user/"+ username + "/" + password + "/" + status;
+                    }
                 </script>
 
 

@@ -39,6 +39,11 @@ public class BillServiceImplement implements BillService {
     }
 
     @Override
+    public List<Bill> findAllByStatus(int status) {
+        return billRepository.findAllByStatus(status);
+    }
+
+    @Override
     public List<Bill> findAll() {
         return billRepository.findAll();
     }

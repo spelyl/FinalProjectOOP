@@ -49,13 +49,13 @@
           href="https://www.amcharts.com/lib/3/plugins/export/export.css"
           type="text/css" media="all" />
     <!-- Style.css -->
-    <!-- Style.css -->
     <link rel="stylesheet" type="text/css"
           th:href="@{/assets/css/style.css}">
     <link rel="stylesheet" type="text/css"
           th:href="@{/css/table.css}">
     <link rel="stylesheet" type="text/css"
           th:href="@{/css/profile.css}">
+
     <link rel="stylesheet"
           href="https://fonts.googleapis.com/css?family=Roboto|Varela+Round">
     <link rel="stylesheet"
@@ -135,14 +135,14 @@
     <div class="pcoded-container navbar-wrapper">
 
         <!--        Header-->
-        <div th:replace="~{admin/header::header}"></div>
+        <div th:replace="~{seller/header::header}"></div>
         <!--        EndHeader-->
 
         <div class="pcoded-main-container">
             <div class="pcoded-wrapper">
 
                 <!--                Left-->
-                <div th:replace="~{admin/left::left}"></div>
+                <div th:replace="~{seller/left::left}"></div>
                 <!--                Endleft-->
 
                 <!--                Body-->
@@ -165,7 +165,7 @@
                                     <div class="row">
                                         <div class="col-sm-6">
                                             <h2>
-                                                Manage <b>Customer Info</b>
+                                                Manage <b>Product Detail</b>
                                             </h2>
 
                                         </div>
@@ -186,39 +186,36 @@
                                                 type="checkbox" id="selectAll"> <label for="selectAll"></label>
 							</span></th>
                                         <th>ID</th>
-                                        <th>Username</th>
-                                        <th>Fullname</th>
-                                        <th>Birthday</th>
-                                        <th>Email</th>
-                                        <th>Phone</th>
-                                        <th>Avatar</th>
+                                        <th>Name</th>
+                                        <th>Bran</th>
+                                        <th>Color</th>
+                                        <th>Description</th>
+                                        <th>Material</th>
                                         <th>Action</th>
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    <th:block th:each="o : ${customerInfoList}">
-                                        <tr>
-                                            <td><span class="custom-checkbox"> <input
-                                                    type="checkbox" id="checkbox" name="options[]"
-                                                    value="${o.id}"> <label for="checkbox"></label>
+                                    <!--                                    <c:forEach items="${listAllCustomer}" var="o">-->
+                                    <tr>
+                                        <td><span class="custom-checkbox"> <input
+                                                type="checkbox" id="checkbox" name="options[]"
+                                                value="${o.userID}"> <label for="checkbox"></label>
 								</span></td>
-                                            <td>[[${o.id}]]</td>
-                                            <td>[[${o.user.userName}]]</td>
-                                            <td>[[${o.fullname}]]</td>
-                                            <td>[[${o.bithday}]]</td>
-                                            <td>[[${o.email}]]</td>
-                                            <td>[[${o.phone}]]</td>
-                                            <td>[[${o.linkAVT}]]</td>
-                                            <td><a href="#editCustomerModal" class="edit"
-                                                   data-toggle="modal"
-                                                   th:onclick="Edit([[${o.id}]] , [[${o.user.userName}]] , [[${o.fullname}]] , [[${o.bithday}]], [[${o.email}]],[[${o.phone}]],[[${o.linkAVT}]]);" >
-
-                                                <i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i>
-                                            </a> <a href="#deleteCustomerModal" class="delete"
-                                                    onclick="deleteCustomerInfo([[${o.id}]])" data-toggle="modal"><i
-                                                    class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a></td>
-                                        </tr>
-                                    </th:block>>
+                                        <td>[[${id}]]</td>
+                                        <td>[[${name}]]</td>
+                                        <td>[[${brand}]]</td>
+                                        <td>[[${color}]]</td>
+                                        <td>[[${description}]]</td>
+                                        <td>[[${material}]]</td>
+                                        <td><a href="#editCustomerModal" class="edit"
+                                               data-toggle="modal"
+                                               onclick="Edit('${o.userID}','${o.fullName}','${o.userName}','${o.passWord}',${o.status })">
+                                            <i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i>
+                                        </a> <a href="#deleteCustomerModal" class="delete"
+                                                onclick="Delete(${o.userID})" data-toggle="modal"><i
+                                                class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a></td>
+                                    </tr>
+                                    <!--                                    </c:forEach>-->
                                     </tbody>
                                 </table>
                                 <div class="clearfix">
@@ -387,6 +384,7 @@
                         });
                     });
                 </script>
+
                 <script>
                     function Edit(id, fullname, username, password, status){
                         document.getElementById('editID').value = id;
@@ -427,15 +425,7 @@
                         }
                         return result;
                     };
-                    function deleteCustomerInfo(id){
-                        let message = "Bạn có muốn xóa không?";
-                        if(confirm(message) == true){
-                            window.location.href = "/admin/delete_customerinfo/" + id;
-                        }
-                    }
-
                 </script>
-
 
 
                 <!--                EndBody-->

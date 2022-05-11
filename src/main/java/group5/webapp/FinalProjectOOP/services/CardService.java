@@ -7,4 +7,6 @@ import java.util.List;
 
 public interface CardService {
     List<Card> findAllByUser(User user);
+
+    List<Card> findAll();
 }

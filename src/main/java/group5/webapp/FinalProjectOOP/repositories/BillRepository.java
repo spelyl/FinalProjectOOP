@@ -20,4 +20,6 @@ public interface BillRepository extends JpaRepository<Bill, Integer> {
 
     List<Bill> findAllByUserAndStatus(User user, int status);
 
+    List<Bill> findAllByStatus(int status);
+
 }

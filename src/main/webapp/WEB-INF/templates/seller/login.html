@@ -29,7 +29,7 @@
           th:href="@{/assets/css/bootstrap/css/bootstrap.min.css}" >
     <!-- waves.css -->
     <link rel="stylesheet" th:href="@{/assets/pages/waves/css/waves.min.css}"
-    type="text/css" media="all">
+          type="text/css" media="all">
     <!-- themify-icons line icon -->
     <link rel="stylesheet" type="text/css"
           th:href="@{/assets/icon/themify-icons/themify-icons.css}">
@@ -116,7 +116,10 @@
                                     <h3 class="text-center">Sign In Seller</h3>
                                 </div>
                             </div>
-                            <p class="text-danger">${mess}</p>
+                            <th:block th:if="${message}">
+                                <p class="text-danger">[[${message}]]</p>
+                            </th:block>
+
                             <div class="form-group form-primary">
                                 <input type="text" name="username" class="form-control" required="">
                                 <span class="form-bar"></span>

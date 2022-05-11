@@ -12,4 +12,10 @@ public interface CustomerInfoService {
     CustomerInfo findByEmail(String email);
 
     List<CustomerInfo> findAll();
+
+    CustomerInfo findCustomerInfoByUserID(Integer id);
+
+    void saveInfo(CustomerInfo info);
+
+    void deletInfoById(Integer id);
 }

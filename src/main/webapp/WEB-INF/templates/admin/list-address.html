@@ -192,29 +192,29 @@
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    <!--                                    <c:forEach items="${listAllCustomer}" var="o">-->
-                                    <tr>
-                                        <td><span class="custom-checkbox"> <input
-                                                type="checkbox" id="checkbox" name="options[]"
-                                                value="${o.userID}"> <label for="checkbox"></label>
+                                    <th:block th:each="o : ${addressList}">
+                                        <tr>
+                                            <td><span class="custom-checkbox"> <input
+                                                    type="checkbox" id="checkbox" name="options[]"
+                                                    value="${o.user.id}"> <label for="checkbox"></label>
 								</span></td>
-                                        <td>${o.userID}</td>
-                                        <td>${o.userName}</td>
-                                        <td>${o.description}</td>
-                                        <td><a href="#editCustomerModal" class="edit"
-                                               data-toggle="modal"
-                                               onclick="Edit('${o.userID}','${o.fullName}','${o.userName}','${o.passWord}',${o.status })">
-                                            <i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i>
-                                        </a> <a href="#deleteCustomerModal" class="delete"
-                                                onclick="Delete(${o.userID})" data-toggle="modal"><i
-                                                class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a></td>
-                                    </tr>
-                                    <!--                                    </c:forEach>-->
+                                            <td>[[${o.user.id}]]</td>
+                                            <td>[[${o.user.userName}]]</td>
+                                            <td>[[${o.description}]]</td>
+                                            <td><a href="#editCustomerModal" class="edit"
+                                                   data-toggle="modal"
+                                                   th:onclick="Edit([[${o.user.id}]] , [[${o.user.userName}]] , [[${o.description}]]);" >
+                                                <i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i>
+                                            </a> <a href="#deleteCustomerModal" class="delete"
+                                                    onclick="Delete(${o.userID})" data-toggle="modal"><i
+                                                    class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a></td>
+                                        </tr>
+                                    </th:block>>
                                     </tbody>
                                 </table>
                                 <div class="clearfix">
                                     <div class="hint-text">
-                                        Showing <b>5</b> out of <b>${counts}</b> entries
+                                        Showing <b>5</b> out of <b>[[${counts}]]</b> entries
                                     </div>
                                     <ul class="pagination">
                                         <!--                                        <c:if test="${tag>1 }">-->

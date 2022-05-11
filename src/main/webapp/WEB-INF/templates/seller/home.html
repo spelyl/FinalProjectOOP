@@ -20,21 +20,21 @@
     <meta name="author" content="codedthemes" />
     <!-- Favicon icon -->
     <link rel="icon" th:href="@{/assets/images/favicon.ico}"
-    type="image/x-icon">
+          type="image/x-icon">
     <!-- Google font-->
     <link href="https://fonts.googleapis.com/css?family=Roboto:400,500"
           rel="stylesheet">
     <!-- waves.css -->
     <link rel="stylesheet"
           th:href="@{/assets/pages/waves/css/waves.min.css}"
-    type="text/css" media="all">
+          type="text/css" media="all">
     <!-- Required Fremwork -->
     <link rel="stylesheet" type="text/css"
           th:href="@{/assets/css/bootstrap/css/bootstrap.min.css}">
     <!-- waves.css -->
     <link rel="stylesheet"
           th:href="@{/assets/pages/waves/css/waves.min.css}"
-    type="text/css" media="all">
+          type="text/css" media="all">
     <!-- themify icon -->
     <link rel="stylesheet" type="text/css"
           th:href="@{/assets/icon/themify-icons/themify-icons.css}">
@@ -52,9 +52,9 @@
     <link rel="stylesheet" type="text/css"
           th:href="@{/assets/css/style.css}">
     <link rel="stylesheet" type="text/css"
-          th:href="@{/templates/css/table.css}">
+          th:href="@{/css/table.css}">
     <link rel="stylesheet" type="text/css"
-          th:href="@{/templates/css/profile.css}">
+          th:href="@{/css/profile.css}">
     <link rel="stylesheet"
           href="https://fonts.googleapis.com/css?family=Roboto|Varela+Round">
     <link rel="stylesheet"
@@ -131,225 +131,237 @@
     <div class="pcoded-overlay-box"></div>
     <div class="pcoded-container navbar-wrapper">
 
-<!--Header -->
+        <!--Header -->
         <div th:replace="seller/header::header"></div>
-<!--EndHeader-->
+        <!--EndHeader-->
         <div class="pcoded-main-container">
             <div class="pcoded-wrapper">
-<!--                Left-->
+                <!--                Left-->
                 <div th:replace="seller/left::left"></div>
-<!--                EndLeft-->
+                <!--                EndLeft-->
 
-<!--                Body-->
-<div class="pcoded-content">
-    <!-- Page-header start -->
-    <div class="page-header">
-        <div class="page-block">
-            <div class="row align-items-center">
-                <div class="col-md-8">
-                    <div class="page-header-title">
-                        <h5 class="m-b-10">Dashboard</h5>
-                        <p class="m-b-0">Welcome to Seller site</p>
+                <!--                Body-->
+                <div class="pcoded-content">
+                    <!-- Page-header start -->
+                    <div class="page-header">
+                        <div class="page-block">
+                            <div class="row align-items-center">
+                                <div class="col-md-8">
+                                    <div class="page-header-title">
+                                        <h5 class="m-b-10">Dashboard</h5>
+                                        <p class="m-b-0">Welcome to Seller site</p>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <ul class="breadcrumb-title">
+                                        <li class="breadcrumb-item"><a href="/seller/home"> <i
+                                                class="fa fa-home"></i>
+                                        </a></li>
+                                        <li class="breadcrumb-item"><a href="/seller/home">Dashboard</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                </div>
-                <div class="col-md-4">
-                    <ul class="breadcrumb-title">
-                        <li class="breadcrumb-item"><a href="/seller/home"> <i
-                                class="fa fa-home"></i>
-                            </a></li>
-                        <li class="breadcrumb-item"><a href="/seller/home">Dashboard</a></li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- Page-header end -->
-    <div class="pcoded-inner-content">
-        <!-- Main-body start -->
-        <div class="main-body">
-            <div class="page-wrapper">
-                <!-- Page-body start -->
-                <div class="page-body">
-                    <div class="row">
-                        <!-- task, page, download counter  start -->
-                        <div class="col-xl-3 col-md-6">
-                            <div class="card">
-                                <div class="card-block">
-                                    <div class="row align-items-center">
-                                        <div class="col-8">
-                                            <h4 class="text-c-purple">${Total}</h4>
-                                            <h6 class="text-muted m-b-0">Total Money</h6>
-                                        </div>
-                                        <div class="col-4 text-right">
-                                            <i class="fa fa-bar-chart f-28"></i>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="card-footer bg-c-purple">
-                                    <div class="row align-items-center">
-                                        <div class="col-9">
-                                            <p class="text-white m-b-0">100%</p>
-                                        </div>
-                                        <div class="col-3 text-right">
-                                            <i class="fa fa-line-chart text-white f-16"></i>
-                                        </div>
-                                    </div>
+                    <!-- Page-header end -->
+                    <div class="pcoded-inner-content">
+                        <!-- Main-body start -->
+                        <div class="main-body">
+                            <div class="page-wrapper">
+                                <!-- Page-body start -->
+                                <div class="page-body">
+                                    <div class="row">
+                                        <!-- task, page, download counter  start -->
+                                        <div class="col-xl-3 col-md-6">
+                                            <div class="card">
+                                                <div class="card-block">
+                                                    <div class="row align-items-center">
+                                                        <div class="col-8">
+                                                            <th:block th:if="${Total}">
+                                                                <h4 class="text-c-purple">[[${Total}]]</h4>
+                                                            </th:block>
 
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-xl-3 col-md-6">
-                            <div class="card">
-                                <div class="card-block">
-                                    <div class="row align-items-center">
-                                        <div class="col-8">
-                                            <h4 class="text-c-green">${CountProduct}+</h4>
-                                            <h6 class="text-muted m-b-0">Product</h6>
-                                        </div>
-                                        <div class="col-4 text-right">
-                                            <i class="fa fa-file-text-o f-28"></i>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="card-footer bg-c-green">
-                                    <div class="row align-items-center">
-                                        <div class="col-9">
-                                            <p class="text-white m-b-0">100%</p>
-                                        </div>
-                                        <div class="col-3 text-right">
-                                            <i class="fa fa-line-chart text-white f-16"></i>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-xl-3 col-md-6">
-                            <div class="card">
-                                <div class="card-block">
-                                    <div class="row align-items-center">
-                                        <div class="col-8">
-                                            <h4 class="text-c-red">${CountInvoice}</h4>
-                                            <h6 class="text-muted m-b-0">Total Invoice</h6>
-                                        </div>
-                                        <div class="col-4 text-right">
-                                            <i class="fa fa-calendar-check-o f-28"></i>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="card-footer bg-c-red">
-                                    <div class="row align-items-center">
-                                        <div class="col-9">
-                                            <p class="text-white m-b-0">100%</p>
-                                        </div>
-                                        <div class="col-3 text-right">
-                                            <i class="fa fa-line-chart text-white f-16"></i>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-xl-3 col-md-6">
-                            <div class="card">
-                                <div class="card-block">
-                                    <div class="row align-items-center">
-                                        <div class="col-8">
-                                            <h4 class="text-c-blue">${BestProduct.pName}</h4>
-                                            <h6 class="text-muted m-b-0">BestSeller</h6>
-                                        </div>
-                                        <div class="col-4 text-right">
-                                            <i class="fa fa-hand-o-down f-28"></i>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="card-footer bg-c-blue">
-                                    <div class="row align-items-center">
-                                        <div class="col-9">
-                                            <p class="text-white m-b-0">100%</p>
-                                        </div>
-                                        <div class="col-3 text-right">
-                                            <i class="fa fa-line-chart text-white f-16"></i>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- task, page, download counter  end -->
+                                                            <h6 class="text-muted m-b-0">Total Money</h6>
+                                                        </div>
+                                                        <div class="col-4 text-right">
+                                                            <i class="fa fa-bar-chart f-28"></i>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="card-footer bg-c-purple">
+                                                    <div class="row align-items-center">
+                                                        <div class="col-9">
+                                                            <p class="text-white m-b-0">100%</p>
+                                                        </div>
+                                                        <div class="col-3 text-right">
+                                                            <i class="fa fa-line-chart text-white f-16"></i>
+                                                        </div>
+                                                    </div>
 
-                        <!--  sale analytics start -->
-                        <div class="col-xl-8 col-md-12">
-                            <div class="card">
-                                <div class="card-header">
-                                    <h5>Sales Analytics</h5>
-                                    <span class="text-muted">Get 15% Off on <a
-                                            href="https://www.amcharts.com/" target="_blank">amCharts</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-xl-3 col-md-6">
+                                            <div class="card">
+                                                <div class="card-block">
+                                                    <div class="row align-items-center">
+                                                        <div class="col-8">
+                                                            <th:block th:if="${CountProduct}">
+                                                                <h4 class="text-c-green">[[${CountProduct}]]+</h4>
+                                                            </th:block>
+
+                                                            <h6 class="text-muted m-b-0">Product</h6>
+                                                        </div>
+                                                        <div class="col-4 text-right">
+                                                            <i class="fa fa-file-text-o f-28"></i>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="card-footer bg-c-green">
+                                                    <div class="row align-items-center">
+                                                        <div class="col-9">
+                                                            <p class="text-white m-b-0">100%</p>
+                                                        </div>
+                                                        <div class="col-3 text-right">
+                                                            <i class="fa fa-line-chart text-white f-16"></i>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-xl-3 col-md-6">
+                                            <div class="card">
+                                                <div class="card-block">
+                                                    <div class="row align-items-center">
+                                                        <div class="col-8">
+                                                            <th:block th:if="${CountInvoice}">
+                                                                <h4 class="text-c-red">[[${CountInvoice}]]</h4>
+                                                            </th:block>
+
+                                                            <h6 class="text-muted m-b-0">Total Invoice</h6>
+                                                        </div>
+                                                        <div class="col-4 text-right">
+                                                            <i class="fa fa-calendar-check-o f-28"></i>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="card-footer bg-c-red">
+                                                    <div class="row align-items-center">
+                                                        <div class="col-9">
+                                                            <p class="text-white m-b-0">100%</p>
+                                                        </div>
+                                                        <div class="col-3 text-right">
+                                                            <i class="fa fa-line-chart text-white f-16"></i>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-xl-3 col-md-6">
+                                            <div class="card">
+                                                <div class="card-block">
+                                                    <div class="row align-items-center">
+                                                        <div class="col-8">
+                                                            <th:block th:if="${BestProduct.getName()}">
+                                                                <h4 class="text-c-blue">[[${BestProduct.getName()}]]</h4>
+                                                            </th:block>
+
+                                                            <h6 class="text-muted m-b-0">BestSeller</h6>
+                                                        </div>
+                                                        <div class="col-4 text-right">
+                                                            <i class="fa fa-hand-o-down f-28"></i>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="card-footer bg-c-blue">
+                                                    <div class="row align-items-center">
+                                                        <div class="col-9">
+                                                            <p class="text-white m-b-0">100%</p>
+                                                        </div>
+                                                        <div class="col-3 text-right">
+                                                            <i class="fa fa-line-chart text-white f-16"></i>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- task, page, download counter  end -->
+
+                                        <!--  sale analytics start -->
+                                        <div class="col-xl-8 col-md-12">
+                                            <div class="card">
+                                                <div class="card-header">
+                                                    <h5>Sales Analytics</h5>
+                                                    <span class="text-muted">Get 15% Off on <a
+                                                            href="https://www.amcharts.com/" target="_blank">amCharts</a>
 										licences. Use code "codedthemes" and get the discount.
 									</span>
-                                    <div class="card-header-right">
-                                        <ul class="list-unstyled card-option">
-                                            <li><i class="fa fa fa-wrench open-card-option"></i></li>
-                                            <li><i class="fa fa-window-maximize full-card"></i></li>
-                                            <li><i class="fa fa-minus minimize-card"></i></li>
-                                            <li><i class="fa fa-refresh reload-card"></i></li>
-                                            <li><i class="fa fa-trash close-card"></i></li>
-                                        </ul>
+                                                    <div class="card-header-right">
+                                                        <ul class="list-unstyled card-option">
+                                                            <li><i class="fa fa fa-wrench open-card-option"></i></li>
+                                                            <li><i class="fa fa-window-maximize full-card"></i></li>
+                                                            <li><i class="fa fa-minus minimize-card"></i></li>
+                                                            <li><i class="fa fa-refresh reload-card"></i></li>
+                                                            <li><i class="fa fa-trash close-card"></i></li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                                <div class="card-block">
+                                                    <div id="sales-analytics" style="height: 400px;"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-xl-4 col-md-12">
+                                            <div class="card">
+                                                <div class="card-block">
+                                                    <div class="row">
+                                                        <div class="col">
+                                                            <h4>$256.23</h4>
+                                                            <p class="text-muted">This Month</p>
+                                                        </div>
+                                                        <div class="col-auto">
+                                                            <label class="label label-success">+20%</label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-sm-8">
+                                                            <canvas id="this-month" style="height: 150px;"></canvas>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="card quater-card">
+                                                <div class="card-block">
+                                                    <h6 class="text-muted m-b-15">This Quarter</h6>
+                                                    <h4>$3,9452.50</h4>
+                                                    <p class="text-muted">$3,9452.50</p>
+                                                    <h5>87</h5>
+                                                    <p class="text-muted">
+                                                        Online Revenue<span class="f-right">80%</span>
+                                                    </p>
+                                                    <div class="progress">
+                                                        <div class="progress-bar bg-c-blue" style="width: 80%"></div>
+                                                    </div>
+                                                    <h5 class="m-t-15">68</h5>
+                                                    <p class="text-muted">
+                                                        Offline Revenue<span class="f-right">50%</span>
+                                                    </p>
+                                                    <div class="progress">
+                                                        <div class="progress-bar bg-c-green" style="width: 50%"></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!--  sale analytics end -->
                                     </div>
                                 </div>
-                                <div class="card-block">
-                                    <div id="sales-analytics" style="height: 400px;"></div>
-                                </div>
+                                <!-- Page-body end -->
                             </div>
+                            <div id="styleSelector"></div>
                         </div>
-                        <div class="col-xl-4 col-md-12">
-                            <div class="card">
-                                <div class="card-block">
-                                    <div class="row">
-                                        <div class="col">
-                                            <h4>$256.23</h4>
-                                            <p class="text-muted">This Month</p>
-                                        </div>
-                                        <div class="col-auto">
-                                            <label class="label label-success">+20%</label>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-sm-8">
-                                            <canvas id="this-month" style="height: 150px;"></canvas>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="card quater-card">
-                                <div class="card-block">
-                                    <h6 class="text-muted m-b-15">This Quarter</h6>
-                                    <h4>$3,9452.50</h4>
-                                    <p class="text-muted">$3,9452.50</p>
-                                    <h5>87</h5>
-                                    <p class="text-muted">
-                                        Online Revenue<span class="f-right">80%</span>
-                                    </p>
-                                    <div class="progress">
-                                        <div class="progress-bar bg-c-blue" style="width: 80%"></div>
-                                    </div>
-                                    <h5 class="m-t-15">68</h5>
-                                    <p class="text-muted">
-                                        Offline Revenue<span class="f-right">50%</span>
-                                    </p>
-                                    <div class="progress">
-                                        <div class="progress-bar bg-c-green" style="width: 50%"></div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <!--  sale analytics end -->
                     </div>
                 </div>
-                <!-- Page-body end -->
-            </div>
-            <div id="styleSelector"></div>
-        </div>
-    </div>
-</div>
-<!--End Body-->
+                <!--End Body-->
             </div>
         </div>
 

@@ -185,12 +185,18 @@
         src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js">
 </script>
 <script>
-    var xValues = ["Seller", "User", "Admin"];
-    var yValues = [${CountSeller}, ${CountCustomer}, ${CountAdmin}];
+    var xValues = [[${nameList}]];
+    var yValues = [[${countList}]];
     var barColors = [
         "#b91d47",
         "#00aba9",
-        "#2b5797"
+        "#2b5797",
+        "#b91ad7",
+        "#00ab39",
+        "#275812",
+        "#b31d47",
+        "#01aba9",
+        "#2b5227"
     ];
 
     new Chart("myChart1", {
