@@ -51,12 +51,8 @@
                     <i class="fa fa-star-o"></i>
                 </div>
                 <p name="price">[[${p.price}]]$</p>
-                <form action="/add-to-cart" method="post">
-                    <input type="text" class="form-control"  id="product" name="product" min="1" max="100" value="${p.id}" hidden>
-                    <input type="hidden" name="quantity" id="quantity" value="1">
-                    <button type="submit" class="btn">Add To Cart</button>
-                </form>
-
+                <div type="submit" class="btn" th:onclick="'addProductToCart(\'' + ${p.id} + '\');'">Add To Cart</div>
+                <input type="hidden" id="quantity" value="1">
             </div>
         </th:block>
     </div>
@@ -96,5 +92,22 @@
     }
 </script>
 
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js">
+</script>
+
+<script>
+    function addProductToCart(id){
+        const quantity = document.getElementById('quantity').value;
+        $.ajax({
+            url: "/add-to-cart/" + id +"/"+ quantity,
+            type:"get",
+            success: function(response){
+                alert(response)
+            },
+            error: function (xhr){
+            },
+        });
+    }
+</script>
 </body>
 </html>

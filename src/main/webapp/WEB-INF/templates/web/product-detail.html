@@ -70,7 +70,6 @@
 <div class="small-container">
 
     <div class="row">
-
         <th:block th:each=" u : ${listProductSame}">
             <div class="col-4">
                 <a th:href="@{'/product-detail/'+${u.id}+'/'+${u.category.id}}">
@@ -86,8 +85,6 @@
                 <p>[[${u.price}]] $</p>
             </div>
         </th:block>
-
-
     </div>
 </div>
 <div th:replace="~{web/footer::footer}"></div>

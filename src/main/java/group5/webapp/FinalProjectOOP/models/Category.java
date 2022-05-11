@@ -17,11 +17,11 @@ public class Category {
 	
 	public Category() {}
 
-	public int getId() {
+	public Integer getId() {
 		return id;
 	}
 
-	public void setId(int iD) {
+	public void setId(Integer iD) {
 		this.id = id;
 	}
 

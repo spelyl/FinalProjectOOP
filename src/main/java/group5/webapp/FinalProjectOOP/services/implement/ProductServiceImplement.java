@@ -44,7 +44,17 @@ public class ProductServiceImplement implements ProductService {
 
     @Override
     public List<Product> getProductSameCategory(Category category, Integer id) {
-        return productRepository.findTop4ByCategoryAndIdIsNotLike(category, id);
+        List<Product> list =  productRepository.findTop5ByCategory(category);
+
+        for(Product p : list){
+            if(p.getId() == id){
+                list.remove(p);
+                return list;
+            }
+        }
+
+        list.remove(list.size() - 1);
+        return list;
     }
 
     @Override
@@ -54,7 +64,8 @@ public class ProductServiceImplement implements ProductService {
 
     @Override
     public List<Product> findAllProductByName(String name) {
-        return productRepository.findAllByNameContains(name);
+
+        return productRepository.searchByName(name);
     }
 
     @Override

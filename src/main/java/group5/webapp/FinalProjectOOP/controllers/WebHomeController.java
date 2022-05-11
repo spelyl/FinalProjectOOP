@@ -1,19 +1,11 @@
 package group5.webapp.FinalProjectOOP.controllers;
 
-import group5.webapp.FinalProjectOOP.models.Category;
-import group5.webapp.FinalProjectOOP.models.Product;
-import group5.webapp.FinalProjectOOP.models.ProductDetail;
-import group5.webapp.FinalProjectOOP.models.ProductImage;
+
+import group5.webapp.FinalProjectOOP.models.*;
+import group5.webapp.FinalProjectOOP.repositories.BillRepository;
 import group5.webapp.FinalProjectOOP.repositories.ProductDetailRepository;
-import group5.webapp.FinalProjectOOP.repositories.ProductRepository;
-import group5.webapp.FinalProjectOOP.services.CategoryService;
-import group5.webapp.FinalProjectOOP.services.ProductImageService;
-import group5.webapp.FinalProjectOOP.services.ProductService;
-import group5.webapp.FinalProjectOOP.services.implement.ProductImageServiceImplement;
-import group5.webapp.FinalProjectOOP.services.implement.ProductServiceImplement;
+import group5.webapp.FinalProjectOOP.services.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -23,8 +15,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 public class WebHomeController {
@@ -40,6 +32,12 @@ public class WebHomeController {
 
     @Autowired
     ProductDetailRepository productDetailRepository;
+
+    @Autowired
+    BillService billService;
+
+    @Autowired
+    BillDetailService billDetailService;
 
     public static final int PAGE_SITE = 12;
 
@@ -93,7 +91,7 @@ public class WebHomeController {
         Product productDetail = productService.getProductById(product);
         System.out.println(categoryService.findCategoryById(category).getName());
         System.out.println(productService.getProductById(product).getName());
-        //List<Product> listProductSame = productService.getProductSameCategory(categoryService.findCategoryById(category), product);
+        List<Product> listProductSame = productService.getProductSameCategory(categoryService.findCategoryById(category), product);
 
         List<ProductImage> listImageOfProduct = productImageService.getAllImageOfProduct(productDetail);
 
@@ -110,7 +108,7 @@ public class WebHomeController {
 
         model.addAttribute("product", productDetail);
         model.addAttribute("detail", detailOfProduct);
-        //model.addAttribute("listProductSame", listProductSame);
+        model.addAttribute("listProductSame", listProductSame);
         model.addAttribute("listImageOfProduct", listImageOfProduct);
 
         return "web/product-detail";
@@ -125,13 +123,13 @@ public class WebHomeController {
         List<Category> listAllCategory = categoryService.findAll();
         System.out.println(text);
         int amount = 0;
-//        List<Product> list = productService.findAllProductByName(text);
-//        System.out.println(list.size());
-//        if(list.size() > 0) {
-//            amount = list.size();
-//        }else {
-//            System.out.println("NUlllll");
-//        }
+        List<Product> list = productService.findAllProductByName(text);
+        System.out.println(list.size());
+        if(list.size() > 0) {
+            amount = list.size();
+        }else {
+            System.out.println("NUlllll");
+        }
         int endPage = amount / PAGE_SITE;
 
         if(amount % 4 != 0){
@@ -162,7 +160,21 @@ public class WebHomeController {
     }
 
     @RequestMapping(value = {"/cart"})
-    public String CartPage(){
+    public String CartPage(HttpServletRequest rq, Model model){
+        HttpSession session = rq.getSession();
+        User user = (User) session.getAttribute("account");
+        Optional<Bill> billCheck = billService.findByUserAndStatus(user,-1);
+        if(billCheck.isPresent()){
+            Bill bill = billCheck.get();
+            List<BillDetail> billDetailList = billDetailService.findAllByBill(bill);
+            if(billDetailList.size() > 0) {
+                model.addAttribute("listBillDetail", billDetailList);
+                model.addAttribute("bill", bill);
+            }
+        }
+        if(user == null)
+            return "redirect:/login";
+
         return "web/cart";
     }
 

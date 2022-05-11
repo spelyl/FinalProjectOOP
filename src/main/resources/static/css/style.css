@@ -102,6 +102,7 @@ body{
     border-radius: 30px;
     text-decoration: none;
     transition: background 0.5s;
+    cursor: pointer;
 }
 
 .btn:hover{

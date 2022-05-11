@@ -22,29 +22,26 @@
             <th>Subtotal</th>
             <th></th>
         </tr>
-<!--        <c:forEach items="${sessionScope.cart}" var="map">-->
+        <th:block th:each="p : ${listBillDetail}">
             <tr>
-<!--                <c:forEach items="${listAllProduct}" var="p">-->
-<!--                    <c:if test="${p.pID==map.value.pID }">-->
                         <td>
                             <div class="cart-info">
 
-                                <img src="{p.image1 }" alt="">
+                                <img th:src="@{'/api/uploadfile/upload' + ${p.product.thumnailPhoto}}" alt="">
                                 <div>
-                                    <p>${p.pName}</p>
-                                    <small>Price: $ ${p.price}</small> <br>
+                                    <p>[[${p.product.name}]]</p>
+                                    <small>Price: $ [[${p.product.price}]]</small> <br>
                                 </div>
 
                             </div></td>
-                        <td><input type="number" value="${map.value.cdQuantity}"
+                        <td><input type="number" th:value="${p.quantity}"
                                    disable></td>
-                        <td>$ ${p.price*map.value.cdQuantity}</td>
+                        <td>$ [[${p.product.price*p.quantity}]]</td>
                         <td><a href="">Remove</a></td>
-<!--                    </c:if>-->
-<!--                </c:forEach>-->
             </tr>
-
-<!--        </c:forEach>-->
+        </th:block>
+        </th:block>
+        </th:block>
 
 
 
@@ -55,7 +52,7 @@
 
             <tr>
                 <td>Total</td>
-                <td>$ ${total}</td>
+                <td>$ [[${bill.total}]]</td>
             </tr>
         </table>
     </div>

@@ -13,7 +13,9 @@ public class Bill {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Integer id;
-	private int total;
+	private double total;
+
+	private Integer status;
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date date;
 
@@ -30,20 +32,11 @@ public class Bill {
 		this.user = user;
 	}
 
-
-	public int getId() {
-		return id;
-	}
-
-	public void setId(int iD) {
-		this.id = id;
-	}
-
-	public int getTotal() {
+	public double getTotal() {
 		return total;
 	}
 
-	public void setTotal(int total) {
+	public void setTotal(double total) {
 		this.total = total;
 	}
 
@@ -55,4 +48,19 @@ public class Bill {
 		this.date = date;
 	};
 
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
+	public Integer getStatus() {
+		return status;
+	}
+
+	public void setStatus(Integer status) {
+		this.status = status;
+	}
 }

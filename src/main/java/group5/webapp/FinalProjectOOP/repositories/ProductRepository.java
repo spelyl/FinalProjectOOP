@@ -6,6 +6,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
@@ -14,12 +16,12 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
     List<Product> findAllByCategory(Category category);
 
     List<Product> findAllByNameContains(String text, Pageable pageable);
-
-    List<Product> findAllByNameContains(String text);
+    @Query(nativeQuery = true, value ="SELECT * FROM Product WHERE name like '%' :name '%'")
+    List<Product> searchByName(@Param("name") String text);
 
     List<Product> findTop8ByNameIsNotNull();
 
     List<Product> findTop4ByNameIsNotNull(Sort sort);
 
-    List<Product> findTop4ByCategoryAndIdIsNotLike(Category category, Integer id);
+    List<Product> findTop5ByCategory(Category category);
 }
