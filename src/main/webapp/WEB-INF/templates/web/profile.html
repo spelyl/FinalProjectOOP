@@ -33,7 +33,7 @@
                 <span class="text-black-50">[[${session.info.email}]]</span>
 
                 <!-- Button trigger modal -->
-                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+                <button type="button" class="btn btn-primary profile-button" data-toggle="modal" data-target="#exampleModal">
                     Change avatar
                 </button>
 
@@ -72,7 +72,16 @@
                 </div>
 
                 <br><br>
-                <i class="bi bi-clock-history"></i><a href="/transaction-history" style="text-decoration: none"> Transaction history</a>
+                <div>
+               <a href="/transaction-history" style="text-decoration: none"> <i class="bi bi-clock-history" style="margin-right: 2px"></i> Transaction history</a>
+                </div>
+
+                <div style="margin-top: 10px">
+                <a href="/address" style="text-decoration: none"><i class="bi bi-card-list"  style="margin-right: 2px"></i> List Address</a>
+                </div>
+                <div>
+                <a href="/card" style="text-decoration: none" ><i class="bi bi-card-list"  style="margin-right: 2px"></i> List Card</a>
+                </div>
             </div>
         </div>
 
@@ -110,7 +119,7 @@
                         <input type="date" name="birthday" class="form-control" placeholder="Birthday" th:value="${session.info.bithday}">
                     </div>
                      </div>
-                <div class="mt-5 text-center"><button class="btn btn-primary profile-button" type="submit">Save Profile</button></div>
+                <div class="mt-5 text-center" style="padding-top: 3px"><button class="btn btn-primary profile-button" type="submit">Save Profile</button></div>
             </div>
             </form>
         </div>
@@ -133,6 +142,8 @@
                     <label class="labels">Confirm Password</label>
                     <input type="password" name="confirmpassword" class="form-control" placeholder="Confirm password" value="">
                 </div>
+                <br>
+                <br>
                 <div class="mt-5 text-center">
                     <button class="btn btn-primary profile-button" type="submit">Save Password</button>
                 </div>

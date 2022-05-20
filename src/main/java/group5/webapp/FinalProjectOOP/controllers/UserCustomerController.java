@@ -295,7 +295,68 @@ public class UserCustomerController {
         if(user == null)
             return "redirect:/login";
 
+        List<Address> addressList = addressService.findAllByUser(user);
+        model.addAttribute("ListAddress", addressList);
+
         return "web/address";
+    }
+
+    @RequestMapping(value = "/delete-address")
+    public String DeleteAddress(@RequestParam(required = false, value = "idAddress") Integer idAddress,
+                                HttpServletRequest rq,
+                              RedirectAttributes attributes,
+                              Model model){
+        HttpSession session = rq.getSession();
+
+        User user = (User) session.getAttribute("account");
+
+        if(user == null)
+            return "redirect:/login";
+
+        addressService.deleteAddressById(idAddress);
+        attributes.addFlashAttribute("message", "Đã xoá thành công !!!");
+
+        return "redirect:/address";
+    }
+
+    @RequestMapping(value = "/add-address")
+    public String AddAddress(@RequestParam(required = false, value = "addAddress") String addAddress,
+                                HttpServletRequest rq,
+                                RedirectAttributes attributes,
+                                Model model){
+        HttpSession session = rq.getSession();
+
+        User user = (User) session.getAttribute("account");
+
+        if(user == null)
+            return "redirect:/login";
+        Address address = new Address();
+        address.setDescription(addAddress);
+        address.setUser(user);
+        addressService.addAddress(address);
+        attributes.addFlashAttribute("message", "Đã thêm thành công !!!");
+
+        return "redirect:/address";
+    }
+
+    @RequestMapping(value = "/edit-address")
+    public String EditAddress(@RequestParam(required = false, value = "editID") Integer editID,
+                                 @RequestParam(required = false, value = "editAddress") String editAddress,
+                                HttpServletRequest rq,
+                                RedirectAttributes attributes,
+                                Model model){
+        HttpSession session = rq.getSession();
+
+        User user = (User) session.getAttribute("account");
+
+        if(user == null)
+            return "redirect:/login";
+        Address address = addressService.getById(editID);
+        address.setDescription(editAddress);
+        addressService.addAddress(address);
+        attributes.addFlashAttribute("message", "Đã sửa thành công !!!");
+
+        return "redirect:/address";
     }
 
     @RequestMapping(value = "/card")
@@ -306,9 +367,13 @@ public class UserCustomerController {
 
             User user = (User) session.getAttribute("account");
 
+
+
             if(user == null)
                 return "redirect:/login";
 
+            List<Card> cardList = cardService.findAllByUser(user);
+            model.addAttribute("ListCard", cardList);
         return "web/card";
     }
 

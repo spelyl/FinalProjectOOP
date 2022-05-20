@@ -30,7 +30,7 @@
                 <span class="text-black-50">[[${session.info.email}]]</span>
                 <br><br>
                 <div>
-                <i class="bi bi-backspace"></i><a href="/profile" style="text-decoration: none"> Go Back to Profile</a>
+                <a href="/profile" style="text-decoration: none"> <i class="bi bi-backspace" style="margin-right: 3px"></i> Go Back to Profile</a>
                 </div>
             </div>
         </div>
@@ -50,7 +50,7 @@
                     <tr>
                         <td>[[${p.date}]]</td>
                         <td>
-                            <ul>
+                            <ul style="padding-left: 0">
                                 <th:block th:each="t : ${billDetailList}" th:if="${t.billId.id == p.id}">
                                 <li>[[${t.quantity +" "+t.productId.name + "( "+t.productId.price+"$"+" )"}]]</li>
 

@@ -63,6 +63,14 @@ public class WebHomeController {
 
         List<Category> listAllCategory = categoryService.findAll();
         int amount = productService.findAll().size();
+
+        List<Product> productList =  productService.PagingAllProduct(pagenumber-1, PAGE_SITE).getContent();
+        if(category !=0){
+            Category categoryModel = categoryService.findCategoryById(category);
+            productList = productService.PagingProductByCategory(pagenumber-1, PAGE_SITE, categoryModel).getContent();
+            amount = productService.findAllByCategory(categoryModel).size();
+        }
+
         int endPage = amount / PAGE_SITE;
 
         if(amount % PAGE_SITE != 0){
@@ -72,11 +80,7 @@ public class WebHomeController {
         if(pagenumber == null){
             pagenumber = 1;
         }
-        List<Product> productList =  productService.PagingAllProduct(pagenumber-1, PAGE_SITE).getContent();
-        if(category !=0){
-            Category categoryModel = categoryService.findCategoryById(category);
-            productList = productService.PagingProductByCategory(pagenumber-1, PAGE_SITE, categoryModel).getContent();
-        }
+
 
         model.addAttribute("listAllProduct", productList);
         model.addAttribute("listAllCategory", listAllCategory);
@@ -187,7 +191,5 @@ public class WebHomeController {
 
         return "web/cart";
     }
-
-
 
 }

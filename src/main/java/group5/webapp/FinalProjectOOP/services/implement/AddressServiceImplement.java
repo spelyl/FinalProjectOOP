@@ -25,4 +25,19 @@ public class AddressServiceImplement implements AddressService {
     public List<Address> findAll() {
         return addresRepository.findAll();
     }
+
+    @Override
+    public Address getById(Integer id) {
+        return addresRepository.getById(id);
+    }
+
+    @Override
+    public void deleteAddressById(Integer id) {
+        addresRepository.deleteById(id);
+    }
+
+    @Override
+    public void addAddress(Address address) {
+        addresRepository.save(address);
+    }
 }

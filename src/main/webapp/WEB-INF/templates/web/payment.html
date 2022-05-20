@@ -56,6 +56,7 @@
                     <div class="d-flex align-items-center justify-content-between card-atm border rounded">
                         <div class="fab fa-cc-visa ps-3"></div>
                         <select type="number" class="form-control" placeholder="Card Details">
+                            <option selected>Select Card</option>
                             <th:block th:each="p : ${cardList}">
                                 <option value="1">[[${p.Bank + " : " + p.number }]]</option>
                             </th:block>

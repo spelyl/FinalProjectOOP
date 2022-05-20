@@ -9,6 +9,7 @@ import java.util.List;
 
 public interface ProductService {
     List<Product> findAll();
+    List<Product> findAllByCategory(Category category);
 
     Page<Product> PagingAllProduct(int offset, int pageSize);
 

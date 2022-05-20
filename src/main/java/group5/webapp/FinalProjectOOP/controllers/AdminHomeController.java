@@ -44,6 +44,11 @@ public class AdminHomeController {
             return "redirect:/admin/login";
         }
 
+        if(user.getRole() != 3) {
+            session.removeAttribute("account");
+            return "redirect:/admin/login";
+        }
+
         List<BillDetail> billDetailList = billDetailService.findAll();
 
         List<Category> categories = categoryService.findAll();

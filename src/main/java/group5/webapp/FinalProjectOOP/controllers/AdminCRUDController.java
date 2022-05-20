@@ -120,15 +120,16 @@ public class AdminCRUDController {
         }
     }
 
-    @RequestMapping(value ="/save_user/{id}/{fullName}/{username}/{password}/{status}")
+    @RequestMapping(value ="/save_user/{id}/{username}/{password}/{role}/{status}")
     public String saveUser(@PathVariable Integer id,
-                           @PathVariable String fullName,
                            @PathVariable String username,
                            @PathVariable String password,
+                           @PathVariable int role,
                            @PathVariable Integer status){
         User user = userService.getUserById(id);
         user.setUserName(username);
         user.setStatus(status);
+        user.setRole(role);
         user.setPassWord(password);
         userService.saveUser(user);
         return "redirect:/admin/list-user";

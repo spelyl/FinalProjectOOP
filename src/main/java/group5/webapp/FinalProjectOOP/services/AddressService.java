@@ -10,4 +10,10 @@ public interface AddressService {
     List<Address> findAllByUser(User user);
 
     List<Address> findAll();
+
+    Address getById(Integer id);
+
+    void deleteAddressById(Integer id);
+
+    void addAddress(Address address);
 }

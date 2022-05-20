@@ -41,6 +41,12 @@ public class AdminController {
         User user = (User) session.getAttribute("account");
         if(user == null)
             return "redirect:/admin/login";
+
+        if(user.getRole() != 3){
+            session.removeAttribute("account");
+            return "redirect:/admin/login";
+        }
+
         List<Bill> billList=billService.findAll();
         List<BillDetail> billDetailList=billDetailService.findAll();
         List<CustomerInfo> customerInfoList=customerInfoService.findAll();

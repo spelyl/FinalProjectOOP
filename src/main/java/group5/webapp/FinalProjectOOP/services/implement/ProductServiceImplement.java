@@ -28,6 +28,11 @@ public class ProductServiceImplement implements ProductService {
     }
 
     @Override
+    public List<Product> findAllByCategory(Category category) {
+        return productRepository.findAllByCategory(category);
+    }
+
+    @Override
     public Page<Product> PagingAllProduct(int offset, int pageSize) {
         return productRepository.findAll(PageRequest.of(offset,pageSize).withSort(Sort.by("id")));
     }
