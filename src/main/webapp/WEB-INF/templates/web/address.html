@@ -47,8 +47,9 @@
             <div class="container" style="width: 100%">
                 <div style="position: relative">
                 <h2>Your Address</h2>
+                    <th:block th:if="${ListAddress.size() < 10}">
                 <a href="#addEmployeeModal" class="add" data-toggle="modal" style="  position: absolute; top: 0px; right: 0px; padding: 10px; text-decoration: none;"><i class="bi bi-plus-circle" ></i>
-                <span>New Address</span></a>
+                <span>New Address</span></a></th:block>
                 </div>
                 <table class="table table-striped">
                     <thead>
@@ -76,6 +77,12 @@
                     </th:block>
                     </tbody>
                 </table>
+            </div>
+
+            <div class="clearfix" style="padding: 20px">
+                <div class="hint-text">
+                    You can have 10 address
+                </div>
             </div>
 
 

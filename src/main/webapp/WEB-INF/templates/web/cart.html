@@ -26,7 +26,7 @@
             <th>Subtotal</th>
             <th></th>
         </tr>
-        <th:block th:each="p : ${listBillDetail}">
+        <th:block th:each="p : ${listBill}">
             <tr>
                         <td>
                             <div class="cart-info">
@@ -60,10 +60,17 @@
             </tr>
         </table>
     </div>
-
+    <th:block th:if="${total} > 0">
     <div class="btn-acpt">
         <a href="/payment" class="btn">Accept</a>
     </div>
+    </th:block>
+
+    <th:block th:if="${total} == 0">
+        <div class="btn-acpt">
+            <div class="btn" style="background-color: #2b3d51">Accept</div>
+        </div>
+    </th:block>
 </div>
 <div th:replace="~{web/footer::footer}">
 

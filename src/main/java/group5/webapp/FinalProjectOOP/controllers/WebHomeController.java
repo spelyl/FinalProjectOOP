@@ -43,13 +43,29 @@ public class WebHomeController {
     public static final int PAGE_SITE = 12;
 
     @RequestMapping(value = {"/", "/home", "/index"})
-    public String HomePage(Model model){
+    public String HomePage(Model model, HttpServletRequest rq){
 
        // GetData getData = new GetData();
         //		getData.getDataForDatabase();
 
         List<Product> listTop8Product = productService.getTop8Product();
         List<Product> listLast4Product = productService.getLast4Product();
+
+        HttpSession session = rq.getSession();
+
+        User user = (User) session.getAttribute("account");
+
+        if(user != null){
+            Optional<Bill> billCheck = billService.findByUserAndStatus(user, -1);
+            if (billCheck.isPresent()){
+                Bill bill = billCheck.get();
+
+                List<BillDetail> billDetailList = billDetailService.findAllByBillId(bill);
+                if(billDetailList.size() > 0){
+                    model.addAttribute("listBill", billDetailList);
+                }
+            }
+        }
 
         model.addAttribute("listtop8product", listTop8Product);
         model.addAttribute("listlast4product", listLast4Product);
@@ -59,7 +75,8 @@ public class WebHomeController {
     @RequestMapping(value =  "/products/{category}/page/{pagenumber}")
     public String AllProductPage(@PathVariable("category") Integer category,
                                  @PathVariable("pagenumber") Integer pagenumber,
-                                 Model model){
+                                 Model model,
+                                 HttpServletRequest rq){
 
         List<Category> listAllCategory = categoryService.findAll();
         int amount = productService.findAll().size();
@@ -81,6 +98,22 @@ public class WebHomeController {
             pagenumber = 1;
         }
 
+        HttpSession session = rq.getSession();
+
+        User user = (User) session.getAttribute("account");
+
+        if(user != null){
+            Optional<Bill> billCheck = billService.findByUserAndStatus(user, -1);
+            if (billCheck.isPresent()){
+                Bill bill = billCheck.get();
+
+                List<BillDetail> billDetailList = billDetailService.findAllByBillId(bill);
+                if(billDetailList.size() > 0){
+                    model.addAttribute("listBill", billDetailList);
+                }
+            }
+        }
+
 
         model.addAttribute("listAllProduct", productList);
         model.addAttribute("listAllCategory", listAllCategory);
@@ -95,7 +128,8 @@ public class WebHomeController {
     @RequestMapping(value = {"/product-detail/{product}/{category}"})
     public String ProductDetailPage(@PathVariable("product") Integer product,
                                     @PathVariable("category") Integer category,
-                                    Model model){
+                                    Model model,
+                                    HttpServletRequest rq){
 
         Product productDetail = productService.getProductById(product);
         System.out.println(categoryService.findCategoryById(category).getName());
@@ -115,6 +149,22 @@ public class WebHomeController {
             detailOfProduct = temp;
         }
 
+        HttpSession session = rq.getSession();
+
+        User user = (User) session.getAttribute("account");
+
+        if(user != null){
+            Optional<Bill> billCheck = billService.findByUserAndStatus(user, -1);
+            if (billCheck.isPresent()){
+                Bill bill = billCheck.get();
+
+                List<BillDetail> billDetailList = billDetailService.findAllByBillId(bill);
+                if(billDetailList.size() > 0){
+                    model.addAttribute("listBill", billDetailList);
+                }
+            }
+        }
+
         model.addAttribute("product", productDetail);
         model.addAttribute("detail", detailOfProduct);
         model.addAttribute("listProductSame", listProductSame);
@@ -125,8 +175,9 @@ public class WebHomeController {
 
     @RequestMapping(value = "/search", method = RequestMethod.GET)
     public String SearchProductPage(@RequestParam("text") String text,
-                                    @RequestParam("pagenumber") Integer pagenumber
-                                    , Model model){
+                                    @RequestParam("pagenumber") Integer pagenumber,
+                                    Model model,
+                                    HttpServletRequest rq){
 
         List<Product> listAllProduct = productService.findProductByName(text, pagenumber-1, 8);
         List<Category> listAllCategory = categoryService.findAll();
@@ -148,6 +199,22 @@ public class WebHomeController {
 
         if(pagenumber == null){
             pagenumber = 1;
+        }
+
+        HttpSession session = rq.getSession();
+
+        User user = (User) session.getAttribute("account");
+
+        if(user != null){
+            Optional<Bill> billCheck = billService.findByUserAndStatus(user, -1);
+            if (billCheck.isPresent()){
+                Bill bill = billCheck.get();
+
+                List<BillDetail> billDetailList = billDetailService.findAllByBillId(bill);
+                if(billDetailList.size() > 0){
+                    model.addAttribute("listBill", billDetailList);
+                }
+            }
         }
 
         model.addAttribute("listAllProduct", listAllProduct);
@@ -183,7 +250,7 @@ public class WebHomeController {
             Bill bill = billCheck.get();
             List<BillDetail> billDetailList = billDetailService.findAllByBillId(bill);
             if(billDetailList.size() > 0) {
-                model.addAttribute("listBillDetail", billDetailList);
+                model.addAttribute("listBill", billDetailList);
                 total = bill.getTotal();
             }
         }

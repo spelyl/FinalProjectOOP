@@ -150,8 +150,20 @@ public class UserCustomerController {
 
         User user = (User) session.getAttribute("account");
         if(user != null){
+
+            Optional<Bill> billCheck = billService.findByUserAndStatus(user, -1);
+            if (billCheck.isPresent()){
+                Bill bill = billCheck.get();
+
+                List<BillDetail> billDetailList = billDetailService.findAllByBillId(bill);
+                if(billDetailList.size() > 0){
+                    model.addAttribute("listBill", billDetailList);
+                }
+            }
+
             return "web/profile";
         }
+
         return "redirect:/login";
     }
 
@@ -162,12 +174,17 @@ public class UserCustomerController {
                               @RequestParam(required = false, value = "username") String username,
                               @RequestParam(required = false, value = "birthday") Date birthday,
                               RedirectAttributes redirectAttributes,
-                              HttpServletRequest rq){
+                              HttpServletRequest rq,
+                              Model model){
 
         HttpSession session = rq.getSession();
+        User user = (User) session.getAttribute("account");
+
+        if(user == null)
+            return "redirect:/login";
 
         try {
-            User user = (User) session.getAttribute("account");
+
             User usernameCheck = userService.getUserByUserName(username);
             if(username.isEmpty()){
                 redirectAttributes.addFlashAttribute("message1", "Tên tài khoản không được để trống!!!");
@@ -200,6 +217,17 @@ public class UserCustomerController {
             e.printStackTrace();
         }
         redirectAttributes.addFlashAttribute("message1", "Cập nhập thông tin thất bại!!!");
+
+        Optional<Bill> billCheck = billService.findByUserAndStatus(user, -1);
+        if (billCheck.isPresent()){
+            Bill bill = billCheck.get();
+
+            List<BillDetail> billDetailList = billDetailService.findAllByBillId(bill);
+            if(billDetailList.size() > 0){
+                model.addAttribute("listBill", billDetailList);
+            }
+        }
+
         return "redirect:/profile";
     }
 
@@ -208,12 +236,17 @@ public class UserCustomerController {
                                  @RequestParam(required = false, value = "newpassword") String newpassword,
                                  @RequestParam(required = false, value = "confirmpassword") String confirmpassword,
                                  RedirectAttributes redirectAttributes,
-                                 HttpServletRequest rq
-                                 ){
+                                 HttpServletRequest rq,
+                                 Model model){
+
         HttpSession session = rq.getSession();
+        User user = (User) session.getAttribute("account");
+
+        if(user == null)
+            return "redirect:/login";
 
         try {
-            User user = (User) session.getAttribute("account");
+
             if(oldpassword.equals(user.getPassWord())){
                 if(newpassword.equals(confirmpassword)){
                     user.setPassWord(newpassword);
@@ -234,6 +267,17 @@ public class UserCustomerController {
             e.printStackTrace();
         }
         redirectAttributes.addFlashAttribute("message2", "Đổi mật khẩu thất bại!!!");
+
+        Optional<Bill> billCheck = billService.findByUserAndStatus(user, -1);
+        if (billCheck.isPresent()){
+            Bill bill = billCheck.get();
+
+            List<BillDetail> billDetailList = billDetailService.findAllByBillId(bill);
+            if(billDetailList.size() > 0){
+                model.addAttribute("listBill", billDetailList);
+            }
+        }
+
         return "redirect:/profile";
 
     }
@@ -241,14 +285,20 @@ public class UserCustomerController {
     @RequestMapping(value = "/change-avt", method = RequestMethod.POST)
     public String ChangeAvatar( @RequestParam("avatar") MultipartFile avatar,
                                 HttpServletRequest rq,
-                                RedirectAttributes redirectAttributes){
+                                RedirectAttributes redirectAttributes,
+                                Model model){
 
         HttpSession session = rq.getSession();
 
         CustomerInfo customerInfo = (CustomerInfo) session.getAttribute("info");
 
+        User user = (User) session.getAttribute("account");
+        if(user == null)
+            return "redirect:/login";
+
         try{
             customerInfo.setLinkAVT(uploadFileService.storeFile(avatar));
+            customerInfo.setUser(user);
             customerInfoService.addCustomerInfo(customerInfo);
 
             session.removeAttribute("info");
@@ -260,6 +310,16 @@ public class UserCustomerController {
             e.printStackTrace();
         }
         redirectAttributes.addFlashAttribute("message3", "Đổi avatar thất bại!!!");
+
+        Optional<Bill> billCheck = billService.findByUserAndStatus(user, -1);
+        if (billCheck.isPresent()){
+            Bill bill = billCheck.get();
+
+            List<BillDetail> billDetailList = billDetailService.findAllByBillId(bill);
+            if(billDetailList.size() > 0){
+                model.addAttribute("listBill", billDetailList);
+            }
+        }
         return "redirect:/profile";
     }
 
@@ -277,6 +337,16 @@ public class UserCustomerController {
 
             model.addAttribute("billList", billList);
             model.addAttribute("billDetailList", billDetailList);
+
+            Optional<Bill> billCheck = billService.findByUserAndStatus(user, -1);
+            if (billCheck.isPresent()){
+                Bill bill = billCheck.get();
+
+                billDetailList = billDetailService.findAllByBillId(bill);
+                if(billDetailList.size() > 0){
+                    model.addAttribute("listBill", billDetailList);
+                }
+            }
 
             return "web/transaction-history";
         }
@@ -298,6 +368,16 @@ public class UserCustomerController {
         List<Address> addressList = addressService.findAllByUser(user);
         model.addAttribute("ListAddress", addressList);
 
+        Optional<Bill> billCheck = billService.findByUserAndStatus(user, -1);
+        if (billCheck.isPresent()) {
+            Bill bill = billCheck.get();
+
+            List<BillDetail> billDetailList = billDetailService.findAllByBillId(bill);
+            if (billDetailList.size() > 0) {
+                model.addAttribute("listBill", billDetailList);
+            }
+        }
+
         return "web/address";
     }
 
@@ -316,6 +396,16 @@ public class UserCustomerController {
         addressService.deleteAddressById(idAddress);
         attributes.addFlashAttribute("message", "Đã xoá thành công !!!");
 
+        Optional<Bill> billCheck = billService.findByUserAndStatus(user, -1);
+        if (billCheck.isPresent()) {
+            Bill bill = billCheck.get();
+
+            List<BillDetail> billDetailList = billDetailService.findAllByBillId(bill);
+            if (billDetailList.size() > 0) {
+                model.addAttribute("listBill", billDetailList);
+            }
+        }
+
         return "redirect:/address";
     }
 
@@ -333,8 +423,18 @@ public class UserCustomerController {
         Address address = new Address();
         address.setDescription(addAddress);
         address.setUser(user);
-        addressService.addAddress(address);
+        addressService.saveAddress(address);
         attributes.addFlashAttribute("message", "Đã thêm thành công !!!");
+
+        Optional<Bill> billCheck = billService.findByUserAndStatus(user, -1);
+        if (billCheck.isPresent()) {
+            Bill bill = billCheck.get();
+
+            List<BillDetail> billDetailList = billDetailService.findAllByBillId(bill);
+            if (billDetailList.size() > 0) {
+                model.addAttribute("listBill", billDetailList);
+            }
+        }
 
         return "redirect:/address";
     }
@@ -353,8 +453,18 @@ public class UserCustomerController {
             return "redirect:/login";
         Address address = addressService.getById(editID);
         address.setDescription(editAddress);
-        addressService.addAddress(address);
+        addressService.saveAddress(address);
         attributes.addFlashAttribute("message", "Đã sửa thành công !!!");
+
+        Optional<Bill> billCheck = billService.findByUserAndStatus(user, -1);
+        if (billCheck.isPresent()) {
+            Bill bill = billCheck.get();
+
+            List<BillDetail> billDetailList = billDetailService.findAllByBillId(bill);
+            if (billDetailList.size() > 0) {
+                model.addAttribute("listBill", billDetailList);
+            }
+        }
 
         return "redirect:/address";
     }
@@ -374,7 +484,119 @@ public class UserCustomerController {
 
             List<Card> cardList = cardService.findAllByUser(user);
             model.addAttribute("ListCard", cardList);
+
+        Optional<Bill> billCheck = billService.findByUserAndStatus(user, -1);
+        if (billCheck.isPresent()) {
+            Bill bill = billCheck.get();
+
+            List<BillDetail> billDetailList = billDetailService.findAllByBillId(bill);
+            if (billDetailList.size() > 0) {
+                model.addAttribute("listBill", billDetailList);
+            }
+        }
+
         return "web/card";
+    }
+
+    @RequestMapping(value = "/delete-card")
+    public String DeleteCard(@RequestParam(required = false, name = "deleteID") Integer deleteID,
+                            HttpServletRequest rq,
+                           RedirectAttributes attributes,
+                           Model model){
+        HttpSession session = rq.getSession();
+
+        User user = (User) session.getAttribute("account");
+
+
+
+        if(user == null)
+            return "redirect:/login";
+
+        cardService.deleteCardById(deleteID);
+        attributes.addFlashAttribute("message", "Đã xoá thành công !!!");
+
+        Optional<Bill> billCheck = billService.findByUserAndStatus(user, -1);
+        if (billCheck.isPresent()) {
+            Bill bill = billCheck.get();
+
+            List<BillDetail> billDetailList = billDetailService.findAllByBillId(bill);
+            if (billDetailList.size() > 0) {
+                model.addAttribute("listBill", billDetailList);
+            }
+        }
+        return "redirect:/card";
+    }
+
+    @RequestMapping(value = "/add-card")
+    public String AddCard(@RequestParam(required = false, name = "addBank") String addBank,
+                            @RequestParam(required = false, name = "addNumber") String addNumber,
+                            HttpServletRequest rq,
+                           RedirectAttributes attributes,
+                           Model model){
+        HttpSession session = rq.getSession();
+
+        User user = (User) session.getAttribute("account");
+
+
+
+        if(user == null)
+            return "redirect:/login";
+
+        Card card = new Card();
+        card.setBank(addBank);
+        card.setNumber(addNumber);
+        card.setUser(user);
+        cardService.saveCard(card);
+        attributes.addFlashAttribute("message", "Đã thêm thành công !!!");
+
+        Optional<Bill> billCheck = billService.findByUserAndStatus(user, -1);
+        if (billCheck.isPresent()) {
+            Bill bill = billCheck.get();
+
+            List<BillDetail> billDetailList = billDetailService.findAllByBillId(bill);
+            if (billDetailList.size() > 0) {
+                model.addAttribute("listBill", billDetailList);
+            }
+        }
+
+        return "redirect:/card";
+    }
+
+    @RequestMapping(value = "/edit-card")
+    public String EditCard(@RequestParam(required = false, name = "editID") Integer editID,
+                           @RequestParam(required = false, name = "editBank") String editBank,
+                           @RequestParam(required = false, name = "editNumber") String editNumber,
+                           HttpServletRequest rq,
+                           RedirectAttributes attributes,
+                           Model model){
+        HttpSession session = rq.getSession();
+
+        User user = (User) session.getAttribute("account");
+
+
+
+        if(user == null)
+            return "redirect:/login";
+
+        Card card = cardService.getById(editID);
+        card.setBank(editBank);
+        card.setNumber(editNumber);
+
+        cardService.saveCard(card);
+        attributes.addFlashAttribute("message", "Đã sửa thành công !!!");
+
+
+        Optional<Bill> billCheck = billService.findByUserAndStatus(user, -1);
+        if (billCheck.isPresent()) {
+            Bill bill = billCheck.get();
+
+            List<BillDetail> billDetailList = billDetailService.findAllByBillId(bill);
+            if (billDetailList.size() > 0) {
+                model.addAttribute("listBill", billDetailList);
+            }
+        }
+
+        return "redirect:/card";
     }
 
     @RequestMapping(value = "/payment")
@@ -404,7 +626,10 @@ public class UserCustomerController {
     }
 
     @RequestMapping(value = {"/payment-confirm"})
-    public String PaymentConfirmPage(HttpServletRequest rq,
+    public String PaymentConfirmPage(@RequestParam(required = false, name = "address") String address,
+                            @RequestParam(required = false, name = "card") String card,
+                            @RequestParam(required = false, name = "email") String email,
+                            HttpServletRequest rq,
                             RedirectAttributes attributes,
                             Model model){
         HttpSession session = rq.getSession();
@@ -434,6 +659,39 @@ public class UserCustomerController {
                 }
                 billService.saveBill(bill);
                 attributes.addFlashAttribute("message", "Thanh toán thành công !!!");
+
+                CustomerInfo customerInfo = (CustomerInfo) session.getAttribute("info");
+                if(customerInfo != null){
+                    if(!email.isEmpty()) {
+                        customerInfo.setEmail(email);
+                        customerInfo.setUser(user);
+                    }
+                }else{
+                    customerInfo = new CustomerInfo();
+                    customerInfo.setEmail(email);
+                    customerInfo.setUser(user);
+                    customerInfoService.saveInfo(customerInfo);
+                }
+
+                session.removeAttribute("info");
+                session.setAttribute("info", customerInfo);
+
+                if(!address.isEmpty()){
+                    Address newAddress = new Address();
+                    newAddress.setDescription(address);
+                    newAddress.setUser(user);
+                    addressService.saveAddress(newAddress);
+                }
+
+                if(!card.isEmpty()){
+                    Card newCard = new Card();
+                    String[] paraCard = card.split(" ");
+                    newCard.setBank(paraCard[0]);
+                    newCard.setNumber(paraCard[1]);
+                    newCard.setUser(user);
+                    cardService.saveCard(newCard);
+                }
+
                 return "redirect:/cart";
             }
 

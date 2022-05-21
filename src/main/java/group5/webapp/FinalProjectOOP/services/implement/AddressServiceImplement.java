@@ -37,7 +37,7 @@ public class AddressServiceImplement implements AddressService {
     }
 
     @Override
-    public void addAddress(Address address) {
+    public void saveAddress(Address address) {
         addresRepository.save(address);
     }
 }

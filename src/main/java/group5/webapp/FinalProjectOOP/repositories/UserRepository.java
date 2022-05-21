@@ -1,5 +1,6 @@
 package group5.webapp.FinalProjectOOP.repositories;
 
+import com.sun.mail.imap.protocol.UIDSet;
 import group5.webapp.FinalProjectOOP.models.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 

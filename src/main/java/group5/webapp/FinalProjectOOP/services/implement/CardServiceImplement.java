@@ -1,5 +1,6 @@
 package group5.webapp.FinalProjectOOP.services.implement;
 
+import group5.webapp.FinalProjectOOP.models.Address;
 import group5.webapp.FinalProjectOOP.models.Card;
 import group5.webapp.FinalProjectOOP.models.User;
 import group5.webapp.FinalProjectOOP.repositories.CardRepository;
@@ -23,5 +24,20 @@ public class CardServiceImplement implements CardService {
     @Override
     public List<Card> findAll() {
         return cardRepository.findAll();
+    }
+
+    @Override
+    public Card getById(Integer id) {
+        return cardRepository.getById(id);
+    }
+
+    @Override
+    public void deleteCardById(Integer id) {
+        cardRepository.deleteById(id);
+    }
+
+    @Override
+    public void saveCard(Card card) {
+        cardRepository.save(card);
     }
 }
