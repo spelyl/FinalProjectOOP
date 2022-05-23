@@ -5,6 +5,9 @@ import group5.webapp.FinalProjectOOP.models.User;
 import group5.webapp.FinalProjectOOP.repositories.CustomerInfoRepository;
 import group5.webapp.FinalProjectOOP.services.CustomerInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -20,11 +23,6 @@ public class CustomerInfoServiceImplement implements CustomerInfoService {
     @Override
     public CustomerInfo findByUser(User user) {
         return customerInfoRepository.findByUser(user);
-    }
-
-    @Override
-    public void addCustomerInfo(CustomerInfo customerInfo) {
-        customerInfoRepository.save(customerInfo);
     }
 
     @Override
@@ -50,5 +48,15 @@ public class CustomerInfoServiceImplement implements CustomerInfoService {
     @Override
     public void deletInfoById(Integer id) {
         customerInfoRepository.deleteById(id);
+    }
+
+    @Override
+    public Page<CustomerInfo> pagingCustomerInfo(int offset, int pagesize) {
+        return customerInfoRepository.findAll(PageRequest.of(offset, pagesize, Sort.by("id").descending()));
+    }
+
+    @Override
+    public CustomerInfo getByID(Integer id) {
+        return customerInfoRepository.getById(id);
     }
 }

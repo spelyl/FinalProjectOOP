@@ -97,7 +97,7 @@ public class UserCustomerController {
             customerInfo.setEmail(email);
             customerInfo.setPhone(phone);
             customerInfo.setUser(userRegister);
-            customerInfoService.addCustomerInfo(customerInfo);
+            customerInfoService.saveInfo(customerInfo);
 
             redirectAttributes.addFlashAttribute("message2", "Đăng kí tài khoản thành công!!!");
             return "redirect:/login";
@@ -201,7 +201,7 @@ public class UserCustomerController {
             customerInfo.setPhone(phone);
             customerInfo.setEmail(email);
             customerInfo.setBithday(birthday);
-            customerInfoService.addCustomerInfo(customerInfo);
+            customerInfoService.saveInfo(customerInfo);
 
             User newUser = userService.getUserByUserName(username);
             CustomerInfo newCustomerInfo = customerInfoService.findByUser(newUser);
@@ -299,7 +299,7 @@ public class UserCustomerController {
         try{
             customerInfo.setLinkAVT(uploadFileService.storeFile(avatar));
             customerInfo.setUser(user);
-            customerInfoService.addCustomerInfo(customerInfo);
+            customerInfoService.saveInfo(customerInfo);
 
             session.removeAttribute("info");
             session.setAttribute("info", customerInfoService.findByUser(customerInfo.getUser()));

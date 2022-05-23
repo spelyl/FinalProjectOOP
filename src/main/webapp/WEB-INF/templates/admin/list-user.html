@@ -148,17 +148,13 @@
                 <!--                Body-->
                 <div class="pcoded-content">
                     <div class="container-xl">
-                        <!--                        <c:if test="${check == 1}">-->
-                        <!--                            <div class="alert alert-success">-->
-                        <!--                                <strong>Success!</strong> Thành công !!!-->
-                        <!--                            </div>-->
-                        <!--                        </c:if>-->
-                        <!--                        <c:if test="${check == 0}">-->
-                        <!--                            <div class="alert alert-danger">-->
-                        <!--                                <strong>Error!</strong> Lỗi rồi !!!-->
-                        <!--                            </div>-->
-                        <!--                        </c:if>-->
+                        <th:block th:if="${message}">
+                            <h4 style="color: #0c8940">[[${message}]]</h4>
+                        </th:block>
 
+                        <th:block th:if="${messageError}">
+                            <h4 style="color: red">[[${messageError}]]</h4>
+                        </th:block>
                         <div class="table-responsive">
                             <div class="table-wrapper">
                                 <div class="table-title">
@@ -196,22 +192,32 @@
                                     <tbody>
                                     <th:block th:each="o : ${userList}">
                                         <tr>
-                                            <td><span class="custom-checkbox"> <input
-                                                    type="checkbox" id="checkbox" name="options[]"
-                                                    value="${o.id}"> <label for="checkbox"></label>
+                                            <td><span class="custom-checkbox">
+<!--                                                <th:block th:if="${o.role ==1 }">-->
+                                                    <input type="checkbox" id="checkbox" name="options[]" th:value="${o.id}" >
+<!--                                                </th:block>-->
+<!--                                                <th:block th:if="${o.role != 1}">-->
+<!--                                                    <input class="disabled" type="checkbox" disabled >-->
+<!--                                                </th:block>-->
+
+                                                <label for="checkbox"></label>
 								</span></td>
                                             <td>[[${o.id}]]</td>
                                             <td>[[${o.userName}]]</td>
                                             <td>[[${o.passWord}]]</td>
                                             <td>[[${o.role}]]</td>
                                             <td>[[${o.status == 0 ? "Disable" : "Enable"}]]</td>
-                                            <td><a href="#editCustomerModal" class="edit"
-                                                   data-toggle="modal"
-                                                   th:onclick="Edit([[${o.id}]] , [[${o.userName}]] , [[${o.passWord}]] , [[${o.role}]], [[${o.status}]]);" >
-                                                <i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i>
-                                            </a> <a href="#deleteCustomerModal" class="delete"
-                                                    th:onclick="deleteUser([[${o.id}]])" data-toggle="modal"><i
-                                                    class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a></td>
+                                                <td><a href="#editCustomerModal" class="edit"
+                                                       data-toggle="modal"
+                                                       th:onclick="Edit([[${o.id}]] , [[${o.userName}]] , [[${o.passWord}]] , [[${o.role}]], [[${o.status}]]);" >
+                                                    <i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i>
+                                                </a>
+                                                    <a href="#deleteCustomerModal" class="delete" th:onclick="Delete([[${o.id}]])" data-toggle="modal">
+                                                        <i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i>
+                                                    </a>
+                                                </td>
+
+
                                         </tr>
                                     </th:block>
                                     </tbody>
@@ -221,20 +227,16 @@
                                         Showing <b>5</b> out of <b>[[${counts}]]</b> entries
                                     </div>
                                     <ul class="pagination">
-                                        <!--                                        <c:if test="${tag>1 }">-->
-                                        <!--                                            <li class="page-item disabled"><a-->
-                                        <!--                                                    href="<c:url value="/admin/list-customer?check=3&index=${tag-1}"/>">Previous</a></li>-->
-                                        <!--                                        </c:if>-->
-                                        <!--                                        <c:forEach begin="1" end="${endP}" var="i">-->
-                                        <!--                                            <li class="page-item ${tag == i ? "active" : "" }"><a-->
-                                        <!--                                                href="<c:url value="/admin/list-customer?check=3&index=${i}"/>"-->
-                                        <!--                                            class="page-link">${i}</a></li>-->
-                                        <!--                                        </c:forEach>-->
-                                        <!--                                        <c:if test="${tag<endP }">-->
-                                        <!--                                            <li class="page-item"><a-->
-                                        <!--                                                    href="<c:url value="/admin/list-customer?check=3&index=${tag+1}"/>"-->
-                                        <!--                                                class="page-link">Next</a></li>-->
-                                        <!--                                        </c:if>-->
+                                        <th:block th:if="${tag>1 }" >
+                                            <li class="page-item disabled"><a th:href="@{'/admin/list-user/' + ${tag - 1}}">Previous</a></li>
+                                        </th:block>
+                                        <th:block  th:each="i : ${#numbers.sequence(1, endPage)}">
+                                            <li th:class="${tag == i ? 'page-item active' : 'page-item' }">
+                                                <a th:href="@{'/admin/list-user/' + ${i}}" class="page-link">[[${i}]]</a></li>
+                                        </th:block>
+                                        <th:block th:if="${tag < endPage }" >
+                                            <li class="page-item"><a th:href="@{'/admin/list-user/' + ${tag+1}}" class="page-link">Next</a></li>
+                                        </th:block>
                                     </ul>
                                 </div>
                             </div>
@@ -244,7 +246,7 @@
                     <div id="addCustomerModal" class="modal fade">
                         <div class="modal-dialog">
                             <div class="modal-content">
-                                <form action="add-customer" method="post">
+                                <form action="/admin/add-user">
                                     <div class="modal-header">
                                         <h4 class="modal-title">Add Customer</h4>
                                         <button type="button" class="close" data-dismiss="modal"
@@ -269,7 +271,7 @@
                                     </div>
                                     <div class="modal-footer">
                                         <input type="button" class="btn btn-default" data-dismiss="modal"
-                                               value="Cancel"> <div onclick="insertUser();" class="btn btn-success" >Add</div>
+                                               value="Cancel"> <button type="submit" class="btn btn-success" >Add</button>
                                     </div>
                                 </form>
                             </div>
@@ -279,7 +281,7 @@
                     <div id="editCustomerModal" class="modal fade">
                         <div class="modal-dialog">
                             <div class="modal-content">
-                                <form action="/edit-customer" method="post">
+                                <form action="/admin/edit-user">
                                     <div class="modal-header">
                                         <h4 class="modal-title">Edit Customer</h4>
                                         <button type="button" class="close" data-dismiss="modal"
@@ -300,7 +302,7 @@
                                         </div>
                                         <div class="form-group">
                                             <label>Role</label> <input id="editRole" name="editRole"
-                                                                           type="text" class="form-control" required />
+                                                                           type="text" class="form-control" required disabled/>
                                         </div>
                                         <div class="form-group">
                                             <label>Status</label> <select id="editStt" name="editStt"
@@ -312,8 +314,8 @@
                                     </div>
                                     <div class="modal-footer">
                                         <input type="button" class="btn btn-default" data-dismiss="modal"
-                                               value="Cancel"> <div onclick="saveUser()" type="submit" class="btn btn-info"
-                                                                    value="Save"></div>
+                                               value="Cancel"><button type="submit" class="btn btn-info"
+                                                                    value="Save">Save</button>
                                     </div>
                                 </form>
                             </div>
@@ -323,7 +325,7 @@
                     <div id="deleteCustomerModal" class="modal fade">
                         <div class="modal-dialog">
                             <div class="modal-content">
-                                <form action="delete-customer" method="post">
+                                <form action="/admin/delete-user" method="post">
                                     <div class="modal-header">
                                         <h4 class="modal-title">Delete Customer</h4>
                                         <button type="button" class="close" data-dismiss="modal"
@@ -337,10 +339,10 @@
                                     </div>
                                     <div class="modal-footer">
                                         <input type="button" class="btn btn-default" data-dismiss="modal"
-                                               value="Cancel"> <input type="submit"
-                                                                      class="btn btn-danger" value="Delete"> <input
-                                            type="hidden" id="deleteCustomer" name="deleteCustomer"> <input
-                                            type="hidden" name="result" id="resultDelete" value="">
+                                               value="Cancel"> <button type="submit"
+                                                                       class="btn btn-danger">Delete</button> <input
+                                            type="hidden" id="deleteID" name="deleteID"> <input
+                                            type="hidden" name="resultDelete" id="resultDelete" value="">
                                     </div>
                                 </form>
                             </div>
@@ -387,9 +389,9 @@
                 <script>
                     function Delete(id){
                         if(id != 0)
-                            document.getElementById('deleteCustomer').value = id;
+                            document.getElementById('deleteID').value = id;
                         else{
-                            document.getElementById('deleteCustomer').value = id;
+                            document.getElementById('deleteID').value = id;
                             listChecked();
                         }
                     }
@@ -415,29 +417,6 @@
                         return result;
                     };
 
-                    function saveUser(){
-                        const id = document.getElementById("editID").value
-                        const username = document.getElementById("editUserName").value
-                        const password = document.getElementById("editPW").value
-                        const role = document.getElementById("editRole").value
-                        const status = document.getElementById("editStt").value
-
-                        window.location.href = "/admin/save_user/" + id + "/" + username + "/" + password + "/" + role + "/" + status;
-
-                    }
-                    function deleteUser(id){
-                        let message = "Bạn có muốn xóa không?";
-                        if(confirm(message) == true){
-                            window.location.href = "/admin/delete_user/" + id;
-                        }
-                    }
-
-                    function insertUser(){
-                        const username = document.getElementById("addUserName").value
-                        const password = document.getElementById("addPW").value
-                        const status = document.getElementById("addStt").value
-                        window.location.href = "/admin/insert_user/"+ username + "/" + password + "/" + status;
-                    }
                 </script>
 
 

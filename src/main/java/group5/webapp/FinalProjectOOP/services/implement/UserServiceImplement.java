@@ -4,6 +4,9 @@ import group5.webapp.FinalProjectOOP.models.User;
 import group5.webapp.FinalProjectOOP.repositories.UserRepository;
 import group5.webapp.FinalProjectOOP.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -55,6 +58,16 @@ public class UserServiceImplement implements UserService {
     @Override
     public void deleteUserById(Integer id) {
         userRepository.deleteById(id);
+    }
+
+    @Override
+    public Page<User> pagingUser(int offset, int pagesize) {
+        return userRepository.findAll(PageRequest.of(offset, pagesize,  Sort.by("id").descending()));
+    }
+
+    @Override
+    public List<User> findAllByRoleAndStatus(int role, int status) {
+        return userRepository.findAllByRoleAndStatus(role, status);
     }
 
 }

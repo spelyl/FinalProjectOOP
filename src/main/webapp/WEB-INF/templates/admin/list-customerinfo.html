@@ -148,17 +148,13 @@
                 <!--                Body-->
                 <div class="pcoded-content">
                     <div class="container-xl">
-                        <!--                        <c:if test="${check == 1}">-->
-                        <!--                            <div class="alert alert-success">-->
-                        <!--                                <strong>Success!</strong> Thành công !!!-->
-                        <!--                            </div>-->
-                        <!--                        </c:if>-->
-                        <!--                        <c:if test="${check == 0}">-->
-                        <!--                            <div class="alert alert-danger">-->
-                        <!--                                <strong>Error!</strong> Lỗi rồi !!!-->
-                        <!--                            </div>-->
-                        <!--                        </c:if>-->
+                        <th:block th:if="${message}">
+                            <h4 style="color: #0c8940">[[${message}]]</h4>
+                        </th:block>
 
+                        <th:block th:if="${messageError}">
+                            <h4 style="color: red">[[${messageError}]]</h4>
+                        </th:block>
                         <div class="table-responsive">
                             <div class="table-wrapper">
                                 <div class="table-title">
@@ -172,7 +168,7 @@
                                         <div class="col-sm-6">
                                             <a href="#addCustomerModal" class="btn btn-success"
                                                data-toggle="modal"><i class="material-icons">&#xE147;</i> <span>Add
-									New Customer</span></a> <a href="#deleteCustomerModal" class="btn btn-danger"
+									New CustomerInfo</span></a> <a href="#deleteCustomerModal" class="btn btn-danger"
                                                                data-toggle="modal" onclick="Delete(0)"><i
                                                 class="material-icons">&#xE15C;</i> <span>Delete</span></a>
                                         </div>
@@ -196,11 +192,11 @@
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    <th:block th:each="o : ${customerInfoList}">
+                                    <th:block th:each="o : ${customerInfoList}" th:if="${o.user.role == 1}">
                                         <tr>
                                             <td><span class="custom-checkbox"> <input
                                                     type="checkbox" id="checkbox" name="options[]"
-                                                    value="${o.id}"> <label for="checkbox"></label>
+                                                    th:value="${o.id}"> <label for="checkbox"></label>
 								</span></td>
                                             <td>[[${o.id}]]</td>
                                             <td>[[${o.user.userName}]]</td>
@@ -208,17 +204,17 @@
                                             <td>[[${o.bithday}]]</td>
                                             <td>[[${o.email}]]</td>
                                             <td>[[${o.phone}]]</td>
-                                            <td>[[${o.linkAVT}]]</td>
+                                            <td><img style="width: 60px; height: 60px" th:src="@{'/api/uploadfile/upload/' + ${o.linkAVT}}"></td>
                                             <td><a href="#editCustomerModal" class="edit"
                                                    data-toggle="modal"
-                                                   th:onclick="Edit([[${o.id}]] , [[${o.user.userName}]] , [[${o.fullname}]] , [[${o.bithday}]], [[${o.email}]],[[${o.phone}]],[[${o.linkAVT}]]);" >
+                                                   th:onclick="Edit([[${o.id}]] , [[${o.user.userName}]] , [[${o.fullname}]] , [[${o.bithday}]], [[${o.email}]],[[${o.phone}]],[[@{'/api/uploadfile/upload/' + ${o.linkAVT}}]]);" >
 
                                                 <i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i>
                                             </a> <a href="#deleteCustomerModal" class="delete"
-                                                    onclick="deleteCustomerInfo([[${o.id}]])" data-toggle="modal"><i
+                                                    th:onclick="Delete([[${o.id}]])" data-toggle="modal"><i
                                                     class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a></td>
                                         </tr>
-                                    </th:block>>
+                                    </th:block>
                                     </tbody>
                                 </table>
                                 <div class="clearfix">
@@ -226,20 +222,16 @@
                                         Showing <b>5</b> out of <b>[[${counts}]]</b> entries
                                     </div>
                                     <ul class="pagination">
-                                        <!--                                        <c:if test="${tag>1 }">-->
-                                        <!--                                            <li class="page-item disabled"><a-->
-                                        <!--                                                    href="<c:url value="/admin/list-customer?check=3&index=${tag-1}"/>">Previous</a></li>-->
-                                        <!--                                        </c:if>-->
-                                        <!--                                        <c:forEach begin="1" end="${endP}" var="i">-->
-                                        <!--                                            <li class="page-item ${tag == i ? "active" : "" }"><a-->
-                                        <!--                                                href="<c:url value="/admin/list-customer?check=3&index=${i}"/>"-->
-                                        <!--                                            class="page-link">${i}</a></li>-->
-                                        <!--                                        </c:forEach>-->
-                                        <!--                                        <c:if test="${tag<endP }">-->
-                                        <!--                                            <li class="page-item"><a-->
-                                        <!--                                                    href="<c:url value="/admin/list-customer?check=3&index=${tag+1}"/>"-->
-                                        <!--                                                class="page-link">Next</a></li>-->
-                                        <!--                                        </c:if>-->
+                                        <th:block th:if="${tag>1 }" >
+                                            <li class="page-item disabled"><a th:href="@{'/admin/list-customerinfo/' + ${tag - 1}}">Previous</a></li>
+                                        </th:block>
+                                        <th:block  th:each="i : ${#numbers.sequence(1, endPage)}">
+                                            <li th:class="${tag == i ? 'page-item active' : 'page-item' }">
+                                                <a th:href="@{'/admin/list-customerinfo/' + ${i}}" class="page-link">[[${i}]]</a></li>
+                                        </th:block>
+                                        <th:block th:if="${tag < endPage }" >
+                                            <li class="page-item"><a th:href="@{'/admin/list-customerinfo/' + ${tag+1}}" class="page-link">Next</a></li>
+                                        </th:block>
                                     </ul>
                                 </div>
                             </div>
@@ -249,35 +241,41 @@
                     <div id="addCustomerModal" class="modal fade">
                         <div class="modal-dialog">
                             <div class="modal-content">
-                                <form action="add-customer" method="post">
+                                <form action="/admin/add-customerinfo" method="post" enctype="multipart/form-data">
                                     <div class="modal-header">
-                                        <h4 class="modal-title">Add Customer</h4>
+                                        <h4 class="modal-title">Add CustomerInfo</h4>
                                         <button type="button" class="close" data-dismiss="modal"
                                                 aria-hidden="true">&times;</button>
                                     </div>
                                     <div class="modal-body">
                                         <div class="form-group">
-                                            <label>ID</label> <input id="addID" name="addID" type="text"
-                                                                     class="form-control" required>
+                                            <label>User</label> <select id="addUserID" name="addUserID" type="text"
+                                                                        class="form-control" required>
+                                            <th:block th:each="t : ${listUser}">
+                                                <option th:value="${t.id}">[[${t.userName}]]</option>
+                                            </th:block>
+                                        </select>
                                         </div>
                                         <div class="form-group">
                                             <label>FullName</label> <input id="addFullName"
                                                                            name="addFullName" type="text" class="form-control" required>
                                         </div>
                                         <div class="form-group">
-                                            <label>UserName</label> <input id="addUserName"
-                                                                           name="addUserName" type="text" class="form-control" required>
+                                            <label>Birthday</label> <input id="addBirthday" name="addBirthday"
+                                                                           type="date" class="form-control" required>
                                         </div>
                                         <div class="form-group">
-                                            <label>PassWord</label> <input id="addPW" name="addPW"
-                                                                           type="text" class="form-control" required>
+                                            <label>Email</label> <input id="addEmail" name="addEmail"
+                                                                         type="email" class="form-control" required>
                                         </div>
                                         <div class="form-group">
-                                            <label>Status</label> <select id="addStt" name="addStt"
-                                                                          class="form-control" required>
-                                            <option value="0">Disable</option>
-                                            <option value="1">Enable</option>
-                                        </select>
+                                            <label>Phone</label> <input id="addPhone" name="addPhone"
+                                                                        type="text" class="form-control" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Avatar</label><br>
+                                            <img id="blah">
+                                            <input id="addAVT" name="addAVT"  onchange="readURL(this);"  type="file" class="form-control">
                                         </div>
                                     </div>
                                     <div class="modal-footer">
@@ -293,7 +291,7 @@
                     <div id="editCustomerModal" class="modal fade">
                         <div class="modal-dialog">
                             <div class="modal-content">
-                                <form action="edit-customer" method="post">
+                                <form action="/admin/edit-customerinfo" method="post" enctype="multipart/form-data">
                                     <div class="modal-header">
                                         <h4 class="modal-title">Edit Customer</h4>
                                         <button type="button" class="close" data-dismiss="modal"
@@ -301,27 +299,34 @@
                                     </div>
                                     <div class="modal-body">
                                         <div class="form-group">
-                                            <label>ID</label> <input id="editID" name="editID" type="text"
-                                                                     class="form-control" required readonly>
+                                            <label>ID</label> <input id="editID" name="editID" type="number"
+                                                                       class="form-control" required readonly>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>User</label> <input id="editUser" name="editUser" type="text"
+                                                                        class="form-control" required readonly>
                                         </div>
                                         <div class="form-group">
                                             <label>FullName</label> <input id="editFullName"
                                                                            name="editFullName" type="text" class="form-control" required>
                                         </div>
                                         <div class="form-group">
-                                            <label>UserName</label> <input id="editUserName"
-                                                                           name="editUserName" type="text" class="form-control" required>
+                                            <label>Birthday</label> <input id="editBirthday" name="editBirthday"
+                                                                           type="date" class="form-control" required>
                                         </div>
                                         <div class="form-group">
-                                            <label>PassWord</label> <input id="editPW" name="editPW"
-                                                                           type="text" class="form-control" required />
+                                            <label>Email</label> <input id="editEmail" name="editEmail"
+                                                                        type="email" class="form-control" required>
                                         </div>
                                         <div class="form-group">
-                                            <label>Status</label> <select id="editStt" name="editStt"
-                                                                          class="form-control" required>
-                                            <option value="0">Disable</option>
-                                            <option value="1">Enable</option>
-                                        </select>
+                                            <label>Phone</label> <input id="editPhone" name="editPhone"
+                                                                        type="text" class="form-control" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Avatar</label><br>
+                                            <img id="blah2" style="width: 80px; height: 80px">
+                                            <input id="editAVT" name="editAVT"  onchange="readURL2(this);"
+                                                   type="file" class="form-control">
                                         </div>
                                     </div>
                                     <div class="modal-footer">
@@ -337,7 +342,7 @@
                     <div id="deleteCustomerModal" class="modal fade">
                         <div class="modal-dialog">
                             <div class="modal-content">
-                                <form action="delete-customer" method="post">
+                                <form action="/admin/delete-customerinfo" method="post">
                                     <div class="modal-header">
                                         <h4 class="modal-title">Delete Customer</h4>
                                         <button type="button" class="close" data-dismiss="modal"
@@ -353,8 +358,8 @@
                                         <input type="button" class="btn btn-default" data-dismiss="modal"
                                                value="Cancel"> <input type="submit"
                                                                       class="btn btn-danger" value="Delete"> <input
-                                            type="hidden" id="deleteCustomer" name="deleteCustomer"> <input
-                                            type="hidden" name="result" id="resultDelete" value="">
+                                            type="hidden" id="deleteCustomerInfo" name="deleteCustomerInfo"> <input
+                                            type="hidden" name="resultCustomerInfo" id="resultCustomerInfo" value="">
                                     </div>
                                 </form>
                             </div>
@@ -388,21 +393,23 @@
                     });
                 </script>
                 <script>
-                    function Edit(id, fullname, username, password, status){
+                    function Edit(id, username, fullname, birthday, email, phone, linkAVT){
                         document.getElementById('editID').value = id;
+                        document.getElementById('editUser').value = username;
                         document.getElementById('editFullName').value = fullname;
-                        document.getElementById('editUserName').value = username;
-                        document.getElementById('editPW').value = password;
-                        document.getElementById('editStt').value = status;
+                        document.getElementById('editBirthday').value = birthday;
+                        document.getElementById('editEmail').value = email;
+                        document.getElementById('editPhone').value = phone;
+                        document.getElementById('blah2').src = linkAVT;
                     }
                 </script>
 
                 <script>
                     function Delete(id){
                         if(id != 0)
-                            document.getElementById('deleteCustomer').value = id;
+                            document.getElementById('deleteCustomerInfo').value = id;
                         else{
-                            document.getElementById('deleteCustomer').value = id;
+                            document.getElementById('deleteCustomerInfo').value = id;
                             listChecked();
                         }
                     }
@@ -411,7 +418,7 @@
                 <script>
                     function listChecked() {
                         let result = range();
-                        document.getElementById('resultDelete').setAttribute('value', result);
+                        document.getElementById('resultCustomerInfo').setAttribute('value', result);
                     }
                 </script>
 
@@ -426,14 +433,35 @@
                             }
                         }
                         return result;
-                    };
-                    function deleteCustomerInfo(id){
-                        let message = "Bạn có muốn xóa không?";
-                        if(confirm(message) == true){
-                            window.location.href = "/admin/delete_customerinfo/" + id;
+                    }
+                </script>
+
+                <script>
+                    function readURL(input) {
+                        if (input.files && input.files[0]) {
+                            var reader = new FileReader();
+
+                            reader.onload = function (e) {
+                                $('#blah').attr('src', e.target.result).width(80).height(80);
+                            };
+
+                            reader.readAsDataURL(input.files[0]);
                         }
                     }
+                </script>
 
+                <script>
+                    function readURL2(input) {
+                        if (input.files && input.files[0]) {
+                            var reader = new FileReader();
+
+                            reader.onload = function (e) {
+                                $('#blah2').attr('src', e.target.result).width(80).height(80);
+                            };
+
+                            reader.readAsDataURL(input.files[0]);
+                        }
+                    }
                 </script>
 
 

@@ -13,8 +13,9 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.swing.text.html.ListView;
+import java.sql.Date;
+import java.time.LocalDate;
 import java.time.Month;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -47,26 +48,33 @@ public class AdminController {
             return "redirect:/admin/login";
         }
 
-        List<Bill> billList=billService.findAll();
+        List<Bill> billList=billService.findAllByStatus(1);
         List<BillDetail> billDetailList=billDetailService.findAll();
         List<CustomerInfo> customerInfoList=customerInfoService.findAll();
-        Date date=new Date();
-        List<Bill> billList1=billService.findAllByDate("2022/4/1","2022/5/30");
+        Date date= Date.valueOf( LocalDate.now());
+        String dateStart = String.valueOf(LocalDate.now().getYear() + "/"+ LocalDate.now().getMonthValue() + "/1" );
+        List<Bill> billList1=billService.findAllByDate(dateStart,date.toString());
         List<Product> productList=productService.getTop4ProductBestSeller();
         double total=0;
         for (int i=0;i<billList.size();i++) {
             total+=billList.get(i).getTotal();
         }
+
         double total1=0;
         for (int j=0;j<billList1.size();j++) {
-            total1+=billList.get(j).getTotal();
+            if(billList1.get(j).getStatus() == 1) {
+                total1 += billList1.get(j).getTotal();
+            }
         }
+
         int totalcustomer=customerInfoList.size();
         int totalbill=billList.size();
 
         int totalproduct= 0;
         for(BillDetail billDetail : billDetailList){
-            totalproduct += billDetail.getQuantity();
+            if(billDetail.getBillId().getStatus() == 1) {
+                totalproduct += billDetail.getQuantity();
+            }
         }
         model.addAttribute("Total",total);
         model.addAttribute("Total1",total1);

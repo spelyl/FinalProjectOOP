@@ -4,19 +4,21 @@ import group5.webapp.FinalProjectOOP.models.Address;
 import group5.webapp.FinalProjectOOP.models.Card;
 import group5.webapp.FinalProjectOOP.models.CustomerInfo;
 import group5.webapp.FinalProjectOOP.models.User;
-import group5.webapp.FinalProjectOOP.services.AddressService;
-import group5.webapp.FinalProjectOOP.services.CardService;
-import group5.webapp.FinalProjectOOP.services.CustomerInfoService;
-import group5.webapp.FinalProjectOOP.services.UserService;
+import group5.webapp.FinalProjectOOP.services.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.sql.Date;
 import java.util.List;
 
 @Controller
@@ -32,130 +34,360 @@ public class AdminCRUDController {
     AddressService addressService;
     @Autowired
     CardService cardService;
-    @RequestMapping(value = "/list-user")
-    public String ListUserPage(HttpServletRequest rq, RedirectAttributes redirectAttributes, Model model){
+
+    @Autowired
+    UploadFileService uploadFileService;
+
+    private static final int PAGE_SIZE = 5;
+
+    @RequestMapping(value = "/list-user/{page}")
+    public String ListUserPage(@PathVariable Integer page,
+                               HttpServletRequest rq,
+                               RedirectAttributes redirectAttributes,
+                               Model model) {
 
         HttpSession session = rq.getSession();
         User user = (User) session.getAttribute("account");
-        if(user == null) {
+        if (user == null) {
             redirectAttributes.addFlashAttribute("message", "Vui lòng đăng nhập!!!");
             return "redirect:/admin/login";
-        }
-        else {
-            if(user.getRole() != 3) {
+        } else {
+            if (user.getRole() != 3) {
                 redirectAttributes.addFlashAttribute("message", "Tài khoản không có quyền admin!!!");
                 return "redirect:/admin/login";
-            }else {
+            } else {
                 //do some thing
-                List<User> userList=userService.findAll();
-                model.addAttribute("userList",userList);
+                Page<User> userList = userService.pagingUser(page - 1, PAGE_SIZE);
+                int amount = userService.findAll().size();
+
+                int endPage = amount / PAGE_SIZE;
+
+                if (amount % PAGE_SIZE != 0) {
+                    endPage += 1;
+                }
+
+                if (page == null) {
+                    page = 1;
+                }
+
+                model.addAttribute("userList", userList);
+                model.addAttribute("tag", page);
+                model.addAttribute("endPage", endPage);
+
                 return "admin/list-user";
             }
         }
     }
 
-    @RequestMapping(value = "/list-customerinfo")
-    public String ListCustomerInfoPage(HttpServletRequest rq, RedirectAttributes redirectAttributes,Model model){
+    @RequestMapping(value = "/edit-user")
+    public String saveUser(@RequestParam(required = false, name = "editID") Integer id,
+                           @RequestParam(required = false, name = "editUserName") String username,
+                           @RequestParam(required = false, name = "editPW") String password,
+                           @RequestParam(required = false, name = "editStt") Integer status,
+                           HttpServletRequest rq,
+                           RedirectAttributes redirectAttributes) {
 
         HttpSession session = rq.getSession();
         User user = (User) session.getAttribute("account");
-        if(user == null) {
+        if (user == null) {
             redirectAttributes.addFlashAttribute("message", "Vui lòng đăng nhập!!!");
             return "redirect:/admin/login";
-        }
-        else {
-            if(user.getRole() != 3) {
+        } else {
+            if (user.getRole() != 3) {
                 redirectAttributes.addFlashAttribute("message", "Tài khoản không có quyền admin!!!");
                 return "redirect:/admin/login";
-            }else {
+            } else {
                 //do some thing
-                List<CustomerInfo> customerInfoList=customerInfoService.findAll();
-                model.addAttribute("customerInfoList",customerInfoList);
+                User newUser = userService.getUserById(id);
+                newUser.setUserName(username);
+                newUser.setStatus(status);
+                newUser.setPassWord(password);
+                userService.saveUser(newUser);
+                redirectAttributes.addFlashAttribute("message", "Đã sửa thành công!!!");
+                return "redirect:/admin/list-user/1";
+            }
+        }
+    }
+
+    @RequestMapping(value = "/delete-user")
+    public String deleteUser(@RequestParam(required = false, name = "deleteID") Integer id,
+                             @RequestParam(required = false, name = "resultDelete") String listID,
+                             HttpServletRequest rq,
+                             RedirectAttributes redirectAttributes) {
+
+        HttpSession session = rq.getSession();
+        User user = (User) session.getAttribute("account");
+        if (user == null) {
+            redirectAttributes.addFlashAttribute("message", "Vui lòng đăng nhập!!!");
+            return "redirect:/admin/login";
+        } else {
+            if (user.getRole() != 3) {
+                redirectAttributes.addFlashAttribute("message", "Tài khoản không có quyền admin!!!");
+                return "redirect:/admin/login";
+            } else {
+                //do some thing
+                if(id !=0) {
+                    userService.deleteUserById(id);
+                }else {
+                    String[] splitListId = listID.split(",");
+
+                    for(String x : splitListId){
+                        userService.deleteUserById(Integer.parseInt(x));
+                    }
+                }
+                redirectAttributes.addFlashAttribute("message", "Đã xoá thành công!!!");
+                return "redirect:/admin/list-user/1";
+            }
+        }
+    }
+
+    @RequestMapping(value = "/add-user")
+    public String insertUser(@RequestParam(required = false, name = "addUserName") String username,
+                             @RequestParam(required = false, name = "addPW") String password,
+                             @RequestParam(required = false, name = "addStt") Integer status,
+                             HttpServletRequest rq,
+                             RedirectAttributes redirectAttributes) {
+
+        HttpSession session = rq.getSession();
+        User user = (User) session.getAttribute("account");
+        if (user == null) {
+            redirectAttributes.addFlashAttribute("message", "Vui lòng đăng nhập!!!");
+            return "redirect:/admin/login";
+        } else {
+            if (user.getRole() != 3) {
+                redirectAttributes.addFlashAttribute("message", "Tài khoản không có quyền admin!!!");
+                return "redirect:/admin/login";
+            } else {
+                //do some thing
+                User newUser = userService.getUserByUserName(username);
+                if(newUser == null) {
+                    newUser = new User();
+                    newUser.setUserName(username);
+                    newUser.setPassWord(password);
+                    newUser.setRole(1);
+                    newUser.setStatus(status);
+                    userService.saveUser(newUser);
+                    redirectAttributes.addFlashAttribute("message", "Đã thêm thành công!!!");
+                }else{
+                    redirectAttributes.addFlashAttribute("messageError", "Đã tồn tại tên tài khoản!!!");
+
+                }
+                return "redirect:/admin/list-user/1";
+            }
+        }
+    }
+
+    //----------------
+    @RequestMapping(value = "/list-customerinfo/{page}")
+    public String ListCustomerInfoPage(@PathVariable Integer page, HttpServletRequest rq,
+                                       RedirectAttributes redirectAttributes,
+                                       Model model) {
+
+        HttpSession session = rq.getSession();
+        User user = (User) session.getAttribute("account");
+        if (user == null) {
+            redirectAttributes.addFlashAttribute("message", "Vui lòng đăng nhập!!!");
+            return "redirect:/admin/login";
+        } else {
+            if (user.getRole() != 3) {
+                redirectAttributes.addFlashAttribute("message", "Tài khoản không có quyền admin!!!");
+                return "redirect:/admin/login";
+            } else {
+                //do some thing
+                Page<CustomerInfo> customerInfoList = customerInfoService.pagingCustomerInfo(page - 1, PAGE_SIZE);
+
+                int amount = customerInfoService.findAll().size();
+
+                int endPage = amount / PAGE_SIZE;
+
+                if (amount % PAGE_SIZE != 0) {
+                    endPage += 1;
+                }
+
+                if (page == null) {
+                    page = 1;
+                }
+
+                List<User> userList = userService.findAllByRoleAndStatus(1,1);
+                List<CustomerInfo> customerInfoListTemp = customerInfoService.findAll();
+                boolean flag = true;
+                for(int i = 0; i < userList.size();){
+                    for(int j = 0; j < customerInfoListTemp.size(); j++){
+                        if(userList.get(i).getId() == customerInfoListTemp.get(j).getUser().getId()){
+                            userList.remove(i);
+                            flag = false;
+                            break;
+                        }
+                    }
+                    if(flag){
+                        i ++;
+                    }else {
+                        flag = true;
+                    }
+                }
+
+                model.addAttribute("tag", page);
+                model.addAttribute("endPage", endPage);
+                model.addAttribute("customerInfoList", customerInfoList);
+                model.addAttribute("listUser", userList);
+                model.addAttribute("tag", page);
                 return "admin/list-customerinfo";
             }
         }
     }
 
-    @RequestMapping(value = "/list-card")
-    public String ListCardPage(HttpServletRequest rq, RedirectAttributes redirectAttributes,Model model){
+    @RequestMapping(value = "/add-customerinfo")
+    public String AddCustomerInfo(@RequestParam(required = false, name = "addUserID") Integer addUserID,
+                                  @RequestParam(required = false, name = "addFullName") String addFullName,
+                                  @RequestParam(required = false, name = "addBirthday") Date addBirthday,
+                                  @RequestParam(required = false, name = "addEmail") String addEmail,
+                                  @RequestParam(required = false, name = "addPhone") String addPhone,
+                                  @RequestParam(required = false, name = "addAVT") MultipartFile addAVT,
+                                  HttpServletRequest rq,
+                                  RedirectAttributes redirectAttributes,
+                                  Model model) {
 
         HttpSession session = rq.getSession();
         User user = (User) session.getAttribute("account");
-        if(user == null) {
+        if (user == null) {
             redirectAttributes.addFlashAttribute("message", "Vui lòng đăng nhập!!!");
             return "redirect:/admin/login";
-        }
-        else {
-            if(user.getRole() != 3) {
+        } else {
+            if (user.getRole() != 3) {
                 redirectAttributes.addFlashAttribute("message", "Tài khoản không có quyền admin!!!");
                 return "redirect:/admin/login";
-            }else {
+            } else {
                 //do some thing
-                List<Card> cardList=cardService.findAll();
-                model.addAttribute("cardList",cardList);
+                CustomerInfo customerInfo = new CustomerInfo();
+                customerInfo.setUser(userService.getUserById(addUserID));
+                customerInfo.setFullname(addFullName);
+                customerInfo.setBithday(addBirthday);
+                customerInfo.setPhone(addPhone);
+                customerInfo.setEmail(addEmail);
+
+                if(addAVT != null) {
+                    customerInfo.setLinkAVT(uploadFileService.storeFile(addAVT));
+                }
+
+                customerInfoService.saveInfo(customerInfo);
+                redirectAttributes.addFlashAttribute("message", "Đã thêm thành công!!!");
+                return "redirect:/admin/list-customerinfo/1";
+            }
+        }
+    }
+
+    @RequestMapping(value = "/edit-customerinfo")
+    public String EditCustomerInfo(@RequestParam(required = false, name = "editID") Integer editID,
+                                   @RequestParam(required = false, name = "editFullName") String editFullName,
+                                   @RequestParam(required = false, name = "editBirthday") Date editBirthday,
+                                   @RequestParam(required = false, name = "editEmail") String editEmail,
+                                   @RequestParam(required = false, name = "editPhone") String editPhone,
+                                   @RequestParam(required = false, name = "editAVT") MultipartFile editAVT,
+                                   HttpServletRequest rq,
+                                  RedirectAttributes redirectAttributes,
+                                  Model model) {
+
+        HttpSession session = rq.getSession();
+        User user = (User) session.getAttribute("account");
+        if (user == null) {
+            redirectAttributes.addFlashAttribute("message", "Vui lòng đăng nhập!!!");
+            return "redirect:/admin/login";
+        } else {
+            if (user.getRole() != 3) {
+                redirectAttributes.addFlashAttribute("message", "Tài khoản không có quyền admin!!!");
+                return "redirect:/admin/login";
+            } else {
+                //do some thing
+                System.out.println(editID);
+                CustomerInfo customerInfo = customerInfoService.getByID(editID);
+                customerInfo.setFullname(editFullName);
+                customerInfo.setBithday(editBirthday);
+                customerInfo.setPhone(editPhone);
+                customerInfo.setEmail(editEmail);
+
+                if(editAVT != null) {
+                    customerInfo.setLinkAVT(uploadFileService.storeFile(editAVT));
+                }
+
+                customerInfoService.saveInfo(customerInfo);
+                redirectAttributes.addFlashAttribute("message", "Đã sửa thành công!!!");
+                return "redirect:/admin/list-customerinfo/1";
+            }
+        }
+    }
+
+    @RequestMapping(value = "/delete-customerinfo")
+    public String deleteCustomerInfo(@RequestParam(required = false, name = "deleteCustomerInfo") Integer deleteID,
+                                     @RequestParam(required = false, name = "resultCustomerInfo") String listID,
+                                     HttpServletRequest rq,
+                                     RedirectAttributes redirectAttributes) {
+
+        HttpSession session = rq.getSession();
+        User user = (User) session.getAttribute("account");
+        if (user == null) {
+            redirectAttributes.addFlashAttribute("message", "Vui lòng đăng nhập!!!");
+            return "redirect:/admin/login";
+        } else {
+            if (user.getRole() != 3) {
+                redirectAttributes.addFlashAttribute("message", "Tài khoản không có quyền admin!!!");
+                return "redirect:/admin/login";
+            } else {
+                //do some thing
+                if(deleteID != 0) {
+                    customerInfoService.deletInfoById(deleteID);
+                }else{
+                    String[] listIDInt = listID.split(",");
+                    for(String idTemp : listIDInt){
+                        customerInfoService.deletInfoById(Integer.parseInt(idTemp));
+                    }
+                }
+                redirectAttributes.addFlashAttribute("message", "Đã xoá thành công!!!");
+                return "redirect:/admin/list-customerinfo/1";
+            }
+        }
+    }
+
+
+    @RequestMapping(value = "/list-card")
+    public String ListCardPage(HttpServletRequest rq, RedirectAttributes redirectAttributes, Model model) {
+
+        HttpSession session = rq.getSession();
+        User user = (User) session.getAttribute("account");
+        if (user == null) {
+            redirectAttributes.addFlashAttribute("message", "Vui lòng đăng nhập!!!");
+            return "redirect:/admin/login";
+        } else {
+            if (user.getRole() != 3) {
+                redirectAttributes.addFlashAttribute("message", "Tài khoản không có quyền admin!!!");
+                return "redirect:/admin/login";
+            } else {
+                //do some thing
+                List<Card> cardList = cardService.findAll();
+                model.addAttribute("cardList", cardList);
                 return "admin/list-card";
             }
         }
     }
 
     @RequestMapping(value = "/list-address")
-    public String ListAddressPage(HttpServletRequest rq, RedirectAttributes redirectAttributes,Model model){
+    public String ListAddressPage(HttpServletRequest rq, RedirectAttributes redirectAttributes, Model model) {
 
         HttpSession session = rq.getSession();
         User user = (User) session.getAttribute("account");
-        if(user == null) {
+        if (user == null) {
             redirectAttributes.addFlashAttribute("message", "Vui lòng đăng nhập!!!");
             return "redirect:/admin/login";
-        }
-        else {
-            if(user.getRole() != 3) {
+        } else {
+            if (user.getRole() != 3) {
                 redirectAttributes.addFlashAttribute("message", "Tài khoản không có quyền admin!!!");
                 return "redirect:/admin/login";
-            }else {
+            } else {
                 //do some thing
-                List<Address> addressList=addressService.findAll();
-                model.addAttribute("addressList",addressList);
+                List<Address> addressList = addressService.findAll();
+                model.addAttribute("addressList", addressList);
                 return "admin/list-address";
             }
         }
-    }
-
-    @RequestMapping(value ="/save_user/{id}/{username}/{password}/{role}/{status}")
-    public String saveUser(@PathVariable Integer id,
-                           @PathVariable String username,
-                           @PathVariable String password,
-                           @PathVariable int role,
-                           @PathVariable Integer status){
-        User user = userService.getUserById(id);
-        user.setUserName(username);
-        user.setStatus(status);
-        user.setRole(role);
-        user.setPassWord(password);
-        userService.saveUser(user);
-        return "redirect:/admin/list-user";
-    }
-    @RequestMapping(value ="/delete_user/{id}")
-    public String deleteUser(@PathVariable Integer id){
-        userService.deleteUserById(id);
-        return "redirect:/admin/list-user";
-    }
-    @RequestMapping(value ="/admin/delete_customerinfo/{id}")
-    public String deleteCustomerInfo(@PathVariable Integer id){
-        customerInfoService.deletInfoById(id);
-        return "redirect:/admin/list-customerinfo";
-    }
-
-    @RequestMapping(value ="/insert_user/{username}/{password}/{status}")
-    public String insertUser(@PathVariable String username,
-                             @PathVariable String password,
-                             @PathVariable Integer status){
-        User user = new User();
-        user.setUserName(username);
-        user.setPassWord(password);
-        user.setStatus(status);
-        userService.saveUser(user);
-
-        return "redirect:/admin/list-user";
     }
 
 }
