@@ -149,11 +149,15 @@
                 <div class="pcoded-content">
                     <div class="container-xl">
                         <th:block th:if="${message}">
-                            <h4 style="color: #0c8940">[[${message}]]</h4>
+                            <div class="alert alert-success">
+                                <strong>[[${message}]]</strong>
+                            </div>
                         </th:block>
 
                         <th:block th:if="${messageError}">
-                            <h4 style="color: red">[[${messageError}]]</h4>
+                            <div class="alert alert-danger">
+                                <strong>[[${messageError}]]</strong>
+                            </div>
                         </th:block>
                         <div class="table-responsive">
                             <div class="table-wrapper">
@@ -168,7 +172,7 @@
                                         <div class="col-sm-6">
                                             <a href="#addCustomerModal" class="btn btn-success"
                                                data-toggle="modal"><i class="material-icons">&#xE147;</i> <span>Add
-									New Customer</span></a> <a href="#deleteCustomerModal" class="btn btn-danger"
+									New User</span></a> <a href="#deleteCustomerModal" class="btn btn-danger"
                                                                data-toggle="modal" onclick="Delete(0)"><i
                                                 class="material-icons">&#xE15C;</i> <span>Delete</span></a>
                                         </div>
@@ -248,7 +252,7 @@
                             <div class="modal-content">
                                 <form action="/admin/add-user">
                                     <div class="modal-header">
-                                        <h4 class="modal-title">Add Customer</h4>
+                                        <h4 class="modal-title">Add User</h4>
                                         <button type="button" class="close" data-dismiss="modal"
                                                 aria-hidden="true">&times;</button>
                                     </div>
@@ -283,7 +287,7 @@
                             <div class="modal-content">
                                 <form action="/admin/edit-user">
                                     <div class="modal-header">
-                                        <h4 class="modal-title">Edit Customer</h4>
+                                        <h4 class="modal-title">Edit User</h4>
                                         <button type="button" class="close" data-dismiss="modal"
                                                 aria-hidden="true">&times;</button>
                                     </div>
@@ -327,7 +331,7 @@
                             <div class="modal-content">
                                 <form action="/admin/delete-user" method="post">
                                     <div class="modal-header">
-                                        <h4 class="modal-title">Delete Customer</h4>
+                                        <h4 class="modal-title">Delete User</h4>
                                         <button type="button" class="close" data-dismiss="modal"
                                                 aria-hidden="true">&times;</button>
                                     </div>

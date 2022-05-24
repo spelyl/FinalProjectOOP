@@ -126,12 +126,12 @@ public class AdminCRUDController {
                 return "redirect:/admin/login";
             } else {
                 //do some thing
-                if(id !=0) {
+                if (id != 0) {
                     userService.deleteUserById(id);
-                }else {
+                } else {
                     String[] splitListId = listID.split(",");
 
-                    for(String x : splitListId){
+                    for (String x : splitListId) {
                         userService.deleteUserById(Integer.parseInt(x));
                     }
                 }
@@ -160,7 +160,7 @@ public class AdminCRUDController {
             } else {
                 //do some thing
                 User newUser = userService.getUserByUserName(username);
-                if(newUser == null) {
+                if (newUser == null) {
                     newUser = new User();
                     newUser.setUserName(username);
                     newUser.setPassWord(password);
@@ -168,7 +168,7 @@ public class AdminCRUDController {
                     newUser.setStatus(status);
                     userService.saveUser(newUser);
                     redirectAttributes.addFlashAttribute("message", "Đã thêm thành công!!!");
-                }else{
+                } else {
                     redirectAttributes.addFlashAttribute("messageError", "Đã tồn tại tên tài khoản!!!");
 
                 }
@@ -208,20 +208,20 @@ public class AdminCRUDController {
                     page = 1;
                 }
 
-                List<User> userList = userService.findAllByRoleAndStatus(1,1);
+                List<User> userList = userService.findAllByRoleAndStatus(1, 1);
                 List<CustomerInfo> customerInfoListTemp = customerInfoService.findAll();
                 boolean flag = true;
-                for(int i = 0; i < userList.size();){
-                    for(int j = 0; j < customerInfoListTemp.size(); j++){
-                        if(userList.get(i).getId() == customerInfoListTemp.get(j).getUser().getId()){
+                for (int i = 0; i < userList.size(); ) {
+                    for (int j = 0; j < customerInfoListTemp.size(); j++) {
+                        if (userList.get(i).getId() == customerInfoListTemp.get(j).getUser().getId()) {
                             userList.remove(i);
                             flag = false;
                             break;
                         }
                     }
-                    if(flag){
-                        i ++;
-                    }else {
+                    if (flag) {
+                        i++;
+                    } else {
                         flag = true;
                     }
                 }
@@ -230,7 +230,6 @@ public class AdminCRUDController {
                 model.addAttribute("endPage", endPage);
                 model.addAttribute("customerInfoList", customerInfoList);
                 model.addAttribute("listUser", userList);
-                model.addAttribute("tag", page);
                 return "admin/list-customerinfo";
             }
         }
@@ -265,7 +264,7 @@ public class AdminCRUDController {
                 customerInfo.setPhone(addPhone);
                 customerInfo.setEmail(addEmail);
 
-                if(addAVT != null) {
+                if (addAVT != null) {
                     customerInfo.setLinkAVT(uploadFileService.storeFile(addAVT));
                 }
 
@@ -284,8 +283,8 @@ public class AdminCRUDController {
                                    @RequestParam(required = false, name = "editPhone") String editPhone,
                                    @RequestParam(required = false, name = "editAVT") MultipartFile editAVT,
                                    HttpServletRequest rq,
-                                  RedirectAttributes redirectAttributes,
-                                  Model model) {
+                                   RedirectAttributes redirectAttributes,
+                                   Model model) {
 
         HttpSession session = rq.getSession();
         User user = (User) session.getAttribute("account");
@@ -305,7 +304,7 @@ public class AdminCRUDController {
                 customerInfo.setPhone(editPhone);
                 customerInfo.setEmail(editEmail);
 
-                if(editAVT != null) {
+                if (editAVT != null) {
                     customerInfo.setLinkAVT(uploadFileService.storeFile(editAVT));
                 }
 
@@ -333,11 +332,11 @@ public class AdminCRUDController {
                 return "redirect:/admin/login";
             } else {
                 //do some thing
-                if(deleteID != 0) {
+                if (deleteID != 0) {
                     customerInfoService.deletInfoById(deleteID);
-                }else{
+                } else {
                     String[] listIDInt = listID.split(",");
-                    for(String idTemp : listIDInt){
+                    for (String idTemp : listIDInt) {
                         customerInfoService.deletInfoById(Integer.parseInt(idTemp));
                     }
                 }
@@ -348,8 +347,11 @@ public class AdminCRUDController {
     }
 
 
-    @RequestMapping(value = "/list-card")
-    public String ListCardPage(HttpServletRequest rq, RedirectAttributes redirectAttributes, Model model) {
+    @RequestMapping(value = "/list-card/{page}")
+    public String ListCardPage(@PathVariable Integer page,
+                               HttpServletRequest rq,
+                               RedirectAttributes redirectAttributes,
+                               Model model) {
 
         HttpSession session = rq.getSession();
         User user = (User) session.getAttribute("account");
@@ -362,15 +364,39 @@ public class AdminCRUDController {
                 return "redirect:/admin/login";
             } else {
                 //do some thing
-                List<Card> cardList = cardService.findAll();
+                Page<Card> cardList = cardService.pagingCard(page - 1, PAGE_SIZE);
+
+                int amount = cardService.findAll().size();
+
+                int endPage = amount / PAGE_SIZE;
+
+                if (amount % PAGE_SIZE != 0) {
+                    endPage += 1;
+                }
+
+                if (page == null) {
+                    page = 1;
+                }
+
+                List<User> userList = userService.findAll();
+
                 model.addAttribute("cardList", cardList);
+                model.addAttribute("tag", page);
+                model.addAttribute("endPage", endPage);
+                model.addAttribute("listUser", userList);
                 return "admin/list-card";
             }
         }
     }
 
-    @RequestMapping(value = "/list-address")
-    public String ListAddressPage(HttpServletRequest rq, RedirectAttributes redirectAttributes, Model model) {
+
+    @RequestMapping(value = "/add-card")
+    public String AddCard(@RequestParam(required = false, name = "addUserID") Integer addUserID,
+                          @RequestParam(required = false, name = "addBank") String addBank,
+                          @RequestParam(required = false, name = "addNumber") String addNumber,
+                          HttpServletRequest rq,
+                          RedirectAttributes redirectAttributes,
+                          Model model) {
 
         HttpSession session = rq.getSession();
         User user = (User) session.getAttribute("account");
@@ -383,11 +409,208 @@ public class AdminCRUDController {
                 return "redirect:/admin/login";
             } else {
                 //do some thing
-                List<Address> addressList = addressService.findAll();
+                Card card = new Card();
+                card.setUser(userService.getUserById(addUserID));
+                card.setBank(addBank);
+                card.setNumber(addNumber);
+                cardService.saveCard(card);
+                redirectAttributes.addFlashAttribute("message", "Đã thêm thành công!!!");
+                return "redirect:list-card/1";
+            }
+        }
+    }
+
+
+    @RequestMapping(value = "/edit-card")
+    public String EditCard(@RequestParam(required = false, name = "editID") Integer editID,
+                           @RequestParam(required = false, name = "editBank") String editBank,
+                           @RequestParam(required = false, name = "editNumber") String editNumber,
+                           HttpServletRequest rq,
+                           RedirectAttributes redirectAttributes,
+                           Model model) {
+
+        HttpSession session = rq.getSession();
+        User user = (User) session.getAttribute("account");
+        if (user == null) {
+            redirectAttributes.addFlashAttribute("message", "Vui lòng đăng nhập!!!");
+            return "redirect:/admin/login";
+        } else {
+            if (user.getRole() != 3) {
+                redirectAttributes.addFlashAttribute("message", "Tài khoản không có quyền admin!!!");
+                return "redirect:/admin/login";
+            } else {
+                //do some thing
+                Card card = cardService.getById(editID);
+                card.setBank(editBank);
+                card.setNumber(editNumber);
+                cardService.saveCard(card);
+                redirectAttributes.addFlashAttribute("message", "Đã sửa thành công!!!");
+                return "redirect:list-card/1";
+            }
+        }
+    }
+
+
+    @RequestMapping(value = "/delete-card")
+    public String DeleteCard(@RequestParam(required = false, name = "deleteCard") Integer deleteCard,
+                             @RequestParam(required = false, name = "resultCard") String resultCard,
+                             HttpServletRequest rq,
+                             RedirectAttributes redirectAttributes,
+                             Model model) {
+
+        HttpSession session = rq.getSession();
+        User user = (User) session.getAttribute("account");
+        if (user == null) {
+            redirectAttributes.addFlashAttribute("message", "Vui lòng đăng nhập!!!");
+            return "redirect:/admin/login";
+        } else {
+            if (user.getRole() != 3) {
+                redirectAttributes.addFlashAttribute("message", "Tài khoản không có quyền admin!!!");
+                return "redirect:/admin/login";
+            } else {
+                //do some thing
+                if (deleteCard != 0) {
+                    cardService.deleteCardById(deleteCard);
+                } else {
+                    String[] listID = resultCard.split(",");
+                    for (String idTemp : listID) {
+                        cardService.deleteCardById(Integer.parseInt(idTemp));
+                    }
+                }
+                redirectAttributes.addFlashAttribute("message", "Đã xoá thành công!!!");
+                return "redirect:list-card/1";
+            }
+        }
+    }
+
+
+    @RequestMapping(value = "/list-address/{page}")
+    public String ListAddressPage(@PathVariable Integer page,
+                                  HttpServletRequest rq,
+                                  RedirectAttributes redirectAttributes,
+                                  Model model) {
+
+        HttpSession session = rq.getSession();
+        User user = (User) session.getAttribute("account");
+        if (user == null) {
+            redirectAttributes.addFlashAttribute("message", "Vui lòng đăng nhập!!!");
+            return "redirect:/admin/login";
+        } else {
+            if (user.getRole() != 3) {
+                redirectAttributes.addFlashAttribute("message", "Tài khoản không có quyền admin!!!");
+                return "redirect:/admin/login";
+            } else {
+                //do some thing
+                Page<Address> addressList = addressService.pagingAddress(page - 1, PAGE_SIZE);
+                int amount = addressService.findAll().size();
+
+                int endPage = amount / PAGE_SIZE;
+
+                if (amount % PAGE_SIZE != 0) {
+                    endPage += 1;
+                }
+
+                if (page == null) {
+                    page = 1;
+                }
+
+                List<User> userList = userService.findAll();
                 model.addAttribute("addressList", addressList);
+                model.addAttribute("tag", page);
+                model.addAttribute("endPage", endPage);
+                model.addAttribute("listUser", userList);
                 return "admin/list-address";
             }
         }
     }
 
+
+    @RequestMapping(value = "/add-address")
+    public String AddAddress(@RequestParam(required = false, name = "addUserID") Integer addUserID,
+                             @RequestParam(required = false, name = "addDescription") String addDescription,
+                             HttpServletRequest rq,
+                             RedirectAttributes redirectAttributes,
+                             Model model) {
+
+        HttpSession session = rq.getSession();
+        User user = (User) session.getAttribute("account");
+        if (user == null) {
+            redirectAttributes.addFlashAttribute("message", "Vui lòng đăng nhập!!!");
+            return "redirect:/admin/login";
+        } else {
+            if (user.getRole() != 3) {
+                redirectAttributes.addFlashAttribute("message", "Tài khoản không có quyền admin!!!");
+                return "redirect:/admin/login";
+            } else {
+                //do some thing
+                Address address = new Address();
+                address.setUser(userService.getUserById(addUserID));
+                address.setDescription(addDescription);
+                addressService.saveAddress(address);
+                redirectAttributes.addFlashAttribute("message", "Đã thêm thành công!!!");
+                return "redirect:list-address/1";
+            }
+        }
+    }
+
+
+    @RequestMapping(value = "/edit-address")
+    public String EditAddress(@RequestParam(required = false, name = "editID") Integer editID,
+                              @RequestParam(required = false, name = "editDescription") String editDescription,
+                              HttpServletRequest rq,
+                              RedirectAttributes redirectAttributes,
+                              Model model) {
+
+        HttpSession session = rq.getSession();
+        User user = (User) session.getAttribute("account");
+        if (user == null) {
+            redirectAttributes.addFlashAttribute("message", "Vui lòng đăng nhập!!!");
+            return "redirect:/admin/login";
+        } else {
+            if (user.getRole() != 3) {
+                redirectAttributes.addFlashAttribute("message", "Tài khoản không có quyền admin!!!");
+                return "redirect:/admin/login";
+            } else {
+                //do some thing
+                Address address = addressService.getById(editID);
+                address.setDescription(editDescription);
+                addressService.saveAddress(address);
+                redirectAttributes.addFlashAttribute("message", "Đã sửa thành công!!!");
+                return "redirect:list-address/1";
+            }
+        }
+    }
+
+
+    @RequestMapping(value = "/delete-address")
+    public String DeleteAddress(@RequestParam(required = false, name = "deleteAddress") Integer deleteAddress,
+                                @RequestParam(required = false, name = "resultAddress") String resultAddress,
+                                HttpServletRequest rq,
+                                RedirectAttributes redirectAttributes,
+                                Model model) {
+
+        HttpSession session = rq.getSession();
+        User user = (User) session.getAttribute("account");
+        if (user == null) {
+            redirectAttributes.addFlashAttribute("message", "Vui lòng đăng nhập!!!");
+            return "redirect:/admin/login";
+        } else {
+            if (user.getRole() != 3) {
+                redirectAttributes.addFlashAttribute("message", "Tài khoản không có quyền admin!!!");
+                return "redirect:/admin/login";
+            } else {
+                //do some thing
+                if (deleteAddress != 0) {
+                    addressService.deleteAddressById(deleteAddress);
+                } else {
+                    String[] listID = resultAddress.split(",");
+                    for (String idTemp : listID) {
+                        addressService.deleteAddressById(Integer.parseInt(idTemp));
+                    }
+                }
+                redirectAttributes.addFlashAttribute("message", "Đã xoá thành công!!!");
+                return "redirect:list-address/1";
+            }
+        }
+    }
 }

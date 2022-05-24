@@ -149,11 +149,15 @@
                 <div class="pcoded-content">
                     <div class="container-xl">
                         <th:block th:if="${message}">
-                            <h4 style="color: #0c8940">[[${message}]]</h4>
+                            <div class="alert alert-success">
+                                <strong>[[${message}]]</strong>
+                            </div>
                         </th:block>
 
                         <th:block th:if="${messageError}">
-                            <h4 style="color: red">[[${messageError}]]</h4>
+                            <div class="alert alert-danger">
+                                <strong>[[${messageError}]]</strong>
+                            </div>
                         </th:block>
                         <div class="table-responsive">
                             <div class="table-wrapper">

@@ -5,6 +5,9 @@ import group5.webapp.FinalProjectOOP.models.User;
 import group5.webapp.FinalProjectOOP.repositories.AddresRepository;
 import group5.webapp.FinalProjectOOP.services.AddressService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -39,5 +42,10 @@ public class AddressServiceImplement implements AddressService {
     @Override
     public void saveAddress(Address address) {
         addresRepository.save(address);
+    }
+
+    @Override
+    public Page<Address> pagingAddress(int offset, int pagesize) {
+        return addresRepository.findAll(PageRequest.of(offset, pagesize, Sort.by("id").descending()));
     }
 }
