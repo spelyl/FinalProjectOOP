@@ -7,6 +7,10 @@ import group5.webapp.FinalProjectOOP.models.keys.BillDetailKey;
 import group5.webapp.FinalProjectOOP.repositories.BillDetailsRepository;
 import group5.webapp.FinalProjectOOP.services.BillDetailService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Slice;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -42,5 +46,15 @@ public class BillDetailServiceImplement implements BillDetailService {
     @Override
     public List<BillDetail> findAll() {
         return billDetailsRepository.findAll();
+    }
+
+    @Override
+    public Page<BillDetail> PagingAllBillDetail(int offset, int pageSize) {
+        return billDetailsRepository.findAll(PageRequest.of(offset,pageSize, Sort.by("id").descending()));
+    }
+
+    @Override
+    public void deleteBillDetail(Bill bill, Product product) {
+        billDetailsRepository.deleteBillDetailByBillIdAndProductId(bill, product);
     }
 }

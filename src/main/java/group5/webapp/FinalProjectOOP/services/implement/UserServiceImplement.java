@@ -70,4 +70,9 @@ public class UserServiceImplement implements UserService {
         return userRepository.findAllByRoleAndStatus(role, status);
     }
 
+    @Override
+    public List<User> findUserByRole(int id) {
+        return userRepository.findUserByRole(id);
+    }
+
 }

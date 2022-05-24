@@ -2,6 +2,8 @@ package group5.webapp.FinalProjectOOP.services;
 
 import group5.webapp.FinalProjectOOP.models.Bill;
 import group5.webapp.FinalProjectOOP.models.User;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Slice;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
@@ -18,4 +20,9 @@ public interface BillService {
 
     List<Bill> findAllByStatus(int status);
 
+    Slice<Bill> PagingAllBillByStatus(int offset, int pageSize, int role);
+
+    void deleteBill(int id);
+
+    Bill getBillById(Integer id);
 }

@@ -24,4 +24,6 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
     List<Product> findTop4ByNameIsNotNull(Sort sort);
 
     List<Product> findTop5ByCategory(Category category);
+
+    void deleteProductById(int id);
 }

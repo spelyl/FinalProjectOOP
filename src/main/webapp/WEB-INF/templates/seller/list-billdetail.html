@@ -148,16 +148,16 @@
                 <!--                Body-->
                 <div class="pcoded-content">
                     <div class="container-xl">
-                        <!--                        <c:if test="${check == 1}">-->
-                        <!--                            <div class="alert alert-success">-->
-                        <!--                                <strong>Success!</strong> Thành công !!!-->
-                        <!--                            </div>-->
-                        <!--                        </c:if>-->
-                        <!--                        <c:if test="${check == 0}">-->
-                        <!--                            <div class="alert alert-danger">-->
-                        <!--                                <strong>Error!</strong> Lỗi rồi !!!-->
-                        <!--                            </div>-->
-                        <!--                        </c:if>-->
+                        <th:block th:if="${message}">
+                            <div class="alert alert-success">
+                                <strong>[[${message}]]</strong>
+                            </div>
+                        </th:block>
+                        <th:block th:if="${messageError}">
+                            <div class="alert alert-danger">
+                                <strong>Error!</strong> [[${messageError}]]
+                            </div>
+                        </th:block>
 
                         <div class="table-responsive">
                             <div class="table-wrapper">
@@ -170,10 +170,10 @@
 
                                         </div>
                                         <div class="col-sm-6">
-                                            <a href="#addCustomerModal" class="btn btn-success"
+                                            <a href="#addBillDetailModal" class="btn btn-success"
                                                data-toggle="modal"><i class="material-icons">&#xE147;</i> <span>Add
-									New Customer</span></a> <a href="#deleteCustomerModal" class="btn btn-danger"
-                                                               data-toggle="modal" onclick="Delete(0)"><i
+									New Bill Detail</span></a> <a href="#deleteBillDetailModal" class="btn btn-danger"
+                                                                  data-toggle="modal" onclick="Delete(0,0)"><i
                                                 class="material-icons">&#xE15C;</i> <span>Delete</span></a>
                                         </div>
                                     </div>
@@ -193,82 +193,93 @@
                                     </thead>
                                     <tbody>
                                     <!--                                    <c:forEach items="${listAllCustomer}" var="o">-->
-                                    <tr>
-                                        <td><span class="custom-checkbox"> <input
-                                                type="checkbox" id="checkbox" name="options[]"
-                                                value="${o.userID}"> <label for="checkbox"></label>
+                                    <th:block th:each="p : ${listAllBillDetail}" th:if="${p.billId.status != -1}">
+                                        <tr>
+                                            <td><span class="custom-checkbox"> <input
+                                                    type="checkbox" id="checkbox" name="options[]" value=""
+                                                    th:value="${p.getBillId().id + ':' +p.getProductId().id}"> <label for="checkbox"></label>
 								</span></td>
-                                        <td>[[${id}]]</td>
-                                        <td>[[${name}]]</td>
-                                        <td>[[${quantity}]]</td>
-                                        <td><a href="#editCustomerModal" class="edit"
-                                               data-toggle="modal"
-                                               onclick="Edit('${o.userID}','${o.fullName}','${o.userName}','${o.passWord}',${o.status })">
-                                            <i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i>
-                                        </a> <a href="#deleteCustomerModal" class="delete"
-                                                onclick="Delete(${o.userID})" data-toggle="modal"><i
-                                                class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a></td>
-                                    </tr>
+                                            <td>[[${p.getBillId().id}]]</td>
+                                            <td>[[${p.getProductId().name}]]</td>
+                                            <td>[[${p.quantity}]]</td>
+                                            <td><a href="#editBillDetailModal" class="edit"
+                                                   data-toggle="modal"
+                                                   th:onclick="Edit([[${p.getBillId().id}]],[[${p.getProductId().name}]],[[${p.quantity}]], [[${p.getProductId().id}]])">
+                                                <i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i>
+                                            </a> <a href="#deleteBillDetailModal" class="delete"
+                                                    th:onclick="Delete([[${p.getBillId().id}]], [[${p.getProductId().id}]])" data-toggle="modal"><i
+                                                    class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a></td>
+                                        </tr>
+                                    </th:block>
                                     <!--                                    </c:forEach>-->
                                     </tbody>
                                 </table>
                                 <div class="clearfix">
-                                    <div class="hint-text">
-                                        Showing <b>5</b> out of <b>[[${counts}]]</b> entries
-                                    </div>
-                                    <ul class="pagination">
-                                        <!--                                        <c:if test="${tag>1 }">-->
-                                        <!--                                            <li class="page-item disabled"><a-->
-                                        <!--                                                    href="<c:url value="/admin/list-customer?check=3&index=${tag-1}"/>">Previous</a></li>-->
-                                        <!--                                        </c:if>-->
-                                        <!--                                        <c:forEach begin="1" end="${endP}" var="i">-->
-                                        <!--                                            <li class="page-item ${tag == i ? "active" : "" }"><a-->
-                                        <!--                                                href="<c:url value="/admin/list-customer?check=3&index=${i}"/>"-->
-                                        <!--                                            class="page-link">${i}</a></li>-->
-                                        <!--                                        </c:forEach>-->
-                                        <!--                                        <c:if test="${tag<endP }">-->
-                                        <!--                                            <li class="page-item"><a-->
-                                        <!--                                                    href="<c:url value="/admin/list-customer?check=3&index=${tag+1}"/>"-->
-                                        <!--                                                class="page-link">Next</a></li>-->
-                                        <!--                                        </c:if>-->
+                                    <th:block th:if="${counts>10}">
+                                        <div class="hint-text">
+                                            Showing <b>10</b> out of <b>[[${counts}]]</b> entries
+                                        </div>
+                                    </th:block>
+                                    <th:block th:if="${counts<10}">
+                                        <div class="hint-text">
+                                            Showing <b>[[${counts}]]</b> out of <b>[[${counts}]]</b> entries
+                                        </div>
+                                    </th:block>
+                                    <ul class="pagination" style="justify-content: center; float: none">
+                                        <th:block th:if="${tag>1}">
+                                            <li class="page-item disabled" >
+                                                <a th:href="@{'/seller/list-billdetail/' + ${tag - 1 }}">Previous
+                                                </a>
+                                            </li>
+                                        </th:block>
+                                        <th:block th:each="i : ${#numbers.sequence(1, endP)}">
+                                            <li th:class=" ${tag == i ? 'page-item active' : 'page-item' }">
+                                                <a th:href="@{'/seller/list-billdetail/'+${i}}">
+                                                    [[${i }]]
+                                                </a>
+                                            </li>
+                                        </th:block>
+
+
+                                        <th:block th:if="${tag<endP}">
+                                            <li class="page-item" >
+                                                <a th:href="@{'/seller/list-billdetail/'+ ${tag + 1 }}">
+                                                    Next</a></li>
+                                        </th:block>
                                     </ul>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <!-- Edit Modal HTML -->
-                    <div id="addCustomerModal" class="modal fade">
+                    <div id="addBillDetailModal" class="modal fade">
                         <div class="modal-dialog">
                             <div class="modal-content">
-                                <form action="add-customer" method="post">
+                                <form action="/seller/add-billdetail" method="post">
                                     <div class="modal-header">
-                                        <h4 class="modal-title">Add Customer</h4>
+                                        <h4 class="modal-title">Add Bill Detail</h4>
                                         <button type="button" class="close" data-dismiss="modal"
                                                 aria-hidden="true">&times;</button>
                                     </div>
                                     <div class="modal-body">
                                         <div class="form-group">
-                                            <label>ID</label> <input id="addID" name="addID" type="text"
-                                                                     class="form-control" required>
-                                        </div>
-                                        <div class="form-group">
-                                            <label>FullName</label> <input id="addFullName"
-                                                                           name="addFullName" type="text" class="form-control" required>
-                                        </div>
-                                        <div class="form-group">
-                                            <label>UserName</label> <input id="addUserName"
-                                                                           name="addUserName" type="text" class="form-control" required>
-                                        </div>
-                                        <div class="form-group">
-                                            <label>PassWord</label> <input id="addPW" name="addPW"
-                                                                           type="text" class="form-control" required>
-                                        </div>
-                                        <div class="form-group">
-                                            <label>Status</label> <select id="addStt" name="addStt"
-                                                                          class="form-control" required>
-                                            <option value="0">Disable</option>
-                                            <option value="1">Enable</option>
+                                            <label>Bill</label> <select id="addBill" name="addBill"
+                                                                        class="form-control" required>
+                                            <th:block th:each="p : ${listAllBill}">
+                                                <option th:value="${p.id}">[[${p.id}]]</option>
+                                            </th:block>
                                         </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Product</label><select id="addProduct" name="addProduct"
+                                                                          class="form-control" required onchange="ChangeQuantity(this)">
+                                            <th:block th:each="p : ${listAllProduct}" th:if="${p.quantity > p.amount}">
+                                                <option th:value="${p.id + ',' + p.quantity + ',' + p.amount}">[[${p.name}]]</option>
+                                            </th:block>
+                                        </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Quantity</label><input type="number" name="addQuantity" id="addQuantity" class="form-control" required value="1" min="1" th:max="10" style="padding: 8px 10px;outline:none;">
                                         </div>
                                     </div>
                                     <div class="modal-footer">
@@ -281,38 +292,31 @@
                         </div>
                     </div>
                     <!-- Edit Modal HTML -->
-                    <div id="editCustomerModal" class="modal fade">
+                    <div id="editBillDetailModal" class="modal fade">
                         <div class="modal-dialog">
                             <div class="modal-content">
-                                <form action="edit-customer" method="post">
+                                <form action="/seller/edit-billdetail" method="post">
                                     <div class="modal-header">
-                                        <h4 class="modal-title">Edit Customer</h4>
+                                        <h4 class="modal-title">Edit Bill Detail</h4>
                                         <button type="button" class="close" data-dismiss="modal"
                                                 aria-hidden="true">&times;</button>
                                     </div>
                                     <div class="modal-body">
                                         <div class="form-group">
-                                            <label>ID</label> <input id="editID" name="editID" type="text"
-                                                                     class="form-control" required readonly>
+                                            <label>Bill</label> <input id="editBill" name="editBill" type="text"
+                                                                       class="form-control" required readonly>
                                         </div>
                                         <div class="form-group">
-                                            <label>FullName</label> <input id="editFullName"
-                                                                           name="editFullName" type="text" class="form-control" required>
+                                            <label>Product</label> <input id="editProduct"
+                                                                          name="editProduct" type="text" class="form-control" required readonly>
                                         </div>
                                         <div class="form-group">
-                                            <label>UserName</label> <input id="editUserName"
-                                                                           name="editUserName" type="text" class="form-control" required>
+                                            <label>Quantity</label> <input id="editQuantity"
+                                                                           name="editQuantity" type="text" class="form-control" required>
                                         </div>
-                                        <div class="form-group">
-                                            <label>PassWord</label> <input id="editPW" name="editPW"
-                                                                           type="text" class="form-control" required />
-                                        </div>
-                                        <div class="form-group">
-                                            <label>Status</label> <select id="editStt" name="editStt"
-                                                                          class="form-control" required>
-                                            <option value="0">Disable</option>
-                                            <option value="1">Enable</option>
-                                        </select>
+                                        <div class="form-group" hidden>
+                                            <label>ProductID</label> <input id="editProductID"
+                                                                            name="editProductID" type="text" class="form-control" required>
                                         </div>
                                     </div>
                                     <div class="modal-footer">
@@ -325,12 +329,12 @@
                         </div>
                     </div>
                     <!-- Delete Modal HTML -->
-                    <div id="deleteCustomerModal" class="modal fade">
+                    <div id="deleteBillDetailModal" class="modal fade">
                         <div class="modal-dialog">
                             <div class="modal-content">
-                                <form action="delete-customer" method="post">
+                                <form action="/seller/delete-billdetail" method="post">
                                     <div class="modal-header">
-                                        <h4 class="modal-title">Delete Customer</h4>
+                                        <h4 class="modal-title">Delete Bill Detail</h4>
                                         <button type="button" class="close" data-dismiss="modal"
                                                 aria-hidden="true">&times;</button>
                                     </div>
@@ -344,8 +348,11 @@
                                         <input type="button" class="btn btn-default" data-dismiss="modal"
                                                value="Cancel"> <input type="submit"
                                                                       class="btn btn-danger" value="Delete"> <input
-                                            type="hidden" id="deleteCustomer" name="deleteCustomer"> <input
-                                            type="hidden" name="result" id="resultDelete" value="">
+                                            type="hidden" id="deleteBillDetail" name="deleteBillDetail">
+                                        <input
+                                                type="hidden" id="deleteProductDetail" name="deleteProductDetail">
+                                        <input
+                                                type="hidden" name="result" id="resultDelete" value="">
                                     </div>
                                 </form>
                             </div>
@@ -380,21 +387,35 @@
                 </script>
 
                 <script>
-                    function Edit(id, fullname, username, password, status){
-                        document.getElementById('editID').value = id;
-                        document.getElementById('editFullName').value = fullname;
-                        document.getElementById('editUserName').value = username;
-                        document.getElementById('editPW').value = password;
-                        document.getElementById('editStt').value = status;
+                    function Edit(bill, product, quantity, productID){
+                        document.getElementById('editBill').value = bill;
+                        document.getElementById('editProduct').value = product;
+                        document.getElementById('editProductID').value = productID;
+                        document.getElementById('editQuantity').value = quantity;
                     }
                 </script>
 
                 <script>
-                    function Delete(id){
-                        if(id != 0)
-                            document.getElementById('deleteCustomer').value = id;
+                    function ChangeQuantity(rest){
+
+
+                        var list = rest.value.toString().split(",");
+                        document.getElementById('addQuantity').max = Number(list[1]) - Number(list[2]);
+                        document.getElementById('addQuantity').value = 1;
+
+                    }
+                </script>
+
+                <script>
+                    function Delete(idBill, idProduct){
+                        if(idBill != 0 && idProduct !=0)
+                        {
+                            document.getElementById('deleteBillDetail').value = idBill;
+                            document.getElementById('deleteProductDetail').value = idProduct;
+                        }
                         else{
-                            document.getElementById('deleteCustomer').value = id;
+                            document.getElementById('deleteBillDetail').value = idBill;
+                            document.getElementById('deleteProductDetail').value = idProduct;
                             listChecked();
                         }
                     }

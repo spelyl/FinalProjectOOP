@@ -2,6 +2,8 @@ package group5.webapp.FinalProjectOOP.repositories;
 
 import group5.webapp.FinalProjectOOP.models.Bill;
 import group5.webapp.FinalProjectOOP.models.User;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -22,4 +24,7 @@ public interface BillRepository extends JpaRepository<Bill, Integer> {
 
     List<Bill> findAllByStatus(int status);
 
+    void deleteBillById(int id);
+
+    Slice<Bill> findAllByStatus(int status, Pageable pageable);
 }

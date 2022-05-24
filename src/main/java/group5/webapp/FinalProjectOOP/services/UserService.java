@@ -25,4 +25,6 @@ public interface UserService {
 
     List<User> findAllByRoleAndStatus(int role, int status);
 
+    List<User> findUserByRole(int id);
+
 }

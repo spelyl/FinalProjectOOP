@@ -14,4 +14,6 @@ public interface BillDetailsRepository extends JpaRepository<BillDetail, BillDet
     List<BillDetail> findAllByBillId(Bill billId);
 
     List<BillDetail> findAll();
+
+    void deleteBillDetailByBillIdAndProductId(Bill bill, Product product);
 }

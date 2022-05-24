@@ -5,6 +5,10 @@ import group5.webapp.FinalProjectOOP.models.User;
 import group5.webapp.FinalProjectOOP.repositories.BillRepository;
 import group5.webapp.FinalProjectOOP.services.BillService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Slice;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -47,5 +51,21 @@ public class BillServiceImplement implements BillService {
     public List<Bill> findAll() {
         return billRepository.findAll();
     }
+
+    @Override
+    public Slice<Bill> PagingAllBillByStatus(int offset, int pageSize, int status) {
+        return billRepository.findAllByStatus( status,PageRequest.of(offset,pageSize).withSort(Sort.by("id").descending()));
+    }
+
+    @Override
+    public void deleteBill(int id) {
+        billRepository.deleteBillById(id);
+    }
+
+    @Override
+    public Bill getBillById(Integer id) {
+        return billRepository.getById(id);
+    }
+
 
 }

@@ -34,7 +34,7 @@ public class ProductServiceImplement implements ProductService {
 
     @Override
     public Page<Product> PagingAllProduct(int offset, int pageSize) {
-        return productRepository.findAll(PageRequest.of(offset,pageSize).withSort(Sort.by("id")));
+        return productRepository.findAll(PageRequest.of(offset,pageSize).withSort(Sort.by("id").descending()));
     }
 
     @Override
@@ -91,5 +91,10 @@ public class ProductServiceImplement implements ProductService {
     @Override
     public void saveProduct(Product product) {
         productRepository.save(product);
+    }
+
+    @Override
+    public void deleteProduct(int id) {
+        productRepository.deleteProductById(id);
     }
 }
