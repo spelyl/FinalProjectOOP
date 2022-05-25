@@ -62,7 +62,11 @@ public class WebHomeController {
 
                 List<BillDetail> billDetailList = billDetailService.findAllByBillId(bill);
                 if(billDetailList.size() > 0){
-                    model.addAttribute("listBill", billDetailList);
+                    int count = 0;
+                    for(BillDetail p : billDetailList){
+                        count += p.getQuantity();
+                    }
+                    model.addAttribute("count", count);
                 }
             }
         }
@@ -109,7 +113,11 @@ public class WebHomeController {
 
                 List<BillDetail> billDetailList = billDetailService.findAllByBillId(bill);
                 if(billDetailList.size() > 0){
-                    model.addAttribute("listBill", billDetailList);
+                    int count = 0;
+                    for(BillDetail p : billDetailList){
+                        count += p.getQuantity();
+                    }
+                    model.addAttribute("count", count);
                 }
             }
         }
@@ -160,7 +168,11 @@ public class WebHomeController {
 
                 List<BillDetail> billDetailList = billDetailService.findAllByBillId(bill);
                 if(billDetailList.size() > 0){
-                    model.addAttribute("listBill", billDetailList);
+                    int count = 0;
+                    for(BillDetail p : billDetailList){
+                        count += p.getQuantity();
+                    }
+                    model.addAttribute("count", count);
                 }
             }
         }
@@ -212,7 +224,11 @@ public class WebHomeController {
 
                 List<BillDetail> billDetailList = billDetailService.findAllByBillId(bill);
                 if(billDetailList.size() > 0){
-                    model.addAttribute("listBill", billDetailList);
+                    int count = 0;
+                    for(BillDetail p : billDetailList){
+                        count += p.getQuantity();
+                    }
+                    model.addAttribute("count", count);
                 }
             }
         }
@@ -250,6 +266,11 @@ public class WebHomeController {
             Bill bill = billCheck.get();
             List<BillDetail> billDetailList = billDetailService.findAllByBillId(bill);
             if(billDetailList.size() > 0) {
+                int count = 0;
+                for(BillDetail p : billDetailList){
+                    count += p.getQuantity();
+                }
+                model.addAttribute("count", count);
                 model.addAttribute("listBill", billDetailList);
                 total = bill.getTotal();
             }

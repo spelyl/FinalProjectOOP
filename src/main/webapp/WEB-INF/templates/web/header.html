@@ -26,10 +26,10 @@
             <div style="position: relative">
 
                 <a href="/cart"><img th:src="@{/images/cart.png}" width="30px" height="30px" style="margin-right: 10px;">
-                    <div th:with="count=${0}">
-                        <span class="cart-badge" th:each="p : ${listBill}" style="color: black; position: absolute; bottom: 0; right: 0"
-                              th:with="count=${count + p.quantity}">[[${count}]]</span>
-                    </div>
+                    <th:block th:if="${count > 0}">
+                        <span  class="cart-badge" style="color: black; position: absolute; bottom: 0; right: 0">[[${count}]]</span>
+                    </th:block>
+
                 </a>
 
 

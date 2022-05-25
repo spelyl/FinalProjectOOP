@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.sql.Date;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -157,7 +158,11 @@ public class UserCustomerController {
 
                 List<BillDetail> billDetailList = billDetailService.findAllByBillId(bill);
                 if(billDetailList.size() > 0){
-                    model.addAttribute("listBill", billDetailList);
+                    int count = 0;
+                    for(BillDetail p : billDetailList){
+                        count += p.getQuantity();
+                    }
+                    model.addAttribute("count", count);
                 }
             }
 
@@ -224,7 +229,11 @@ public class UserCustomerController {
 
             List<BillDetail> billDetailList = billDetailService.findAllByBillId(bill);
             if(billDetailList.size() > 0){
-                model.addAttribute("listBill", billDetailList);
+                int count = 0;
+                for(BillDetail p : billDetailList){
+                    count += p.getQuantity();
+                }
+                model.addAttribute("count", count);
             }
         }
 
@@ -274,7 +283,11 @@ public class UserCustomerController {
 
             List<BillDetail> billDetailList = billDetailService.findAllByBillId(bill);
             if(billDetailList.size() > 0){
-                model.addAttribute("listBill", billDetailList);
+                int count = 0;
+                for(BillDetail p : billDetailList){
+                    count += p.getQuantity();
+                }
+                model.addAttribute("count", count);
             }
         }
 
@@ -317,7 +330,11 @@ public class UserCustomerController {
 
             List<BillDetail> billDetailList = billDetailService.findAllByBillId(bill);
             if(billDetailList.size() > 0){
-                model.addAttribute("listBill", billDetailList);
+                int count = 0;
+                for(BillDetail p : billDetailList){
+                    count += p.getQuantity();
+                }
+                model.addAttribute("count", count);
             }
         }
         return "redirect:/profile";
@@ -332,11 +349,14 @@ public class UserCustomerController {
         if(user != null){
 
             List<Bill> billList = billService.findAllByUserAndStatus(user, 1);
-
+            List<Bill> billListReverse = new ArrayList<>();
+            for(int i = billList.size() - 1; i > -1; i --){
+                billListReverse.add(billList.get(i));
+            }
             List<BillDetail> billDetailList = billDetailService.findAll();
 
-            model.addAttribute("billList", billList);
-            model.addAttribute("billDetailList", billDetailList);
+            model.addAttribute("billList", billListReverse);
+            model.addAttribute("billDetailList", billDetailList);  
 
             Optional<Bill> billCheck = billService.findByUserAndStatus(user, -1);
             if (billCheck.isPresent()){
@@ -344,7 +364,11 @@ public class UserCustomerController {
 
                 billDetailList = billDetailService.findAllByBillId(bill);
                 if(billDetailList.size() > 0){
-                    model.addAttribute("listBill", billDetailList);
+                    int count = 0;
+                    for(BillDetail p : billDetailList){
+                        count += p.getQuantity();
+                    }
+                    model.addAttribute("count", count);
                 }
             }
 
@@ -374,7 +398,11 @@ public class UserCustomerController {
 
             List<BillDetail> billDetailList = billDetailService.findAllByBillId(bill);
             if (billDetailList.size() > 0) {
-                model.addAttribute("listBill", billDetailList);
+                int count = 0;
+                for(BillDetail p : billDetailList){
+                    count += p.getQuantity();
+                }
+                model.addAttribute("count", count);
             }
         }
 
@@ -402,7 +430,11 @@ public class UserCustomerController {
 
             List<BillDetail> billDetailList = billDetailService.findAllByBillId(bill);
             if (billDetailList.size() > 0) {
-                model.addAttribute("listBill", billDetailList);
+                int count = 0;
+                for(BillDetail p : billDetailList){
+                    count += p.getQuantity();
+                }
+                model.addAttribute("count", count);
             }
         }
 
@@ -432,7 +464,11 @@ public class UserCustomerController {
 
             List<BillDetail> billDetailList = billDetailService.findAllByBillId(bill);
             if (billDetailList.size() > 0) {
-                model.addAttribute("listBill", billDetailList);
+                int count = 0;
+                for(BillDetail p : billDetailList){
+                    count += p.getQuantity();
+                }
+                model.addAttribute("count", count);
             }
         }
 
@@ -462,7 +498,11 @@ public class UserCustomerController {
 
             List<BillDetail> billDetailList = billDetailService.findAllByBillId(bill);
             if (billDetailList.size() > 0) {
-                model.addAttribute("listBill", billDetailList);
+                int count = 0;
+                for(BillDetail p : billDetailList){
+                    count += p.getQuantity();
+                }
+                model.addAttribute("count", count);
             }
         }
 
@@ -491,7 +531,11 @@ public class UserCustomerController {
 
             List<BillDetail> billDetailList = billDetailService.findAllByBillId(bill);
             if (billDetailList.size() > 0) {
-                model.addAttribute("listBill", billDetailList);
+                int count = 0;
+                for(BillDetail p : billDetailList){
+                    count += p.getQuantity();
+                }
+                model.addAttribute("count", count);
             }
         }
 
@@ -521,7 +565,11 @@ public class UserCustomerController {
 
             List<BillDetail> billDetailList = billDetailService.findAllByBillId(bill);
             if (billDetailList.size() > 0) {
-                model.addAttribute("listBill", billDetailList);
+                int count = 0;
+                for(BillDetail p : billDetailList){
+                    count += p.getQuantity();
+                }
+                model.addAttribute("count", count);
             }
         }
         return "redirect:/card";
@@ -555,7 +603,11 @@ public class UserCustomerController {
 
             List<BillDetail> billDetailList = billDetailService.findAllByBillId(bill);
             if (billDetailList.size() > 0) {
-                model.addAttribute("listBill", billDetailList);
+                int count = 0;
+                for(BillDetail p : billDetailList){
+                    count += p.getQuantity();
+                }
+                model.addAttribute("count", count);
             }
         }
 
@@ -592,7 +644,11 @@ public class UserCustomerController {
 
             List<BillDetail> billDetailList = billDetailService.findAllByBillId(bill);
             if (billDetailList.size() > 0) {
-                model.addAttribute("listBill", billDetailList);
+                int count = 0;
+                for (BillDetail p : billDetailList) {
+                    count += p.getQuantity();
+                }
+                model.addAttribute("count", count);
             }
         }
 
@@ -676,14 +732,14 @@ public class UserCustomerController {
                 session.removeAttribute("info");
                 session.setAttribute("info", customerInfo);
 
-                if(!address.isEmpty()){
+                if(address != null){
                     Address newAddress = new Address();
                     newAddress.setDescription(address);
                     newAddress.setUser(user);
                     addressService.saveAddress(newAddress);
                 }
 
-                if(!card.isEmpty()){
+                if(card != null){
                     Card newCard = new Card();
                     String[] paraCard = card.split(" ");
                     newCard.setBank(paraCard[0]);

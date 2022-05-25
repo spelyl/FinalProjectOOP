@@ -50,7 +50,7 @@ public class BillDetailServiceImplement implements BillDetailService {
 
     @Override
     public Page<BillDetail> PagingAllBillDetail(int offset, int pageSize) {
-        return billDetailsRepository.findAll(PageRequest.of(offset,pageSize, Sort.by("id").descending()));
+        return billDetailsRepository.findAll(PageRequest.of(offset,pageSize, Sort.by("billId").descending()));
     }
 
     @Override
